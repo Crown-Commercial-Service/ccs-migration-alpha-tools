@@ -4,6 +4,14 @@ This repository contains reusable sections of infrastructure code, intended for 
 
 As with all things in the Alpha, this is just one representation of a possible construct for use during a beta phase. It's illustrative rather than directive.
 
+## Usage
+
+It's intended to be used as a Git submodule within consuming projects. For example:
+
+```bash
+git submodule add git@github.com:org/ccs-terraform-modules-alpha.git infrastructure/core  #TODO correct org & repo name when available
+```
+
 ## Structure
 
 The following folders are in this repo:
