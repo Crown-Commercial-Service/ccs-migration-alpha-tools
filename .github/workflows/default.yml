@@ -1,0 +1,13 @@
+name: default
+on: [push]
+jobs:
+  validate-tf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: validate all
+        uses: dflook/terraform-validate@v1
+        with:
+          path: validation
