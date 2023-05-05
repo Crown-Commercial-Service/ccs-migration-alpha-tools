@@ -1,4 +1,4 @@
-# CCS Terraform Modules Alpha
+# CCS Migration Alpha Tools
 
 This repository contains reusable sections of infrastructure code, intended for use solely within the Migration Alpha project.
 
@@ -9,7 +9,7 @@ As with all things in the Alpha, this is just one representation of a possible c
 It's intended to be used as a Git submodule within consuming projects. For example:
 
 ```bash
-git submodule add git@github.com:org/ccs-terraform-modules-alpha.git infrastructure/core  #TODO correct org & repo name when available
+git submodule add git@github.com:Crown-Commercial-Service/ccs-migration-alpha-tools.git infrastructure/core
 ```
 
 ## Structure
