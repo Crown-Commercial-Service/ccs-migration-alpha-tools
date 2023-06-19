@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "write_log_group" {
   }
 
   statement {
-    sid = "Write${replace(var.log_group_name, "-", "")}LogGroup"
+    sid = "Write${replace(var.log_group_name, "/[-_]/", "")}LogGroup"
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "write_log_group" {
   }
 
   statement {
-    sid = "Write${replace(var.log_group_name, "-", "")}LogStream"
+    sid = "Write${replace(var.log_group_name, "/[-_]/", "")}LogStream"
     actions = [
       "logs:PutLogEvents"
     ]
