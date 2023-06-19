@@ -8,6 +8,11 @@ output "pass_task_role_policy_document_json" {
   value       = module.service_task_definition.pass_task_role_policy_document_json
 }
 
+output "task_definition_arn" {
+  description = "ARN of the task definition"
+  value       = module.service_task_definition.task_definition_arn
+}
+
 output "task_role_arn" {
   description = "ARN of the IAM role assigned to all tasks run under this service"
   # Note this assumes that if there are multiple tasks, they all share the same task role
