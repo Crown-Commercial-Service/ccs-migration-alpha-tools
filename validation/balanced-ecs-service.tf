@@ -13,7 +13,10 @@ module "balanced_ecs_service" {
   ecs_execution_role_arn = "arn:aws:iam::123456789012:role/Project_Deployment"
   image                  = "docker-image:latest"
   lb_target_group_arn    = "arn:aws::::"
-  naming_prefix          = "PREFIX:123"
+  resource_name_prefixes = {
+    normal  = "PREFIX:123"
+    hyphens = "PREFIX-123"
+  }
   security_group_ids = [
     "sg-1234"
   ]

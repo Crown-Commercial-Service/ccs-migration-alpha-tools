@@ -13,7 +13,6 @@ module "postgres_migrator" {
   db_clients_security_group_id       = "sg-12345"
   ecs_cluster_arn                    = "arn:aws::::::"
   ecs_execution_role_arn             = "arn:aws::::::"
-  naming_prefix                      = "NAME:123"
   pass_ecs_execution_role_policy_arn = "arn:aws::::::"
   pg_db_endpoint                     = "1234567.us-east-1.rds.amazonaws.com:5432"
   pg_db_name                         = "db"
@@ -21,7 +20,11 @@ module "postgres_migrator" {
   pg_db_username                     = "postgres"
   pg_docker_image                    = "postgres:latest"
   process_name                       = "migrate"
-  subnets                            = {
+  resource_name_prefixes = {
+    normal  = "PREFIX:123"
+    hyphens = "PREFIX-123"
+  }
+  subnets = {
     "us-east-1a" = "subnet-1234",
     "us-east-1b" = "subnet-5678"
   }

@@ -15,7 +15,7 @@ resource "aws_db_instance" "db" {
   identifier                      = var.db_name # NB RDS identifiers use hyphens, not underscores
   instance_class                  = var.db_instance_class
   multi_az                        = true
-  password                        = var.db_password
+  password                        = random_password.db.result
   port                            = var.postgres_port
   publicly_accessible             = false
   skip_final_snapshot             = var.skip_final_snapshot
@@ -25,7 +25,7 @@ resource "aws_db_instance" "db" {
 }
 
 resource "aws_security_group" "db" {
-  name        = "${var.db_name}-db"  # TODO rename
+  name        = "${var.db_name}-db" # TODO rename
   description = "RDS ${var.db_name} DB"
   vpc_id      = var.vpc_id
 
@@ -35,7 +35,7 @@ resource "aws_security_group" "db" {
 }
 
 resource "aws_security_group" "db_clients" {
-  name        = "${var.db_name}-db-clients"  # TODO rename
+  name        = "${var.db_name}-db-clients" # TODO rename
   description = "Entities permitted to access the ${var.db_name} database"
   vpc_id      = var.vpc_id
 

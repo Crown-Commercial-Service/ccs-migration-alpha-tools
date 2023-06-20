@@ -2,7 +2,7 @@ resource "aws_efs_file_system" "filesystem" {
   encrypted = true
 
   tags = {
-    "Name" = "${var.naming_prefix}:PGMIGRATE"
+    "Name" = "${var.resource_name_prefixes.normal}:PGMIGRATE"
     "TYPE" = "EFS"
   }
 }
@@ -25,7 +25,7 @@ resource "aws_efs_access_point" "access" {
   }
 
   tags = {
-    "Name" = "${var.naming_prefix}:PGMIGRATE"
+    "Name" = "${var.resource_name_prefixes.normal}:PGMIGRATE"
   }
 }
 
@@ -68,22 +68,22 @@ resource "aws_efs_mount_target" "target" {
 }
 
 resource "aws_security_group" "filesystem" {
-  name        = "${var.naming_prefix}:PGMIGRATE:EFS"
+  name        = "${var.resource_name_prefixes.normal}:PGMIGRATE:EFS"
   description = "EFS for PG Migrate process"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${var.naming_prefix}:PGMIGRATE:EFS"
+    Name = "${var.resource_name_prefixes.normal}:PGMIGRATE:EFS"
   }
 }
 
 resource "aws_security_group" "filesystem_clients" {
-  name        = "${var.naming_prefix}:PGMIGRATE:EFS:CLIENTS"
-  description = "Entities permitted to access the ${var.naming_prefix}:PGMIGRATE:EFS filesystem"
+  name        = "${var.resource_name_prefixes.normal}:PGMIGRATE:EFS:CLIENTS"
+  description = "Entities permitted to access the ${var.resource_name_prefixes.normal}:PGMIGRATE:EFS filesystem"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${var.naming_prefix}:PGMIGRATE:EFS:CLIENTS"
+    Name = "${var.resource_name_prefixes.normal}:PGMIGRATE:EFS:CLIENTS"
   }
 }
 

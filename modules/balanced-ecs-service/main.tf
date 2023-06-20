@@ -1,5 +1,5 @@
 resource "aws_ecs_service" "service" {
-  name                 = "${var.service_name}"
+  name                 = var.service_name
   cluster              = var.ecs_cluster_arn
   desired_count        = var.desired_count
   force_new_deployment = false

@@ -21,12 +21,6 @@ variable "db_name" {
   description = "Short, no-spaces version of database name"
 }
 
-variable "db_password" {
-  type        = string
-  sensitive   = true
-  description = "Password for the database master user"
-}
-
 variable "db_username" {
   type        = string
   description = "Username for master user"
@@ -35,7 +29,7 @@ variable "db_username" {
 variable "postgres_engine_version" {
   type        = string
   description = "Version number of db engine to use"
-  default     = "14.6" # TODO Determine version currently in use for DMP 1.0
+  default     = "14.6"
 }
 
 variable "postgres_port" {
