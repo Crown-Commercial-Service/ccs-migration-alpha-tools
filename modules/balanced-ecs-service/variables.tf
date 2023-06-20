@@ -60,9 +60,12 @@ variable "lb_target_group_arn" {
   description = "ARN of the Load Balancer Target Group with which instances of this service should register"
 }
 
-variable "naming_prefix" {
-  type        = string
-  description = "Prefix to apply to names of all AWS resources"
+variable "resource_name_prefixes" {
+  type = object({
+    normal  = string,
+    hyphens = string
+  })
+  description = "Prefix to apply to resources in AWS; options provided to satisfy divergent naming requirements across AWS"
 }
 
 variable "security_group_ids" {

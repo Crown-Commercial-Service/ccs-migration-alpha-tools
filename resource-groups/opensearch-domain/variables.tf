@@ -4,14 +4,14 @@ variable "domain_name" {
 }
 
 variable "ebs_volume_size_gib" {
-  type = number
+  type        = number
   description = "Size (in GiB) of the EBS volumes to attach to each search instance"
 }
 
 variable "engine_version" {
   type        = string
   description = "Version of OpenSearch engine to deploy"
-  default     = "OpenSearch_1.3"  # Eschewed more recent 2.5 because DMP in GPaaS is running v1 AFAIK
+  default     = "OpenSearch_1.3" # Eschewed more recent 2.5 because DMP in GPaaS is running v1 AFAIK
 }
 
 variable "instance_type" {
@@ -20,9 +20,12 @@ variable "instance_type" {
   default     = "t3.small.search"
 }
 
-variable "naming_prefix" {
-  type        = string
-  description = "Prefix to apply to names of all AWS resources"
+variable "resource_name_prefixes" {
+  type = object({
+    normal  = string,
+    hyphens = string
+  })
+  description = "Prefix to apply to resources in AWS; options provided to satisfy divergent naming requirements across AWS"
 }
 
 variable "subnet_ids" {

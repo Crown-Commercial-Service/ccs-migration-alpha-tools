@@ -56,7 +56,7 @@ data "aws_iam_policy_document" "domain_resource_based" {
     effect = "Allow"
 
     principals {
-      type        = "AWS"
+      type = "AWS"
       # Access is limited by VPC Security Group
       identifiers = [
         "*"
@@ -74,7 +74,7 @@ resource "aws_opensearch_domain_policy" "main" {
 }
 
 resource "aws_security_group" "opensearch" {
-  name        = "${var.naming_prefix}:${var.domain_name}:OPENSEARCH"
+  name        = "${var.resource_name_prefixes.normal}:${var.domain_name}:OPENSEARCH"
   description = "${var.domain_name} OpenSearch"
   vpc_id      = var.vpc_id
 
@@ -84,7 +84,7 @@ resource "aws_security_group" "opensearch" {
 }
 
 resource "aws_security_group" "opensearch_clients" {
-  name        = "${var.naming_prefix}:${var.domain_name}:OPENSEARCH:CLIENTS"
+  name        = "${var.resource_name_prefixes.normal}:${var.domain_name}:OPENSEARCH:CLIENTS"
   description = "Entities permitted to access the ${var.domain_name} OpenSearch domain"
   vpc_id      = var.vpc_id
 

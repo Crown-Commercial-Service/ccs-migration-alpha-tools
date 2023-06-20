@@ -58,11 +58,6 @@ variable "ecs_execution_role_arn" {
   description = "ARN of the role which is assumed by the ECS execution processes"
 }
 
-variable "naming_prefix" {
-  type        = string
-  description = "Prefix to apply to names of all AWS resources"
-}
-
 variable "pass_ecs_execution_role_policy_arn" {
   type        = string
   description = "ARN of policy permitting passage of the ECS execution role"
@@ -98,6 +93,13 @@ variable "process_name" {
   description = "Short name for the process facilitated by this module - used in resource naming"
 }
 
+variable "resource_name_prefixes" {
+  type = object({
+    normal  = string,
+    hyphens = string
+  })
+  description = "Prefix to apply to resources in AWS; options provided to satisfy divergent naming requirements across AWS"
+}
 variable "subnets" {
   type        = map(string)
   description = "Map of IDs of subnets for resources in the form {AZ = ID}"
