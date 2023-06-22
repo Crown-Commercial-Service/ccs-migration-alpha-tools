@@ -35,5 +35,6 @@ module "service_task_definition" {
   ecs_execution_role_arn          = var.ecs_execution_role_arn
   family_name                     = var.service_name
   image                           = var.image
+  override_command                = var.override_command
   secret_environment_variables    = var.secret_environment_variables
 }

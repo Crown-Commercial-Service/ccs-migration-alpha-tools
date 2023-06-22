@@ -61,6 +61,12 @@ variable "lb_target_group_arn" {
   default     = null
 }
 
+variable "override_command" {
+  type        = list(string)
+  description = "Startup command to override that which is specified in the original Dockerfile of the container"
+  default     = null
+}
+
 variable "resource_name_prefixes" {
   type = object({
     normal        = string,
