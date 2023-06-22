@@ -16,7 +16,12 @@ output "task_definition_arn" {
 output "task_role_arn" {
   description = "ARN of the IAM role assigned to all tasks run under this service"
   # Note this assumes that if there are multiple tasks, they all share the same task role
-  value       = module.service_task_definition.task_role_arn
+  value = module.service_task_definition.task_role_arn
+}
+
+output "task_role_name" {
+  description = "Name of the IAM role assigned to all tasks run under this task definition"
+  value       = module.service_task_definition.task_role_name
 }
 
 output "write_container_logs_policy_document_json" {
