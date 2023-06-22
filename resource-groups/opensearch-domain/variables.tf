@@ -22,8 +22,9 @@ variable "instance_type" {
 
 variable "resource_name_prefixes" {
   type = object({
-    normal  = string,
-    hyphens = string
+    normal        = string,
+    hyphens       = string,
+    hyphens_lower = string
   })
   description = "Prefix to apply to resources in AWS; options provided to satisfy divergent naming requirements across AWS"
 }
