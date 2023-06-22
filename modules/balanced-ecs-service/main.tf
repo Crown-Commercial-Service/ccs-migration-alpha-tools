@@ -4,10 +4,13 @@ resource "aws_ecs_service" "service" {
   desired_count        = var.desired_count
   force_new_deployment = false
   launch_type          = "FARGATE"
-  load_balancer {
-    container_name   = var.service_name
-    container_port   = tostring(var.container_port)
-    target_group_arn = var.lb_target_group_arn
+  dynamic "load_balancer" {
+    for_each = toset(var.lb_target_group_arn == null ? [] : ["ok"])
+    content {
+      container_name   = var.service_name
+      container_port   = tostring(var.container_port)
+      target_group_arn = var.lb_target_group_arn
+    }
   }
   network_configuration {
     assign_public_ip = false

@@ -58,6 +58,7 @@ variable "image" {
 variable "lb_target_group_arn" {
   type        = string
   description = "ARN of the Load Balancer Target Group with which instances of this service should register"
+  default     = null
 }
 
 variable "resource_name_prefixes" {

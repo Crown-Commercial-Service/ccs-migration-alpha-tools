@@ -5,7 +5,7 @@ variable "cluster_name" {
 
 /* This should be declared outside this module - at the top level - and
    passed in, to avoid circular dependencies with the various instances
-   of the balanced-ecs-service modules
+   of the ecs-service modules
 */
 variable "execution_role" {
   type = object({
