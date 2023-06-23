@@ -16,6 +16,7 @@ module "ecs_service" {
   resource_name_prefixes = {
     normal  = "PREFIX:123"
     hyphens = "PREFIX-123"
+    hyphens_lower = "prefix-n123"
   }
   security_group_ids = [
     "sg-1234"

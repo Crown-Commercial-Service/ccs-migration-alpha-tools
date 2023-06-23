@@ -6,6 +6,7 @@ module "opensearch_domain" {
   resource_name_prefixes = {
     normal  = "PREFIX:123"
     hyphens = "PREFIX-123"
+    hyphens_lower = "prefix-n123"
   }
   subnet_ids = ["subnet-123", "subnet-456"]
   vpc_id     = "vpc-12345"

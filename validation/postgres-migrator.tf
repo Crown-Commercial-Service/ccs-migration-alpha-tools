@@ -23,6 +23,7 @@ module "postgres_migrator" {
   resource_name_prefixes = {
     normal  = "PREFIX:123"
     hyphens = "PREFIX-123"
+    hyphens_lower = "prefix-n123"
   }
   subnets = {
     "us-east-1a" = "subnet-1234",
