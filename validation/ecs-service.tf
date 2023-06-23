@@ -1,5 +1,5 @@
-module "balanced_ecs_service" {
-  source = "../modules/balanced-ecs-service"
+module "ecs_service" {
+  source = "../modules/ecs-service"
 
   aws_account_id = "123456789012"
   aws_region     = "eu-west-1"
