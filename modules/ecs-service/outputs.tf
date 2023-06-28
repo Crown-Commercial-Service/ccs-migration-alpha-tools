@@ -26,5 +26,5 @@ output "task_role_name" {
 
 output "write_container_logs_policy_document_json" {
   description = "JSON describing an IAM policy which allows the container logs to be written to"
-  value       = module.container_log_group.write_log_group_policy_document_json
+  value       = module.task_log_group.write_log_group_policy_document_json
 }

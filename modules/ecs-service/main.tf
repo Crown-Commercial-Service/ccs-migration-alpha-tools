@@ -7,8 +7,8 @@ resource "aws_ecs_service" "service" {
   dynamic "load_balancer" {
     for_each = toset(var.lb_target_group_arn == null ? [] : ["ok"])
     content {
-      container_name   = var.service_name
-      container_port   = tostring(var.container_port)
+      container_name   = var.service_container_name
+      container_port   = tostring(var.service_port)
       target_group_arn = var.lb_target_group_arn
     }
   }
@@ -23,18 +23,12 @@ resource "aws_ecs_service" "service" {
 module "service_task_definition" {
   source = "../../resource-groups/ecs-fargate-task-definition"
 
-  aws_account_id                  = var.aws_account_id
-  aws_region                      = var.aws_region
-  container_cpu                   = var.container_cpu
-  container_environment_variables = var.container_environment_variables
-  container_healthcheck_command   = var.container_healthcheck_command
-  container_log_group_name        = module.container_log_group.log_group_name
-  container_memory                = var.container_memory
-  container_name                  = var.service_name
-  container_port                  = var.container_port
-  ecs_execution_role_arn          = var.ecs_execution_role_arn
-  family_name                     = var.service_name
-  image                           = var.image
-  override_command                = var.override_command
-  secret_environment_variables    = var.secret_environment_variables
+  aws_account_id         = var.aws_account_id
+  aws_region             = var.aws_region
+  container_definitions  = var.container_definitions
+  ecs_execution_role_arn = var.ecs_execution_role_arn
+  family_name            = var.service_name
+  task_cpu               = var.task_cpu
+  task_log_group_name    = module.task_log_group.log_group_name
+  task_memory            = var.task_memory
 }

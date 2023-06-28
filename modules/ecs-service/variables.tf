@@ -8,36 +8,40 @@ variable "aws_region" {
   description = "Region for resource deployment"
 }
 
-variable "container_cpu" {
-  type        = number
-  description = "CPU to allocate to each task container (where a value of 1024 == 1vCPU)"
-}
-
-variable "container_environment_variables" {
-  type        = list(map(string))
-  description = "Environment variables to be made available to service container tasks"
-}
-
-variable "container_healthcheck_command" {
-  type        = string
-  description = "Command to run within container to verify process health"
-  default     = null
-}
-
-variable "container_memory" {
-  type        = number
-  description = "Memory to allocate to each task container (where a value of 1024 == 1GB)"
-}
-
-variable "container_port" {
-  type        = number
-  description = "Port on which container processes receives requests"
-  default     = 80
+variable "container_definitions" {
+  type = map(object({
+    # CPU to allocate to the container (where a value of 1024 == 1vCPU)
+    cpu = number
+    # Environment variables to be made available to the container
+    environment_variables = list(map(string))
+    # Indicates whether or not the container is essential to the task
+    essential = bool
+    # Command to run within container to verify process health
+    healthcheck_command = string
+    # Canonical Docker image name - OR - URL of the image repo
+    image = string
+    # Memory to allocate to the container (where a value of 1024 == 1GB)
+    memory = number
+    # List of config value objects for EFS volumes to be mounted from the container
+    mounts = list(object({
+      access_point_id = string
+      file_system_id  = string
+      mount_point     = string
+      read_only       = bool
+      volume_name     = string
+    }))
+    # Startup command to override that which is specified in the original Dockerfile of the container
+    override_command = list(string)
+    # Port to which the container expects to bind its listener
+    port = number
+    # Environment variables to be looked up as secrets and then made available to the container
+    secret_environment_variables = list(map(string))
+  }))
 }
 
 variable "desired_count" {
   type        = number
-  description = "Target number of instances of service to run (fixed)"
+  description = "Target number of task instances of service to run (fixed)"
 }
 
 variable "ecs_cluster_arn" {
@@ -50,20 +54,9 @@ variable "ecs_execution_role_arn" {
   description = "ARN of the role which is assumed by the ECS execution processes"
 }
 
-variable "image" {
-  type        = string
-  description = "Canonical Docker image name - OR - URL of the image repo"
-}
-
 variable "lb_target_group_arn" {
   type        = string
   description = "ARN of the Load Balancer Target Group with which instances of this service should register"
-  default     = null
-}
-
-variable "override_command" {
-  type        = list(string)
-  description = "Startup command to override that which is specified in the original Dockerfile of the container"
   default     = null
 }
 
@@ -81,10 +74,10 @@ variable "security_group_ids" {
   description = "IDs of security groups to which the service tasks should be added"
 }
 
-variable "secret_environment_variables" {
-  type        = list(map(string))
-  description = "Environment variables to be looked up as secrets and then made available to each task container"
-  default     = []
+variable "service_container_name" {
+  type        = string
+  description = "The name of the container to which load balancers should direct traffic (required if this is a balanced service)"
+  default     = null
 }
 
 variable "service_name" {
@@ -92,9 +85,25 @@ variable "service_name" {
   description = "Name of the service, indicating its purpose"
 }
 
+variable "service_port" {
+  type        = number
+  description = "The port of the service container to which load balancers should direct traffic (required if this is a balanced service)"
+  default     = null
+}
+
 variable "service_subnet_ids" {
   type        = list(string)
   description = "IDs of the subnets in which to run the ECS tasks"
+}
+
+variable "task_cpu" {
+  type        = number
+  description = "CPU to allocate to each task (where a value of 1024 == 1vCPU)"
+}
+
+variable "task_memory" {
+  type        = number
+  description = "Memory to allocate to each task (where a value of 1024 == 1GB)"
 }
 
 variable "vpc_id" {

@@ -1,48 +1,52 @@
-resource "aws_ecs_task_definition" "task" {
-  family                = var.family_name
-  container_definitions = jsonencode([
-    {
-      name        = var.container_name
-      command     = var.override_command # If null, does not override Dockerfile original command
-      environment = var.container_environment_variables
-      essential   = true
-      healthCheck = var.container_healthcheck_command == null ? null : {
-        command     = ["CMD-SHELL", var.container_healthcheck_command]
+locals {
+  container_definitions = [
+    for name, vars in var.container_definitions : {
+      name        = name
+      command     = vars.override_command # If null, does not override Dockerfile original command
+      cpu         = vars.cpu
+      environment = vars.environment_variables
+      essential   = vars.essential || true
+      healthCheck = vars.healthcheck_command == null ? null : {
+        command     = ["CMD-SHELL", vars.healthcheck_command]
         startPeriod = 10
         timeout     = 10
       }
-
-      image            = var.image
+      image = vars.image
+      # TODO Solo tasks do not have IAM perms for the logs
       logConfiguration = {
         "logDriver" : "awslogs",
         "options" : {
           "awslogs-create-group" : "true",
-          "awslogs-group" : var.container_log_group_name,
+          "awslogs-group" : var.task_log_group_name,
           "awslogs-region" : var.aws_region,
           "awslogs-stream-prefix" : "container"
         }
       }
-
+      memory = vars.memory
       mountPoints = [
-        for mount in var.efs_mounts :
+        for mount in vars.mounts :
         {
           containerPath : mount["mount_point"],
           readOnly : mount["read_only"],
           sourceVolume : mount["volume_name"]
         }
       ]
-
-      portMappings = var.container_port == null ? null : [
+      portMappings = vars.port == null ? null : [
         {
-          containerPort = var.container_port
+          containerPort = vars.port
         }
       ]
-      secrets = var.secret_environment_variables
+      secrets = vars.secret_environment_variables
     }
-  ])
-  cpu                      = var.container_cpu
+  ]
+}
+
+resource "aws_ecs_task_definition" "task" {
+  family                   = var.family_name
+  container_definitions    = jsonencode(local.container_definitions)
+  cpu                      = var.task_cpu
   execution_role_arn       = var.ecs_execution_role_arn
-  memory                   = var.container_memory
+  memory                   = var.task_memory
   network_mode             = "awsvpc" # Fixed for Fargate
   requires_compatibilities = ["FARGATE"]
   runtime_platform {
@@ -52,20 +56,20 @@ resource "aws_ecs_task_definition" "task" {
   task_role_arn = aws_iam_role.task_role.arn
 
   dynamic "volume" {
-    for_each = var.efs_mounts
-    iterator = mount
+    for_each = var.volumes
+    iterator = volume
 
     content {
       efs_volume_configuration {
         authorization_config {
-          access_point_id = mount.value["access_point_id"]
+          access_point_id = volume.value["access_point_id"]
           iam             = "DISABLED"
         }
-        file_system_id     = mount.value["file_system_id"]
+        file_system_id     = volume.value["file_system_id"]
         transit_encryption = "ENABLED"
       }
 
-      name = mount.value["volume_name"]
+      name = volume.value["volume_name"]
     }
   }
 }

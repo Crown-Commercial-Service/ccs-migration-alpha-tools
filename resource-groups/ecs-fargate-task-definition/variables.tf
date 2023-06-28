@@ -8,42 +8,33 @@ variable "aws_region" {
   description = "Region for resource deployment"
 }
 
-variable "container_cpu" {
-  type        = number
-  description = "CPU to allocate to each task container (where a value of 1024 == 1vCPU)"
-}
-
-variable "container_environment_variables" {
-  type        = list(map(string))
-  description = "Environment variables to be made available to each task container"
-  default     = []
-}
-
-variable "container_healthcheck_command" {
-  type        = string
-  description = "Command to run within container to verify process health"
-  default     = null
-}
-
-variable "container_log_group_name" {
-  type        = string
-  description = "Name to give to the CloudWatch log group to which the task containers will write their standard (non-application) logs"
-}
-
-variable "container_memory" {
-  type        = number
-  description = "Memory to allocate to each task container (where a value of 1024 == 1GB)"
-}
-
-variable "container_name" {
-  type        = string
-  description = "Short name to give to the task containers"
-}
-
-variable "container_port" {
-  type        = number
-  description = "Port to which each task container expects to bind its listener"
-  default     = null
+variable "container_definitions" {
+  type = map(object({
+    # CPU to allocate to the container (where a value of 1024 == 1vCPU)
+    cpu = number
+    # Environment variables to be made available to the container
+    environment_variables = list(map(string))
+    # Indicates whether or not the container is essential to the task
+    essential = bool
+    # Command to run within container to verify process health
+    healthcheck_command = string
+    # Canonical Docker image name - OR - URL of the image repo
+    image = string
+    # Memory to allocate to the container (where a value of 1024 == 1GB)
+    memory = number
+    # List of config value objects for volumes to be mounted from the container
+    mounts = list(object({
+      mount_point = string
+      read_only   = bool
+      volume_name = string
+    }))
+    # Startup command to override that which is specified in the original Dockerfile of the container
+    override_command = list(string)
+    # Port to which the container expects to bind its listener
+    port = number
+    # Environment variables to be looked up as secrets and then made available to the container
+    secret_environment_variables = list(map(string))
+  }))
 }
 
 variable "ecs_execution_role_arn" {
@@ -51,36 +42,32 @@ variable "ecs_execution_role_arn" {
   description = "ARN of the role which is assumed by the ECS execution processes"
 }
 
-variable "efs_mounts" {
-  type = list(object({
-    access_point_id = string
-    file_system_id  = string
-    mount_point     = string
-    read_only       = bool
-    volume_name     = string
-  }))
-  description = "List of config value objects for EFS volumes to be mounted from the container"
-  default     = []
-}
-
 variable "family_name" {
   type        = string
   description = "The name to give to the task definition, across all revisions"
 }
 
-variable "image" {
+variable "task_cpu" {
+  type        = number
+  description = "CPU to allocate to each task (where a value of 1024 == 1vCPU) - Must be >= total of all containers' CPU"
+}
+
+variable "task_log_group_name" {
   type        = string
-  description = "Canonical Docker image name - OR - URL of the image repo"
+  description = "Name to give to the CloudWatch log group to which all the task's containers will write their logs"
 }
 
-variable "override_command" {
-  type        = list(string)
-  description = "Startup command to override that which is specified in the original Dockerfile of the container"
-  default     = null
+variable "task_memory" {
+  type        = number
+  description = "Memory to allocate to each task (where a value of 1024 == 1GB) - Must be >= total of all containers' memory"
 }
 
-variable "secret_environment_variables" {
-  type        = list(map(string))
-  description = "Environment variables to be looked up as secrets and then made available to each task container"
+variable "volumes" {
+  type = list(object({
+    access_point_id = string
+    file_system_id  = string
+    volume_name     = string
+  }))
+  description = "List of volumes made available to the task's container(s)"
   default     = []
 }
