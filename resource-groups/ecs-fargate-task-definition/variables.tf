@@ -52,11 +52,6 @@ variable "task_cpu" {
   description = "CPU to allocate to each task (where a value of 1024 == 1vCPU) - Must be >= total of all containers' CPU"
 }
 
-variable "task_log_group_name" {
-  type        = string
-  description = "Name to give to the CloudWatch log group to which all the task's containers will write their logs"
-}
-
 variable "task_memory" {
   type        = number
   description = "Memory to allocate to each task (where a value of 1024 == 1GB) - Must be >= total of all containers' memory"

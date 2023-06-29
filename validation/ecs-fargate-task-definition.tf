@@ -30,6 +30,5 @@ module "ecs_fargate_task_definition" {
   ecs_execution_role_arn = "arn:aws:iam::123456789012:role/Project_Deployment"
   family_name            = "family"
   task_cpu               = 1024
-  task_log_group_name    = "log-group"
   task_memory            = 1024
 }

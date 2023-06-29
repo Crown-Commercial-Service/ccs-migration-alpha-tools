@@ -32,7 +32,6 @@ module "load_task" {
   ecs_execution_role_arn = var.ecs_execution_role_arn
   family_name            = "${var.process_name}-load"
   task_cpu               = 2048
-  task_log_group_name    = module.task_log_group.log_group_name
   task_memory            = 4096
 }
 
@@ -53,9 +52,4 @@ resource "aws_security_group_rule" "migrate_load_https_out_anywhere" {
   security_group_id = aws_security_group.migrate_load_task.id
   to_port           = 443
   type              = "egress"
-}
-
-resource "aws_iam_role_policy_attachment" "load_task_role__write_logs" {
-  role       = module.load_task.task_role_name
-  policy_arn = aws_iam_policy.write_logs.arn
 }

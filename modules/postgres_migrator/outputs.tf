@@ -17,8 +17,3 @@ output "pass_task_role_policy_document_json" {
   description = "JSON describing an IAM policy which allows passage of the ECS task role"
   value       = module.extract_task.pass_task_role_policy_document_json
 }
-
-output "write_container_logs_policy_document_json" {
-  description = "JSON describing an IAM policy which allows the container logs to be written to"
-  value       = module.task_log_group.write_log_group_policy_document_json
-}

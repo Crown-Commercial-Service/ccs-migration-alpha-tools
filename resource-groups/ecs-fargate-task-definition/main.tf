@@ -12,12 +12,11 @@ locals {
         timeout     = 10
       }
       image = vars.image
-      # TODO Solo tasks do not have IAM perms for the logs
       logConfiguration = {
         "logDriver" : "awslogs",
         "options" : {
           "awslogs-create-group" : "true",
-          "awslogs-group" : var.task_log_group_name,
+          "awslogs-group" : module.task_log_group.log_group_name,
           "awslogs-region" : var.aws_region,
           "awslogs-stream-prefix" : "container"
         }

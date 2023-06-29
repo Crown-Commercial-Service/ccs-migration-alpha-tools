@@ -32,7 +32,6 @@ module "extract_task" {
   ecs_execution_role_arn = ""
   family_name            = "${var.process_name}-extract"
   task_cpu               = 0
-  task_log_group_name    = module.task_log_group.log_group_name
   task_memory            = 0
 }
 
@@ -67,9 +66,4 @@ resource "aws_security_group_rule" "ssh_ish_out_anywhere" {
   security_group_id = aws_security_group.migrate_extract_task.id
   to_port           = 2222
   type              = "egress"
-}
-
-resource "aws_iam_role_policy_attachment" "extract_task_role__write_logs" {
-  role       = module.extract_task.task_role_name
-  policy_arn = aws_iam_policy.write_logs.arn
 }
