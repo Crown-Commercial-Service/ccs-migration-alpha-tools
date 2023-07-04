@@ -1,4 +1,8 @@
 locals {
+  /* Note that in the cases of interval, retries, hostPort, protocol and volumesFrom we have added these even
+     though they are implicitly inferred by AWS. Reason being that Terraform forces a cycle of the ECS Service
+     definition each time if they are omitted, and this is expensive in lots of ways.
+  */
   container_definitions = [
     for name, vars in var.container_definitions : {
       name        = name
@@ -8,6 +12,8 @@ locals {
       essential   = vars.essential || true
       healthCheck = vars.healthcheck_command == null ? null : {
         command     = ["CMD-SHELL", vars.healthcheck_command]
+        interval    = 30
+        retries     = 3
         startPeriod = 10
         timeout     = 10
       }
@@ -33,9 +39,12 @@ locals {
       portMappings = vars.port == null ? null : [
         {
           containerPort = vars.port
+          hostPort      = vars.port
+          protocol      = "tcp"
         }
       ]
-      secrets = vars.secret_environment_variables
+      secrets     = vars.secret_environment_variables
+      volumesFrom = []
     }
   ]
 }
