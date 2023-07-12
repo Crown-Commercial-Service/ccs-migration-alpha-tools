@@ -8,6 +8,9 @@ resource "aws_dynamodb_table" "transfer_list" {
     type = "S"
   }
 
+  stream_enabled   = true
+  stream_view_type = "NEW_IMAGE"
+
   tags = {
     Name = "${var.resource_name_prefixes.hyphens}-DB-${upper(var.migrator_name)}"
   }
