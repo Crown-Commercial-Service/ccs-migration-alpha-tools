@@ -33,3 +33,21 @@ data "aws_iam_policy_document" "put_transfer_list_item" {
     ]
   }
 }
+
+data "aws_iam_policy_document" "update_transfer_list_item" {
+  version = "2012-10-17"
+
+  statement {
+    sid = "AllowUpdate${replace(var.migrator_name, "-", "")}TransferListItem"
+
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:UpdateItem"
+    ]
+
+    resources = [
+      aws_dynamodb_table.transfer_list.arn
+    ]
+  }
+}

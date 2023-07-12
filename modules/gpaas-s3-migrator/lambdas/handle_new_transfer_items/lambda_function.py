@@ -36,7 +36,7 @@ def lambda_handler(event, context):
 
     response = sfn_client.start_execution(
         stateMachineArn=transfer_objects_state_machine_arn,
-        input=json.dumps(sfn_input),
+        input=json.dumps({"TransferItems": sfn_input}),
     )
 
     logger.info(f"Started SFN execution: {response}")
