@@ -16,6 +16,12 @@ variable "dist_package_hash" {
   description = "Hashes for source comparison and triggering of updates"
 }
 
+variable "environment_variables" {
+  type        = map(any)
+  description = "Map of VAR=VALUE pairs to pass into the Lambda's execution space"
+  default     = {}
+}
+
 variable "function_name" {
   type        = string
   description = "The name to give to the Lambda function"
