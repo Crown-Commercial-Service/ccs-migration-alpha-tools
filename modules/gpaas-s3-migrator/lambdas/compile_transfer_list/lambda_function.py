@@ -4,6 +4,9 @@ Compile transfer list
 Reads the complete list of objects to be transferred from a GPaaS-bound S3 bucket
 and writes their details to a Dynamo DB table for later processing.
 
+For information on setting this up and providing service keys for GPaaS, please see the
+README.md in this folder.
+
 """
 import json
 import logging
@@ -24,6 +27,9 @@ def lambda_handler(event, context):
     # Load the SSM param at runtime in case it's necessary to alter the param to fix
     # connection errors, etc. (If it were loaded at module load time, you'd need to
     # re-deploy the Lambda to pick up any changes).
+    #
+    # This Lambda is used rarely and so we do not need to set up a cache to minimise
+    # SSM API calls.
     gpaas_service_key_ssm_param = ssm_client.get_parameter(
         Name=gpaas_service_key_ssm_param_name, WithDecryption=True
     )
