@@ -25,6 +25,10 @@ resource "aws_lambda_function" "function" {
   source_code_hash = var.dist_package_hash.base64sha256
 
   role = aws_iam_role.lambda_exec.arn
+
+  environment {
+    variables = var.environment_variables
+  }
 }
 
 resource "aws_iam_role" "lambda_exec" {
