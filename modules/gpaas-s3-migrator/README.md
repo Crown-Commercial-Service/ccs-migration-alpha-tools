@@ -66,6 +66,15 @@ _(Note that it detects "newness" based only on an object's Key. If you care abou
 
 The migrator persists state within a Dynamo DB and so this idempotency is applicable between invocations, different sessions, etc.
 
+### Object size limit
+
+The act of actually copying an object from the GPaaS-bound bucket to the native bucket is performed by the [migrate_batch_of_objects Lambda](lambdas/migrate_batch_of_objects/lambda_function.py).
+
+By default S3 objects are copied via memory for speed, however if they exceed the size value within the `OBJECT_SIZE_MEMORY_COPY_THRESHOLD` constant then they are copied via a tmpfile (which is obviously slower than a memory copy).
+
+If the object to be copied is larger than the `OBJECT_SIZE_ABSOLUTE_THRESHOLD` constant then the copy will be terminated with an error (`ObjectTooLargeError`) and the object will remain in the state "waiting" and will be listed at the end of the "run_migrator" script as "not migrated".
+
+
 ## Deleting the GPaaS S3 Service Key
 
 It's good practice to delete the Service Key once the migration is complete:

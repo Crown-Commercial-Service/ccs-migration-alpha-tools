@@ -22,6 +22,12 @@ variable "environment_variables" {
   default     = {}
 }
 
+variable "ephemeral_storage_size_mb" {
+  type        = number
+  description = "MB of /tmp space for the Lambda"
+  default     = 512
+}
+
 variable "function_name" {
   type        = string
   description = "The name to give to the Lambda function"

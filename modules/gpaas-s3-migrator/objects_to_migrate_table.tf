@@ -33,3 +33,21 @@ data "aws_iam_policy_document" "put_objects_to_migrate_item" {
     ]
   }
 }
+
+data "aws_iam_policy_document" "update_objects_to_migrate_item" {
+  version = "2012-10-17"
+
+  statement {
+    sid = "AllowUpdate${replace(var.migrator_name, "-", "")}ObjectsToMigrateItem"
+
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:UpdateItem"
+    ]
+
+    resources = [
+      aws_dynamodb_table.objects_to_migrate.arn
+    ]
+  }
+}
