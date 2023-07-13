@@ -8,4 +8,6 @@ module "gpaas_s3_migrator" {
     hyphens       = "PREFIX-123"
     hyphens_lower = "prefix-n123"
   }
+  target_bucket_id                                 = "bucket123"
+  target_bucket_write_objects_policy_document_json = "{\"json\":\"dummy\"}"
 }

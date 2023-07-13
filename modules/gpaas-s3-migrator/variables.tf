@@ -16,3 +16,13 @@ variable "resource_name_prefixes" {
   })
   description = "Prefix to apply to resources in AWS; options provided to satisfy divergent naming requirements across AWS"
 }
+
+variable "target_bucket_id" {
+  description = "ID of the bucket into which to copy the objects from GPaaS"
+  type        = string
+}
+
+variable "target_bucket_write_objects_policy_document_json" {
+  description = "JSON describing a policy to allow the writing of objects to the target bucket"
+  type        = string
+}
