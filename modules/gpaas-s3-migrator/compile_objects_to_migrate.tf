@@ -18,6 +18,10 @@ resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
   }
 }
 EOF
+
+  tags = {
+    GPaasS3MigratorName = var.migrator_name
+  }
 }
 
 resource "aws_iam_role" "compile_objects_to_migrate_sfn" {

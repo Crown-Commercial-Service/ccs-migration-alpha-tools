@@ -56,7 +56,13 @@ _For details, see [the original GOV.UK docs](my-app-s3-service)._
 
 ## Running the Migration
 
-(tbc)
+The migrator comes with a script to initiate, monitor and report the results of the migration. It requires no configuration.
+
+[The script itself](scripts/run_migration/run_migration.py) contains the instructions for its operation. You should consult these before proceeding.
+
+Note that the script only starts the migration process and then monitors the worklist. The migrations will continue independently of the script. So even if you cancel the script, the migrations thus far initiated will continue.
+
+Starting the script again will allow you to pick up on the progress monitoring without interfering with the migration itself.
 
 ### Idempotency
 

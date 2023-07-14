@@ -8,11 +8,27 @@ resource "aws_dynamodb_table" "objects_to_migrate" {
     type = "S"
   }
 
+  attribute {
+    name = "Status"
+    type = "S"
+  }
+
   stream_enabled   = true
   stream_view_type = "NEW_IMAGE"
 
+  global_secondary_index {
+    hash_key = "Status"
+    name     = "CopyStatusIndex"
+    non_key_attributes = [
+      "Bucket",
+      "Key"
+    ]
+    projection_type = "INCLUDE"
+  }
+
   tags = {
-    Name = "${var.resource_name_prefixes.hyphens}-DB-${upper(var.migrator_name)}-OBJECTS-TO-MIGRATE"
+    Name                = "${var.resource_name_prefixes.hyphens}-DB-${upper(var.migrator_name)}-OBJECTS-TO-MIGRATE"
+    GPaasS3MigratorName = var.migrator_name
   }
 }
 
