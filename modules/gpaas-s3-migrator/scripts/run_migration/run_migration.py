@@ -82,6 +82,10 @@ def run_migration(migrator_name):
     Example use:
         run_migration.py MIGRATOR_NAME
 
+    Note that certain IAM permissions are required to run this. For convenience an IAM Group has
+    been set up already with the required permissions. Its name is:
+      "run-MIGRATOR_NAME-migrator" where MIGRATOR_NAME is as described above.
+
     """
     print("Starting migration")
     sfn_client = boto3.client("stepfunctions")

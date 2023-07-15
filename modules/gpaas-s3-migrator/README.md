@@ -64,6 +64,18 @@ Note that the script only starts the migration process and then monitors the wor
 
 Starting the script again will allow you to pick up on the progress monitoring without interfering with the migration itself.
 
+### IAM Permissions
+
+To run this script a user requires the following IAM permissions:
+- tag:GetResources for all resources
+- states:StartExecution for the "compile objects to migrate" step function
+- states:DescribeExecution for any execution of that step function
+- dynamodb:Query on the `CopyStatusIndex` on the "objects to migrate" Dynamo DB table
+
+For convenience an IAM Group has been set up with the necessary minimum permissions to do this. The name of the group will be `run-MIGRATOR_NAME-migrator` where `MIGRATOR_NAME` is the value of `migrator_name` as defined in your environment's invocation of the `gpaas-s3-migrator` Terraform module.
+
+Adding a regular no-permissions IAM user to this group will empower them to run this script (and nothing else). Note this user requires access to neither the Terraform state nor the state lock table in order. The IAM permissions (or Group membership) detailed above will suffice.
+
 ### Idempotency
 
 The migrator is, by design, idempotent. If run more than once it will only perform the migration of objects in the source GPaaS-bound S3 bucket which were not present in any of its previous runs.
