@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import collections
+import json
 import re
 import time
 import sys
@@ -97,6 +98,7 @@ def run_migration(migrator_name):
     )
     execution_arn = execution_response["executionArn"]
     print(f"Started execution {execution_arn}")
+    execution_status = None
 
     print(f"Monitoring migration via Dynamo table {dynamo_table_name}")
     print(
@@ -113,6 +115,18 @@ def run_migration(migrator_name):
     last_four_counts = collections.deque([None] * 4, maxlen=2)
     while True:
         time.sleep(5)
+        # Handle possible failure of kickoff SFN - Note if the SFN succeeds it will be
+        # long before the migration finishes - so we don't bother to check it again
+        # if we see it has already succeeded.
+        if execution_status != "SUCCEEDED":
+            execution_info = sfn_client.describe_execution(executionArn=execution_arn)
+            execution_status = execution_info["status"]
+            if execution_status in ["FAILED", "TIMED_OUT", "ABORTED"]:
+                print(f"GPaaS bucket scan job {execution_status}")
+                if "cause" in execution_info:
+                    print(f"cause: {json.loads(execution_info['cause'])}")
+                sys.exit(2)
+
         copied_count, waiting_count = get_counts(ddb_client, progress_query_base_kwargs)
         print(
             f"Objects in migration list: {copied_count + waiting_count}; objects waiting: {waiting_count}"
