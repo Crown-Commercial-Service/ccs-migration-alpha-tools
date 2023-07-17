@@ -22,7 +22,9 @@ The following are NOT explicitly copied:
 * LastModified
 * ETag (although this should remain the same because it is calculated as the MD5 hash of the Body)
 
-Note that if your application relies upon either of the properties which are not copied, you should analyse this solution carefully before depending upon it.
+> Note that if your application relies upon either of the properties which are not copied, you should analyse this solution carefully before depending upon it.
+
+> Note also that if your application is using customer-managed keys to encrypt the bucket, this migrator will not work since we do not transfer the name of any KMS key as part of the migration.
 
 ## Setting up a GPaaS S3 Service Key
 
