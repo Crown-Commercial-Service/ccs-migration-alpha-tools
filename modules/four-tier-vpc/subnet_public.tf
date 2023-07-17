@@ -18,7 +18,6 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# TODO - Likely to need to do this differently from default table approach.
 resource "aws_default_route_table" "default" {
   default_route_table_id = aws_vpc.vpc.default_route_table_id
 }
