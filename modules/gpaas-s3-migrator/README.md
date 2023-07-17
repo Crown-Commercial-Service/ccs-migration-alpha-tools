@@ -102,7 +102,7 @@ _For details, see [the original GOV.UK docs](my-app-s3-service)._
    ```   
 2. Create the service key:
    ```bash
-   $ cf service-key my-app-s3-service s3_key_name
+   $ cf create-service-key my-app-s3-service s3_key_name -c '{"allow_external_access": true}'
    ```
 3. Retrieve the key's JSON data:
    ```bash
@@ -141,7 +141,7 @@ To run this script a user requires the following IAM permissions:
 
 For convenience an IAM Group has been set up with the necessary minimum permissions to do this. The name of the group will be `run-MIGRATOR_NAME-migrator` where `MIGRATOR_NAME` is the value of `migrator_name` as defined in your environment's invocation of the `gpaas-s3-migrator` Terraform module.
 
-Adding a regular no-permissions IAM user to this group will empower them to run this script (and nothing else). Note this user requires access to neither the Terraform state nor the state lock table in order. The IAM permissions (or Group membership) detailed above will suffice.
+Adding a regular no-permissions IAM user to this group will empower them to run this script (and nothing else). Note this user requires access to neither the Terraform state nor the state lock table in order to use the migrator. The IAM permissions (or Group membership) detailed above will suffice.
 
 ### Idempotency
 
@@ -166,7 +166,7 @@ The script produces a progress update line every 5 seconds.
 The script will end for one of two reasons:
 
 1. The list of objects waiting to migrate goes to zero, indicating full success (exit code `0`)
-2. The progress appears to stagnate (the progress stays the same for ~20 seconds) in which case the mointor script will exit with code `1` and output the name of every unmigrated object to the terminal, for investigation
+2. The progress appears to stagnate (the progress stays the same for ~20 seconds) in which case the monitor script will exit with code `1` and output the name of every unmigrated object to the terminal, for investigation
 
 ## Uninstalling the Migrator and all its resources
 
