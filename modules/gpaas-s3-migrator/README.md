@@ -4,7 +4,7 @@
 
 Collection of resources to duplicate the contents of a GPaaS-bound S3 bucket completely into a natively owned S3 bucket.
 
-Note that the objects in the source bucket are left untouched.
+Note that the objects in the source bucket are left unchanged.
 
 ## Properties
 
@@ -119,6 +119,8 @@ _For details, see [the original GOV.UK docs](my-app-s3-service)._
 5. Copy the JSON output verbatim into the *Value* field, completely replacing the existing contents.
 6. Hit "Save changes"
 
+> Note that the SSM parameter is configured such that even when you re-apply Terraform during the lifecycle of this project, the new values you paste in the above steps will never be overwritten by Terraform. Therefore this is a one-time-only setup step.
+
 ## Running the Migration
 
 The migrator comes with a script to initiate, monitor and report the results of the migration. It requires no configuration.
@@ -127,15 +129,15 @@ The migrator comes with a script to initiate, monitor and report the results of 
 
 Note that the script only starts the migration process and then monitors the worklist. The migrations will continue independently of the script. So even if you cancel the script, the migrations thus far initiated will continue.
 
-Starting the script again will allow you to pick up on the progress monitoring without interfering with the migration itself.
+If you do stop the script for any reason, simply restarting it will allow you to pick up on the progress monitoring without interfering with the migration itself.
 
 ### IAM Permissions
 
 To run this script a user requires the following IAM permissions:
-- tag:GetResources for all resources
+- tag:GetResources for all resources (this is how we obviate the need for configuration)
 - states:StartExecution for the "compile objects to migrate" step function
 - states:DescribeExecution for any execution of that step function
-- dynamodb:Query on the `CopyStatusIndex` on the "objects to migrate" Dynamo DB table
+- dynamodb:Query for the `CopyStatusIndex` on the "objects to migrate" Dynamo DB table
 
 For convenience an IAM Group has been set up with the necessary minimum permissions to do this. The name of the group will be `run-MIGRATOR_NAME-migrator` where `MIGRATOR_NAME` is the value of `migrator_name` as defined in your environment's invocation of the `gpaas-s3-migrator` Terraform module.
 
@@ -145,15 +147,27 @@ Adding a regular no-permissions IAM user to this group will empower them to run 
 
 The migrator is, by design, idempotent. If run more than once it will only perform the migration of objects in the source GPaaS-bound S3 bucket which were not present in any of its previous runs.
 
-_(Note that it detects "newness" based only on an object's Key. If you care about idempotency in your operations of this tool then you will have to analyse the application to determine whether or not it may inadvertently reuse S3 Keys for different objects.)_
+_(Note that it detects "newness" based only on an object's Key. If you care about idempotency in your operations of this tool then you will have to analyse the application to determine whether or not it may inadvertently reuse the same S3 Keys for different objects.)_
 
-The migrator persists state within a Dynamo DB and so this idempotency is applicable between invocations, different sessions, etc.
+The migrator persists state within [a Dynamo DB table](objects_to_migrate_table.tf) and so this idempotency is present between invocations, different sessions, etc.
 
 ### Object size limit
 
 The act of actually copying an object from the GPaaS-bound bucket to the native bucket is performed by the [migrate_batch_of_objects Lambda](lambdas/migrate_batch_of_objects/lambda_function.py).
 
-By default S3 objects are copied via memory for speed, however if they exceed the size value within the `OBJECT_SIZE_MEMORY_COPY_THRESHOLD` constant then they are copied via a tmpfile (which is obviously slower than a memory copy).
+By default S3 objects are copied via memory for speed, however if they exceed the size value within the `OBJECT_SIZE_MEMORY_COPY_THRESHOLD` constant (500MB at time of writing) then they are copied via a tmpfile (which is obviously slower than a memory copy).
+
+If the object to be copied is larger than the `OBJECT_SIZE_ABSOLUTE_THRESHOLD` constant (5GB at time of writing) then the copy will be terminated with an error (`ObjectTooLargeError`, exit code `2`) and the object will retain the state "waiting" in the "objects to migrate" DB table and will be listed at the end of the "run_migrator" script as "not migrated".
+
+### Terminal outputs
+
+The script produces a progress update line every 5 seconds.
+
+The script will end for one of two reasons:
+
+1. The list of objects waiting to migrate goes to zero, indicating full success (exit code `0`)
+2. The progress appears to stagnate (the progress stays the same for ~20 seconds) in which case the mointor script will exit with code `1` and output the name of every unmigrated object to the terminal, for investigation
+
 ## Uninstalling the Migrator and all its resources
 
 Once the application is migrated from GPaaS it is unlikely that you will require the migrator any longer.
