@@ -26,6 +26,69 @@ The following are NOT explicitly copied:
 
 > Note also that if your application is using customer-managed keys to encrypt the bucket, this migrator will not work since we do not transfer the name of any KMS key as part of the migration.
 
+## Using the Migrator in your project
+
+This module is designed to be reusable and temporary. To optimise on both these attributes it's advised to implement it as follows:
+
+### Locate the module invocation separately
+
+Invoke the GPaaS-S3-migrator module using the typical Terraform `module` construct. At time of writing this requires only five variables to be provided. Each is documented clearly in [the module variables file](variables.tf) as you would expect.
+
+It's advised to put this block into the top-level of your environment folder, as a separate file with a name such as `s3_migration.tf` (so, for example, `environments/production/s3_migration.tf`). There are a few reasons for this approach:
+1. It shows with a glance of the folder that this environment has the migrator setup
+2. It stops the `main.tf` becoming cluttered
+3. When you are finished migrating, each of the migrator's resources and components can be removed from your platform by simply deleting this file. See [the section on uninstallation](#uninstalling-the-migrator-and-all-its-resources) for details.
+
+### Providing input variables from your app
+
+Configuration for the GPaaS-S3-migrator module is minimal. However it will require two outputs from your main app's installation. You will need to add these to the `outputs.tf` of your app's top-level module. This will likely be in a location such as `compositions/APPNAME_full/outputs.tf`
+
+The two outputs you need to surface are:
+- The ID (full name) of the target bucket for the migrated S3 objects (this will be populate the `target_bucket_id` variable in the migrator)
+- JSON describing an IAM policy which allows writing of objects to this bucket (this will be populate the `target_bucket_write_objects_policy_document_json` variable in the migrator)
+
+If you're using the `resource-groups/private-s3-bucket` module to provide the buckets for your actual app, you can simply surface these by adding something similar to the following to your `compositions/APPNAME_full/outputs.tf` file:
+
+```hcl
+output "documents_bucket_id" {
+  description = "Full name of the bucket which is to contain the uploaded documents"
+  value       = module.documents_bucket.bucket_id
+}
+
+output "documents_bucket_write_objects_policy_document_json" {
+  description = "JSON describing an IAM policy to allow writing of objects to the documents bucket"
+  value       = module.documents_bucket.write_objects_policy_document_json
+}
+```
+
+### Enabling Lambda deployment
+
+The migrator uses Lambda functions and so to deploy this you will need to provide the ID of an S3 bucket which can be used to distribute Lambdas. This is used to provide the `lambda_dist_bucket_id` variable.
+
+If you are not already using Lambdas in your app then you can easily provide this bucket with the following terraform to your top-level environment folder (perhaps in a file such as `environments/production/lambda_bucket.tf`):
+```hcl
+resource "aws_s3_bucket" "lambda_dist" {
+  bucket_prefix = "lambda-dist-assets"
+  force_destroy = var.environment_is_ephemeral
+}
+```
+
+### Deployment
+
+Once you've set up the module and properties as described above, your `environments/production/s3_migration.tf` file should look something like this:
+```hcl
+module "migrate_documents" {
+  source = "../../core/modules/gpaas-s3-migrator"
+
+  lambda_dist_bucket_id                            = aws_s3_bucket.lambda_dist.id
+  migrator_name                                    = "documents"
+  resource_name_prefixes                           = var.resource_name_prefixes
+  target_bucket_id                                 = module.APPNAME_full.documents_bucket_id
+  target_bucket_write_objects_policy_document_json = module.APPNAME_full.documents_bucket_write_objects_policy_document_json
+}
+```
+Now running `terraform apply` will set up the migrator in your app. Then you are good to go with the rest of the instructions in this file.
+
 ## Setting up a GPaaS S3 Service Key
 
 Most of the setup is done automatically by Terraform; the manual part is setting up a Service Key in GPaaS and making that available to this migrator.
@@ -91,13 +154,25 @@ The migrator persists state within a Dynamo DB and so this idempotency is applic
 The act of actually copying an object from the GPaaS-bound bucket to the native bucket is performed by the [migrate_batch_of_objects Lambda](lambdas/migrate_batch_of_objects/lambda_function.py).
 
 By default S3 objects are copied via memory for speed, however if they exceed the size value within the `OBJECT_SIZE_MEMORY_COPY_THRESHOLD` constant then they are copied via a tmpfile (which is obviously slower than a memory copy).
+## Uninstalling the Migrator and all its resources
 
-If the object to be copied is larger than the `OBJECT_SIZE_ABSOLUTE_THRESHOLD` constant then the copy will be terminated with an error (`ObjectTooLargeError`) and the object will remain in the state "waiting" and will be listed at the end of the "run_migrator" script as "not migrated".
+Once the application is migrated from GPaaS it is unlikely that you will require the migrator any longer.
 
+If you followed [the installation instructions](#using-the-migrator-in-your-project) then the removal of the migrator is simple:
+
+1. Delete the `s3_migration.tf` file you added to your top-level environment folder
+2. If you are not using Lambdas anywhere else in the app, also remove the `lambda_bucket.tf` file from the same folder
+2. Re-apply the Terraform
+
+This will remove every resource and configuration element of the migrator.
+
+> However *BE AWARE* that if you added any users to the IAM group `run-MIGRATOR_NAME-migrator` then you will need to remove their membership of this group before you run `terraform apply`
+ 
+If, upon running `terraform apply` you receive the error message `Error: deleting IAM Group (run-documents-migrator): DeleteConflict: Cannot delete entity, must remove users from group first` then it means you still have user(s) in that IAM group. Remove their membership, then re-apply the Terraform once more.
 
 ## Deleting the GPaaS S3 Service Key
 
-It's good practice to delete the Service Key once the migration is complete:
+It's good practice to delete the Service Key once you have finished with the migrator:
 
 ```bash
 $ cf delete-service-key my-app-s3-service s3_key_name
