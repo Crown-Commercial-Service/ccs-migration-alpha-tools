@@ -1,23 +1,13 @@
+output "network_acl_ids" {
+  description = "The IDs of the Network ACLs for each subnet"
+  value = {
+    public = aws_network_acl.public_subnet.id
+  }
+}
+
 output "subnets" {
   description = "Properties relating to the four subnets"
-  value = {
-    "public" = {
-      "az_ids" : { for suffix, _ in local.subnet_cidr_blocks.public : suffix => aws_subnet.public[suffix].id }
-      "ids" : [for s in aws_subnet.public : s.id]
-    },
-    "web" = {
-      "az_ids" : { for suffix, _ in local.subnet_cidr_blocks.web : suffix => aws_subnet.web[suffix].id }
-      "ids" : [for s in aws_subnet.web : s.id]
-    },
-    "application" = {
-      "az_ids" : { for suffix, _ in local.subnet_cidr_blocks.application : suffix => aws_subnet.application[suffix].id }
-      "ids" : [for s in aws_subnet.application : s.id]
-    },
-    "database" = {
-      "az_ids" : { for suffix, _ in local.subnet_cidr_blocks.database : suffix => aws_subnet.database[suffix].id }
-      "ids" : [for s in aws_subnet.database : s.id]
-    }
-  }
+  value       = local.subnet_attributes
 }
 
 output "vpc_id" {
