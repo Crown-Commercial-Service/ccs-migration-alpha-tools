@@ -2,6 +2,7 @@ output "network_acl_ids" {
   description = "The IDs of the Network ACLs for each subnet"
   value = {
     public = aws_network_acl.public_subnet.id
+    web    = aws_network_acl.web_subnet.id
   }
 }
 
