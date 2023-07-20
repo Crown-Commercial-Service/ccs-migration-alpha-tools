@@ -9,8 +9,18 @@ module "deployed_lambda" {
     base64sha256 = "12345=="
     md5          = "abcd"
   }
-  function_name         = "dummy-function"
-  lambda_dist_bucket_id = aws_s3_bucket.lambda_deploy.id
+  environment_variables = {
+    APP_NAME : "App001"
+  }
+  ephemeral_storage_size_mb = 1024
+  function_name             = "dummy-function"
+  handler                   = "index.handler"
+  is_ephemeral              = true
+  lambda_dist_bucket_id     = aws_s3_bucket.lambda_deploy.id
+  log_retention_days        = 14
+  runtime                   = "python3.11"
+  runtime_memory_size       = 1024
+  timeout_seconds           = 60
 }
 
 data "archive_file" "dummy_lambda_zip" {

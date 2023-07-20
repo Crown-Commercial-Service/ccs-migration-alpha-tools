@@ -31,4 +31,11 @@ module "ecs_fargate_task_definition" {
   family_name            = "family"
   task_cpu               = 1024
   task_memory            = 1024
+  volumes = [
+    {
+      access_point_id = "fsap-06a1234ec01af7fe9"
+      file_system_id  = "fs-00b12384470573e549"
+      volume_name     = "share01"
+    }
+  ]
 }
