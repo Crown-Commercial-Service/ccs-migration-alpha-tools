@@ -46,40 +46,44 @@ resource "aws_iam_role" "enqueue_new_objects_to_migrate_pipe" {
   })
 }
 
-resource "aws_iam_role_policy" "enqueue_new_objects_to_migrate_pipe__read_objects_to_migrate_stream" {
-  name = "read-objets-to-migrate-stream"
-  role = aws_iam_role.enqueue_new_objects_to_migrate_pipe.name
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid = "AllowReadObjectsToMigrateStream"
+data "aws_iam_policy_document" "read_objects_to_migrate_stream" {
+  version = "2012-10-17"
 
-        Action = [
-          "dynamodb:DescribeStream",
-          "dynamodb:GetRecords",
-          "dynamodb:GetShardIterator"
-        ]
+  statement {
+    sid = "AllowReadObjectsToMigrateStream"
 
-        Effect = "Allow"
+    effect = "Allow"
 
-        Resource = [
-          aws_dynamodb_table.objects_to_migrate.stream_arn
-        ]
-      },
-      {
-        Sid = "AllowListStreams"
-
-        Action = [
-          "dynamodb:ListStreams"
-        ]
-
-        Effect = "Allow"
-
-        Resource = "*"
-      }
+    actions = [
+      "dynamodb:DescribeStream",
+      "dynamodb:GetRecords",
+      "dynamodb:GetShardIterator"
     ]
-  })
+
+    resources = [
+      aws_dynamodb_table.objects_to_migrate.stream_arn
+    ]
+  }
+
+  statement {
+    sid = "AllowListStreams"
+
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:ListStreams"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "enqueue_new_objects_to_migrate_pipe__read_objects_to_migrate_stream" {
+  name   = "read-objects-to-migrate-stream"
+  role   = aws_iam_role.enqueue_new_objects_to_migrate_pipe.name
+  policy = data.aws_iam_policy_document.read_objects_to_migrate_stream.json
 }
 
 resource "aws_iam_role_policy" "enqueue_new_objects_to_migrate_pipe__send_new_objects_to_migrate_message" {

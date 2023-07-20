@@ -84,12 +84,12 @@ resource "aws_iam_role" "sfn_perform_migration" {
   name = "${var.process_name}-sfn"
 
   assume_role_policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
-        Action    = "sts:AssumeRole"
-        Effect    = "Allow"
-        Sid       = ""
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
         Principal = {
           Service = "states.amazonaws.com"
         }
@@ -103,43 +103,59 @@ resource "aws_iam_role_policy_attachment" "sfn_perform_migration__pass_ecs_execu
   policy_arn = var.pass_ecs_execution_role_policy_arn
 }
 
+data "aws_iam_policy_document" "manage_ecs_and_events" {
+  version = "2012-10-17"
+
+  statement {
+    sid = "AllowRunMigratorTasks"
+
+    effect = "Allow"
+
+    actions = [
+      "ecs:RunTask"
+    ]
+
+    resources = [
+      module.extract_task.task_definition_arn,
+      module.load_task.task_definition_arn
+    ]
+  }
+
+  statement {
+    sid = "AllowStopMigratorTasks"
+
+    effect = "allow"
+
+    actions = [
+      "ecs:DescribeTasks",
+      "ecs:StopTask"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
+    sid = "AllowDotSyncExecutionOfEcsTasks"
+
+    effect = "Allow"
+
+    actions = [
+      "events:DescribeRule",
+      "events:PutRule",
+      "events:PutTargets"
+    ]
+
+    resources = [
+      "arn:aws:events:${var.aws_region}:${var.aws_account_id}:rule/StepFunctionsGetEventsForECSTaskRule"
+    ]
+  }
+}
+
 resource "aws_iam_policy" "manage_ecs_and_events" {
   name   = "${var.process_name}-manage-ecs-and-events"
-  policy = jsonencode({
-    Version   = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "ecs:RunTask"
-        ]
-        Effect   = "Allow"
-        Resource = [
-          module.extract_task.task_definition_arn,
-          module.load_task.task_definition_arn
-        ]
-      },
-      {
-        Action = [
-          "ecs:DescribeTasks",
-          "ecs:StopTask"
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-      # Required for the ".sync" flavour of ECS runTask invocation
-      {
-        Action = [
-          "events:DescribeRule",
-          "events:PutRule",
-          "events:PutTargets"
-        ]
-        Effect   = "Allow"
-        Resource = [
-          "arn:aws:events:${var.aws_region}:${var.aws_account_id}:rule/StepFunctionsGetEventsForECSTaskRule"
-        ]
-      }
-    ]
-  })
+  policy = data.aws_iam_policy_document.manage_ecs_and_events.json
 }
 
 resource "aws_iam_role_policy_attachment" "sfn_perform_migration__managed_rules" {
