@@ -1,5 +1,5 @@
 module "postgres_migrator" {
-  source = "../modules/postgres_migrator"
+  source = "../modules/postgres-migrator"
 
   aws_account_id                     = "123456789012"
   aws_region                         = "us-east-1"
@@ -21,8 +21,8 @@ module "postgres_migrator" {
   pg_docker_image                    = "postgres:latest"
   process_name                       = "migrate"
   resource_name_prefixes = {
-    normal  = "PREFIX:123"
-    hyphens = "PREFIX-123"
+    normal        = "PREFIX:123"
+    hyphens       = "PREFIX-123"
     hyphens_lower = "prefix-n123"
   }
   subnets = {
