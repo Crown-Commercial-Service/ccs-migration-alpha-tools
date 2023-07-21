@@ -18,6 +18,13 @@ resource "aws_pipes_pipe" "enqueue_new_objects_to_migrate" {
       }
     }
   }
+
+  # Pipe creation must not be attempted until these policies are in place; TF
+  # will not naturally wait beyond the end of the Role creation without this block:
+  depends_on = [
+    aws_iam_role_policy.enqueue_new_objects_to_migrate_pipe__read_objects_to_migrate_stream,
+    aws_iam_role_policy.enqueue_new_objects_to_migrate_pipe__send_new_objects_to_migrate_message
+  ]
 }
 
 
