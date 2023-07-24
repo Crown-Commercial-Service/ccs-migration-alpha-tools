@@ -35,6 +35,18 @@ data "aws_iam_policy_document" "allow_ecr_login_and_push" {
   }
 
   statement {
+    sid = "AllowDescribeRepositories"
+
+    effect = "Allow"
+
+    actions = [
+      "ecr:DescribeRepositories"
+    ]
+
+    resources = local.repo_arns
+  }
+
+  statement {
     sid = "AllowImagePush"
 
     effect = "Allow"
