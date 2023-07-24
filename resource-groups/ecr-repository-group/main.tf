@@ -9,6 +9,31 @@ resource "aws_ecr_repository" "repo" {
   }
 }
 
+resource "aws_ecr_lifecycle_policy" "expire_untagged" {
+  for_each   = aws_ecr_repository.repo
+  repository = each.value.name
+
+  policy = <<EOF
+{
+    "rules": [
+        {
+            "rulePriority": 1,
+            "description": "Expire untagged images older than ${var.expire_untagged_images_older_than_days} days",
+            "selection": {
+                "tagStatus": "untagged",
+                "countType": "sinceImagePushed",
+                "countUnit": "days",
+                "countNumber": ${var.expire_untagged_images_older_than_days}
+            },
+            "action": {
+                "type": "expire"
+            }
+        }
+    ]
+}
+EOF
+}
+
 locals {
   repo_arns = [for repo in aws_ecr_repository.repo : repo.arn]
 }
