@@ -27,7 +27,9 @@ def get_login_password():
     Example use:
         get_login_password.py | docker login --username AWS --password-stdin ECR_REGISTRY_URI
 
-        where ECR_REGISTRY_URI is of the form: REGISTRY_ID.dkr.ecr.REGION.amazonaws.com
+    ECR_REGISTRY_URI can be derived using the script get_ecr_registry_uri.py, like this:
+
+        get_login_password.py | docker login --username AWS --password-stdin `get_ecr_registry_uri.py`
 
     Note that the Docker username is _always_ `AWS`, regardless of the IAM user's name.
 
