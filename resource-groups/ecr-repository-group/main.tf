@@ -9,6 +9,10 @@ resource "aws_ecr_repository" "repo" {
   }
 }
 
+locals {
+  repo_arns = [for repo in aws_ecr_repository.repo : repo.arn]
+}
+
 data "aws_iam_policy_document" "pull_repo_images" {
   version = "2012-10-17"
 
@@ -37,6 +41,6 @@ data "aws_iam_policy_document" "pull_repo_images" {
       "ecr:BatchGetImage",
     ]
 
-    resources = [for repo in aws_ecr_repository.repo : repo.arn]
+    resources = local.repo_arns
   }
 }

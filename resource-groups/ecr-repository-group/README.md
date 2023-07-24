@@ -8,6 +8,8 @@ Multiple ECR repos can be created. For each repo we include:
 
 * ECR Repository definition
 * JSON describing an IAM policy which allows this repo's images to be pulled
+* Managed IAM policy allowing the user to perform a `docker login` via the use of [the helper scripts](../../scripts/ecr-repository/README.md) and to push images to each of the repositories
+* IAM user group with the permissions of that managed policy
 
 ## Caveat - Use once only!
 
