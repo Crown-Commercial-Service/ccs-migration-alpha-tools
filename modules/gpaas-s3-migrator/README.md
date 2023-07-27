@@ -125,7 +125,7 @@ _For details, see [the original GOV.UK docs](my-app-s3-service)._
 
 The migrator comes with a script to initiate, monitor and report the results of the migration. It requires no configuration.
 
-[The script itself](../../scripts/gpaas-s3-migrator/run_migration.py) contains the instructions for its operation. You should consult these before proceeding.
+[The script itself](../../scripts/gpaas_s3_migrator/run_migration.py) contains the instructions for its operation. You should consult these before proceeding.
 
 Note that the script only starts the migration process and then monitors the worklist. The migrations will continue independently of the script. So even if you cancel the script, the migrations thus far initiated will continue.
 
