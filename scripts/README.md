@@ -1,18 +1,40 @@
-# Scripts
+# Core Scripts
 
 Scripts to support the operation of core infrastructure.
 
-Consult the executable files for descriptions and explanations of their operation.
+## Preparing the parent project
 
-For simplicity (of patching) there is a single requirements.txt file which covers all scripts (and should only be compiled with `pip-compile`).
+Given that the core infrastructure is designed to be used [as a Git submodule](../README.md#usage), it is further intended that this scripts folder be symlinked to from within a scripts folder in the top of the active / parent project.
+
+For example:
+```bash
+cd my-user-service
+mkdir scripts
+cd scripts
+ln -s ../infrastructure/core/scripts core
+```
+
+## Use
+
+The scripts should be accessed via that symlink, for example:
+```bash
+cd my-user-service
+scripts/core/ecr_repository/get_login_password.py
+```
 
 ## Setting up to run the scripts
+
+Scripts in this folder's subfolders require extra Python packages to be installed, and therefore should be run in a Virtualenv.
+
+Because on the one hand the parent project will probably have its own package requirements, and on the other hand it's undesirable to maintain package patching for multiple similar virtualenvs, it is intended that there is a single Virtualenv set up, in the top level project, which provides for the needs of all the scripts. (And, being practical, it's very unlikely that there will be much divergence in needs between scripts anyway).
 
 ### Set up Virtualenv
 While it's not the job of this README to explain Python operations in general, the following may be a helpful prompt as to how to at least get started with Virtualenv so that the scripts can be run.
 
+This is intended to be run from the top-level project folder.
+
 ```bash
-cd infrastructure/core/scripts
+cd my-user-service/scripts
 virtualenv -p PYTHONVERSION venv
 ```
 where `PYTHONVERSION` is the desired Python version number, e.g. `3.9`, `3.11`  or whatever.
@@ -25,13 +47,15 @@ This is required to bring the virtual environment into your shell session and to
 source venv/bin/activate
 ```
 
-### Compile the requirements.in file
+### Compile the requirements.txt file
 
-You only need to do this if you have altered `requirements.in` in any way.
+[Pip-Tools](https://pypi.org/project/pip-tools/) is used to compile basic, primary package requirements and identify all downstream dependencies.
+
+The assumption here is that that folder has its own `requirements.in` file whose contents will be merged with the top-level project's `requirements.in` file.
 
 ```bash
 pip install pip-tools
-pip-compile
+pip-compile --output-file requirements.txt requirements.in core/requirements.in
 ```
 
 ### Install the required packages
@@ -40,4 +64,4 @@ pip-compile
 pip install -r requirements.txt
 ```
 
-You can now run the Python scripts enclosed here in the sub-folders.
+You can now run the Python scripts enclosed in the top level project and in this core subfolder, via the `core/` symlink.
