@@ -6,11 +6,11 @@ locals {
   service_name_no_punc = replace(var.service.name, "/[_-]/", "")
 }
 
-resource "aws_iam_group" "run_task_command" {
-  name = "run-${local.service_name_hyphens}-task-command"
+resource "aws_iam_group" "run_service_command" {
+  name = "run-${local.service_name_hyphens}-service-command"
 }
 
-data "aws_iam_policy_document" "run_task_command" {
+data "aws_iam_policy_document" "ecs_operations" {
   version = "2012-10-17"
 
   statement {
@@ -74,7 +74,9 @@ data "aws_iam_policy_document" "run_task_command" {
 
     ]
   }
+}
 
+data "aws_iam_policy_document" "run_task" {
   statement {
     sid = "AllowRun${local.service_name_no_punc}Task"
 
@@ -90,12 +92,19 @@ data "aws_iam_policy_document" "run_task_command" {
   }
 }
 
-resource "aws_iam_policy" "run_task_command" {
-  name   = "run-${local.service_name_hyphens}-task-command"
-  policy = data.aws_iam_policy_document.run_task_command.json
+data "aws_iam_policy_document" "run_service_command" {
+  source_policy_documents = [
+    data.aws_iam_policy_document.ecs_operations.json,
+    data.aws_iam_policy_document.run_task.json,
+  ]
 }
 
-resource "aws_iam_group_policy_attachment" "run_task_command" {
-  group      = aws_iam_group.run_task_command.name
-  policy_arn = aws_iam_policy.run_task_command.arn
+resource "aws_iam_policy" "run_service_command" {
+  name   = "run-${local.service_name_hyphens}-service-command"
+  policy = data.aws_iam_policy_document.run_service_command.json
+}
+
+resource "aws_iam_group_policy_attachment" "run_service_command" {
+  group      = aws_iam_group.run_service_command.name
+  policy_arn = aws_iam_policy.run_service_command.arn
 }

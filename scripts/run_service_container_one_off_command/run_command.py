@@ -41,12 +41,11 @@ def run_command(tf_outputs_json, service_name, container_name, command):
       setup and configuration of ECS tasks - *NOT* the Task Role)
     - "ecs:RunTask" on the ECS task whose definition holds the container as which to run the
       one-off command
-    - "ecs:DescribeServices
 
     For convenience, an IAM policy has been created with the required permissions, as well as an
     IAM group into which you may add users to give them the rights to operate this script.
 
-    Both the IAM policy and IAM group are named `run-SERVICE_NAME-task-command` where SERVICE_NAME
+    Both the IAM policy and IAM group are named `run-SERVICE_NAME-service-command` where SERVICE_NAME
     is the name of the service resource passed in to the Terraform module invocation. Naturally that
     SERVICE_NAME must match the `service_name` argument passed to this command.
 

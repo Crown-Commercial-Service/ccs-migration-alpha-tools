@@ -13,4 +13,4 @@ The command is exercised by [a Python script](../../scripts/run_service_containe
 
 This module also creates IAM policies to enable a standard user to operate the command, and an IAM group into which you may add users to gain the permissions needed.
 
-The policy and the group will both be named `run-SERVICE_NAME-task-command` where SERVICE_NAME is the name of the service resource passed in to the module invocation. 
+The policy and the group will both be named `run-SERVICE_NAME-service-command` where SERVICE_NAME is the name of the service resource passed in to the module invocation. 
