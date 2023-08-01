@@ -9,7 +9,7 @@ Therefore we have chosen to drive the config of this feature by Service rather t
 1. The ARN of the ECS Cluster in which to run
 2. An `aws_ecs_service` resource - the service as which to act.
 
-The command is exercised by [a Python script](../../scripts/run_service_container_one_off_command/run_command.py) and for details of the operation and arguemnts etc you should inspect that. In summary however, this script requires
+The command is exercised by [a Python script](../../scripts/run_service_container_one_off_command/run_command.py) and for details of the operation and arguemnts etc you should inspect that.
 
 This module also creates IAM policies to enable a standard user to operate the command, and an IAM group into which you may add users to gain the permissions needed.
 
