@@ -38,6 +38,19 @@ def update_service(tf_outputs_json, service_name, scale_to, redeploy):
     TF_OUTPUTS_JSON is a streamed JSON string of outputs object from `terraform output -json`
 
     SERVICE_NAME is the name of a service as defined in an `aws_ecs_service` resource.
+
+    Permissions required by the calling IAM principal:
+
+    - "ecs:DescribeServices" on the ECS Service to be updated (this is used by the `waiter.wait()`
+      function in this script to detect the end of the update process)
+    - "ecs:UpdateService" on the ECS service to be updated
+
+    For convenience, an IAM policy has been created with the required permissions, as well as an
+    IAM group into which you may add users to give them the rights to operate this script.
+
+    Both the IAM policy and IAM group are named `run-update-service`. Note that for simplicity,
+    the policy allows the use of this script against all the ECS services within the app's
+    cluster.
     """
     if scale_to is None and redeploy is False:
         click.echo("Neither --scale_to nor --redeploy specified; no action. Quitting.")
