@@ -1,6 +1,6 @@
 # Helper group to enable operatives to run this migrator
 resource "aws_iam_group" "run_migrator" {
-  name = "run-${var.migrator_name}-s3-migrator"
+  name = "run-${var.migrator_name}-postgres-migrator"
 }
 
 data "aws_iam_policy_document" "run_migrator" {
@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "run_migrator" {
   }
 
   statement {
-    sid = "AllowStartCompileObjectsSfn"
+    sid = "AllowStartPerformMigrationSfn"
 
     effect = "Allow"
 
@@ -30,12 +30,12 @@ data "aws_iam_policy_document" "run_migrator" {
     ]
 
     resources = [
-      aws_sfn_state_machine.compile_objects_to_migrate.arn
+      aws_sfn_state_machine.perform_migration.arn
     ]
   }
 
   statement {
-    sid = "AllowDescribeStartCompileObjectsSfnExecution"
+    sid = "AllowDescribePerformMigrationSfnExecution"
 
     effect = "Allow"
 
@@ -44,21 +44,7 @@ data "aws_iam_policy_document" "run_migrator" {
     ]
 
     resources = [
-      "${replace(aws_sfn_state_machine.compile_objects_to_migrate.arn, "stateMachine", "execution")}:*"
-    ]
-  }
-
-  statement {
-    sid = "AllowQueryObjectsToMigrateTableCopyStatusIndex"
-
-    effect = "Allow"
-
-    actions = [
-      "dynamodb:Query",
-    ]
-
-    resources = [
-      "${aws_dynamodb_table.objects_to_migrate.arn}/index/CopyStatusIndex"
+      "${replace(aws_sfn_state_machine.perform_migration.arn, "stateMachine", "execution")}:*"
     ]
   }
 }
