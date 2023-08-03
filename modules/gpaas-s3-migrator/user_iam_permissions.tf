@@ -1,6 +1,6 @@
 # Helper group to enable operatives to run this migrator
 resource "aws_iam_group" "run_migrator" {
-  name = "run-${var.migrator_name}-migrator"
+  name = "run-${var.migrator_name}-s3-migrator"
 }
 
 data "aws_iam_policy_document" "run_migrator" {

@@ -139,7 +139,7 @@ To run this script a user requires the following IAM permissions:
 - states:DescribeExecution for any execution of that step function
 - dynamodb:Query for the `CopyStatusIndex` on the "objects to migrate" Dynamo DB table
 
-For convenience an IAM Group has been set up with the necessary minimum permissions to do this. The name of the group will be `run-MIGRATOR_NAME-migrator` where `MIGRATOR_NAME` is the value of `migrator_name` as defined in your environment's invocation of the `gpaas-s3-migrator` Terraform module.
+For convenience an IAM Group has been set up with the necessary minimum permissions to do this. The name of the group will be `run-MIGRATOR_NAME-s3-migrator` where `MIGRATOR_NAME` is the value of `migrator_name` as defined in your environment's invocation of the `gpaas-s3-migrator` Terraform module.
 
 Adding a regular no-permissions IAM user to this group will empower them to run this script (and nothing else). Note this user requires access to neither the Terraform state nor the state lock table in order to use the migrator. The IAM permissions (or Group membership) detailed above will suffice.
 
@@ -180,7 +180,7 @@ If you followed [the installation instructions](#using-the-migrator-in-your-proj
 
 This will remove every resource and configuration element of the migrator.
 
-> However *BE AWARE* that if you added any users to the IAM group `run-MIGRATOR_NAME-migrator` then you will need to remove their membership of this group before you run `terraform apply`
+> However *BE AWARE* that if you added any users to the IAM group `run-MIGRATOR_NAME-s3-migrator` then you will need to remove their membership of this group before you run `terraform apply`
  
 If, upon running `terraform apply` you receive the error message `Error: deleting IAM Group (run-documents-migrator): DeleteConflict: Cannot delete entity, must remove users from group first` then it means you still have user(s) in that IAM group. Remove their membership, then re-apply the Terraform once more.
 
