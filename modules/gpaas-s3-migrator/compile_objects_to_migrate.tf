@@ -1,5 +1,5 @@
 resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
-  name     = "${var.migrator_name}-compile-objects-to-migrate"
+  name     = "compile-${var.migrator_name}-s3-objects-to-migrate"
   role_arn = aws_iam_role.compile_objects_to_migrate_sfn.arn
 
   definition = <<EOF
