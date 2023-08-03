@@ -26,6 +26,12 @@ variable "db_username" {
   description = "Username for master user"
 }
 
+variable "final_snapshot_identifier" {
+  type        = string
+  description = "Identifier to give the final snapshot of the db upon deletion (if any)"
+  default     = "final-snapshot"
+}
+
 variable "postgres_engine_version" {
   type        = string
   description = "Version number of db engine to use"
@@ -47,11 +53,10 @@ variable "resource_name_prefixes" {
   description = "Prefix to apply to resources in AWS; options provided to satisfy divergent naming requirements across AWS"
 }
 
-# TODO It's beyond the scope of an Alpha to manage final snapshot preferences - Leaving this here as a reminder.
 variable "skip_final_snapshot" {
   type        = bool
   description = "Whether or not to allow the DB to be deleted without taking a snapshot"
-  default     = true
+  default     = false
 }
 
 variable "subnet_ids" {

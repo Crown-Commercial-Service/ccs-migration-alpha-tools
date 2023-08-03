@@ -12,6 +12,7 @@ resource "aws_db_instance" "db" {
   enabled_cloudwatch_logs_exports = ["postgresql"]
   engine                          = "postgres"
   engine_version                  = var.postgres_engine_version
+  final_snapshot_identifier       = var.skip_final_snapshot ? null : var.final_snapshot_identifier
   identifier                      = var.db_name # NB RDS identifiers use hyphens, not underscores
   instance_class                  = var.db_instance_class
   multi_az                        = true
