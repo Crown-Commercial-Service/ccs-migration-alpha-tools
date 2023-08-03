@@ -90,6 +90,10 @@ EOF
     # Some of the permissions are needed _at Terraform apply time_ hence the explicit dependency
     aws_iam_role_policy.sfn_perform_migration,
   ]
+
+  tags = {
+    GPaasPostgresMigratorName = var.migrator_name
+  }
 }
 
 resource "aws_iam_role" "sfn_perform_migration" {
