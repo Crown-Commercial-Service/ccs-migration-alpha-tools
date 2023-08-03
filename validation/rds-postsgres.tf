@@ -8,7 +8,12 @@ module "rds_postgres" {
   db_username                  = "username"
   postgres_engine_version      = "14.7"
   postgres_port                = 8888
-  skip_final_snapshot          = false
-  subnet_ids                   = ["subnet-1234"]
-  vpc_id                       = "vpc-12345"
+  resource_name_prefixes = {
+    normal        = "CORE:DEMO"
+    hyphens       = "CORE-DEMO"
+    hyphens_lower = "core-demo"
+  }
+  skip_final_snapshot = false
+  subnet_ids          = ["subnet-1234"]
+  vpc_id              = "vpc-12345"
 }

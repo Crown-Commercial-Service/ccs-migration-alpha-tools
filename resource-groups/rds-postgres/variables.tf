@@ -38,6 +38,15 @@ variable "postgres_port" {
   default     = 5432
 }
 
+variable "resource_name_prefixes" {
+  type = object({
+    normal        = string,
+    hyphens       = string,
+    hyphens_lower = string
+  })
+  description = "Prefix to apply to resources in AWS; options provided to satisfy divergent naming requirements across AWS"
+}
+
 # TODO It's beyond the scope of an Alpha to manage final snapshot preferences - Leaving this here as a reminder.
 variable "skip_final_snapshot" {
   type        = bool

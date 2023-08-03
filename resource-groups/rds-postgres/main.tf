@@ -25,22 +25,22 @@ resource "aws_db_instance" "db" {
 }
 
 resource "aws_security_group" "db" {
-  name        = "${var.db_name}-db" # TODO rename
+  name        = "${var.resource_name_prefixes.normal}:DB:${upper(var.db_name)}"
   description = "RDS ${var.db_name} DB"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${var.db_name}-db"
+    Name = "${var.resource_name_prefixes.normal}:DB:${upper(var.db_name)}"
   }
 }
 
 resource "aws_security_group" "db_clients" {
-  name        = "${var.db_name}-db-clients" # TODO rename
+  name        = "${var.resource_name_prefixes.normal}:DBCLIENTS:${upper(var.db_name)}"
   description = "Entities permitted to access the ${var.db_name} database"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${var.db_name}-db-clients"
+    Name = "${var.resource_name_prefixes.normal}:DBCLIENTS:${upper(var.db_name)}"
   }
 }
 
