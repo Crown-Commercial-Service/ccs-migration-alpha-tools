@@ -35,7 +35,7 @@ data "aws_iam_policy_document" "run_migrator" {
   }
 
   statement {
-    sid = "AllowDescribeStartCompileObjectsSfnExecution"
+    sid = "AllowDescribeCompileObjectsSfnExecution"
 
     effect = "Allow"
 
