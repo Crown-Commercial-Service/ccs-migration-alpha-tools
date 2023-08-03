@@ -161,12 +161,12 @@ If the object to be copied is larger than the `OBJECT_SIZE_ABSOLUTE_THRESHOLD` c
 
 ### Terminal outputs
 
-The script produces a progress update line every 5 seconds.
+The script produces a progress update line every 10 seconds.
 
 The script will end for one of two reasons:
 
 1. The list of objects waiting to migrate goes to zero, indicating full success (exit code `0`)
-2. The progress appears to stagnate (the progress stays the same for ~20 seconds) in which case the monitor script will exit with code `1` and output the name of every unmigrated object to the terminal, for investigation
+2. The progress appears to stagnate (the progress stays the same for ~50 seconds) in which case the monitor script will exit with code `1` and output the name of every unmigrated object to the terminal, for investigation
 
 ## Uninstalling the Migrator and all its resources
 
