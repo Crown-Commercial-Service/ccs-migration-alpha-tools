@@ -3,14 +3,14 @@ resource "random_password" "db" {
   special = false
 }
 
-resource "aws_ssm_parameter" "db_url" {
-  name        = "${var.db_name}_connection_url"
+resource "aws_ssm_parameter" "postgres_connection_url" {
+  name        = "${var.db_name}-postgres-connection-url"
   description = "Connection URL for the ${var.db_name} PostgreSQL database"
   type        = "SecureString"
   value       = "postgresql://${aws_db_instance.db.username}:${random_password.db.result}@${aws_db_instance.db.endpoint}/${aws_db_instance.db.db_name}"
 }
 
-data "aws_iam_policy_document" "read_db_url_ssm" {
+data "aws_iam_policy_document" "read_postgres_connection_url_ssm" {
   version = "2012-10-17"
 
   statement {
@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "read_db_url_ssm" {
     ]
 
     resources = [
-      aws_ssm_parameter.db_url.arn
+      aws_ssm_parameter.postgres_connection_url.arn
     ]
   }
 }
