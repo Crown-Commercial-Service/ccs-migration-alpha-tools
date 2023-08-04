@@ -28,12 +28,21 @@ def _validate_scale_to(ctx, param, value):
     default=False,
     help="Force new deployment from current ECR image",
 )
-def update_service(tf_outputs_json, service_name, scale_to, redeploy):
+@click.option(
+    "--skip-wait",
+    is_flag=True,
+    show_default=True,
+    default=False,
+    help="Do not wait for ECS operation to complete",
+)
+def update_service(tf_outputs_json, service_name, scale_to, redeploy, skip_wait):
     """
     Update the number of instances and / or force redeployment of an ECS service.
 
     It's a very, very thin wrapper around the ECS update-service API method, with a waiter to
-    ensure that (e.g.) a CI pipeline can be confident of moving on to a next step.
+    ensure that (e.g.) a CI pipeline can be confident of moving on to a next step. Note that
+    the waiter can be bypassed with the `--skip-wait` switch if (for example) you intend to
+    scale multiple services at the same time and waiting would be an undesirable overhead.
 
     TF_OUTPUTS_JSON is a streamed JSON string of outputs object from `terraform output -json`
 
@@ -70,6 +79,12 @@ def update_service(tf_outputs_json, service_name, scale_to, redeploy):
     click.echo(f"Updating service: {update_kwargs}")
 
     ecs_client.update_service(**update_kwargs)
+    if skip_wait:
+        click.echo(
+            "Request issued; --skip-wait requested; ECS operation will continue independently."
+        )
+        sys.exit(0)
+
     click.echo("Request issued; waiting for stable services")
 
     waiter = ecs_client.get_waiter("services_stable")
