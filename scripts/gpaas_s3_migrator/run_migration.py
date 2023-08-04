@@ -116,7 +116,7 @@ def run_migration(migrator_name):
         "ExpressionAttributeNames": {"#status": "Status"},
     }
     # Now we loop until the "waiting" count hits zero or appears to stagnate
-    last_five_counts = collections.deque([None] * 5, maxlen=5)
+    previous_counts = collections.deque([None] * 18, maxlen=18)
     while True:
         time.sleep(10)
         # Handle possible failure of kickoff SFN - Note if the SFN succeeds it will be
@@ -140,13 +140,13 @@ def run_migration(migrator_name):
             sys.exit(0)
 
         current_count = {"copied": copied_count, "waiting": waiting_count}
-        if all(current_count == c for c in last_five_counts):
+        if all(current_count == c for c in previous_counts):
             print("Migration appears to have stagnated; stopping.")
             for key in all_waiting_keys(ddb_client, progress_query_base_kwargs):
                 print(f"Not migrated: {key}")
             sys.exit(1)
 
-        last_five_counts.append(current_count)
+        previous_counts.append(current_count)
 
 
 if __name__ == "__main__":
