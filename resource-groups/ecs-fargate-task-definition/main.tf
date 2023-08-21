@@ -17,7 +17,7 @@ locals {
         startPeriod = 10
         timeout     = 10
       }
-      image = vars.image
+      image            = vars.image
       logConfiguration = {
         "logDriver" : "awslogs",
         "options" : {
@@ -27,7 +27,7 @@ locals {
           "awslogs-stream-prefix" : "container"
         }
       }
-      memory = vars.memory
+      memory      = vars.memory
       mountPoints = [
         for mount in vars.mounts :
         {
