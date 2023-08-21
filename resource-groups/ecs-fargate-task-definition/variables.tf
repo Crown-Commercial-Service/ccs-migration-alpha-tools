@@ -47,6 +47,12 @@ variable "family_name" {
   description = "The name to give to the task definition, across all revisions"
 }
 
+variable "override_entrypoints" {
+  type        = map(list(string))
+  description = "Forced override of entrypoint for the container"
+  default     = {}
+}
+
 variable "task_cpu" {
   type        = number
   description = "CPU to allocate to each task (where a value of 1024 == 1vCPU) - Must be >= total of all containers' CPU"

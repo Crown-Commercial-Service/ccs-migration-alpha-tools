@@ -8,6 +8,7 @@ locals {
       name        = name
       command     = vars.override_command # If null, does not override Dockerfile original command
       cpu         = vars.cpu
+      entrypoint  = lookup(var.override_entrypoints, name, null)
       environment = vars.environment_variables
       essential   = vars.essential || true
       healthCheck = vars.healthcheck_command == null ? null : {
