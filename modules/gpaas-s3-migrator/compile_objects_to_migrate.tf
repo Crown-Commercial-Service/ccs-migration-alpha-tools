@@ -57,7 +57,7 @@ module "compile_objects_to_migrate_lambda" {
 
   dist_folder_path      = "${path.module}/lambdas/dist"
   dist_package_filename = "compile_objects_to_migrate.zip"
-  dist_package_hash = {
+  dist_package_hash     = {
     base64sha256 = data.archive_file.compile_objects_to_migrate_lambda_zip.output_base64sha256
     md5          = data.archive_file.compile_objects_to_migrate_lambda_zip.output_md5
   }
@@ -67,6 +67,7 @@ module "compile_objects_to_migrate_lambda" {
   }
   function_name         = "${var.migrator_name}-compile-objects-to-migrate"
   lambda_dist_bucket_id = var.lambda_dist_bucket_id
+  timeout_seconds       = 900
 }
 
 data "archive_file" "compile_objects_to_migrate_lambda_zip" {
