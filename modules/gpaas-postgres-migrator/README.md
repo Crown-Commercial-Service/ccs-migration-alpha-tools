@@ -23,6 +23,7 @@ This module is designed to be reusable and temporary. To optimise on both these 
 Invoke the gpaas-postgres-migrator module using the typical Terraform `module` construct. Several input variables will be required in order to configure the module. Each is documented clearly in [the module variables file](variables.tf) as you would expect.
 
 It's advised to put this block into the top-level of your environment folder, as a separate file with a name such as `postgres_migration.tf` (so, for example, `environments/production/posetgres_migration.tf`). There are a few reasons for this approach:
+
 1. It shows with a glance of the folder that this environment has the migrator setup
 2. It stops the `main.tf` becoming cluttered
 3. When you are finished migrating, each of the migrator's resources and components can be removed from your platform by simply deleting this file. See [the section on uninstallation](#uninstalling-the-migrator-and-all-its-resources) for details.
@@ -44,7 +45,7 @@ The [extract ECS task](extract_task.tf) leverages the CF Conduit tool, which ope
 Once you have the credentials, they are introduced into the migrator as follows:
 
 1. Locate the existing (but blank) SSM Parameters which will be called `cf-username-postgres-migrator-MIGRATOR_NAME` and `cf-password-postgres-migrator-MIGRATOR_NAME` where `MIGRATOR_NAME` is the name you give to his module when invoking it from your environment Terraform.
-2. Edit the parameters and paste the appropriate item into the Value box 
+2. Edit the parameters and paste the appropriate item into the Value box
 6. Hit "Save changes"
 
 > Note that the SSM parameters are configured such that even when you re-apply Terraform during the lifecycle of this project, the new values you paste in the above steps will never be overwritten by Terraform. Therefore this is a one-time-only setup step.
@@ -66,6 +67,7 @@ If for any reason the migration fails and you need to run it again, it will be n
 ### IAM Permissions
 
 To run this script a user requires the following IAM permissions:
+
 - tag:GetResources for all resources (this is how we obviate the need for configuration)
 - states:StartExecution for the "perform migration" step function
 - states:DescribeExecution for any execution of that step function
@@ -92,5 +94,5 @@ If you followed [the installation instructions](#using-the-migrator-in-your-proj
 This will remove every resource and configuration element of the migrator.
 
 > However *BE AWARE* that if you added any users to the IAM group `run-MIGRATOR_NAME-postgres-migrator` then you will need to remove their membership of this group before you run `terraform apply`
- 
+
 If, upon running `terraform apply` you receive the error message `Error: deleting IAM Group (run-documents-migrator): DeleteConflict: Cannot delete entity, must remove users from group first` then it means you still have user(s) in that IAM group. Remove their membership, then re-apply the Terraform once more.
