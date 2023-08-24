@@ -49,8 +49,12 @@ data "aws_iam_policy_document" "run_migrator" {
   }
 }
 
-resource "aws_iam_group_policy" "run_migrator" {
-  name   = "run-migrator"
-  group  = aws_iam_group.run_migrator.name
+resource "aws_iam_policy" "run_migrator" {
+  name   = "run-${var.migrator_name}-postgres-migrator"
   policy = data.aws_iam_policy_document.run_migrator.json
+}
+
+resource "aws_iam_group_policy_attachment" "run_migrator" {
+  group      = aws_iam_group.run_migrator.name
+  policy_arn = aws_iam_policy.run_migrator.arn
 }

@@ -139,9 +139,9 @@ To run this script a user requires the following IAM permissions:
 - states:DescribeExecution for any execution of that step function
 - dynamodb:Query for the `CopyStatusIndex` on the "objects to migrate" Dynamo DB table
 
-For convenience an IAM Group has been set up with the necessary minimum permissions to do this. The name of the group will be `run-MIGRATOR_NAME-s3-migrator` where `MIGRATOR_NAME` is the value of `migrator_name` as defined in your environment's invocation of the `gpaas-s3-migrator` Terraform module.
+For convenience an IAM policy and IAM group have been set up with the necessary minimum permissions to do this. The name of both will be `run-MIGRATOR_NAME-s3-migrator` where `MIGRATOR_NAME` is the value of `migrator_name` as defined in your environment's invocation of the `gpaas-s3-migrator` Terraform module.
 
-Adding a regular no-permissions IAM user to this group will empower them to run this script (and nothing else). Note this user requires access to neither the Terraform state nor the state lock table in order to use the migrator. The IAM permissions (or Group membership) detailed above will suffice.
+Adding a regular no-permissions IAM user to this group - or assigning a role the permission - will empower them to run this script and perform the migration (and nothing else). Note this user requires access to neither the Terraform state nor the state lock table in order to use the migrator. The IAM permissions (or Group membership) detailed above will suffice.
 
 ### Idempotency
 

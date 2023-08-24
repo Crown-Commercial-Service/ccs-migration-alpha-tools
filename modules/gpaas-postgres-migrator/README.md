@@ -70,9 +70,9 @@ To run this script a user requires the following IAM permissions:
 - states:StartExecution for the "perform migration" step function
 - states:DescribeExecution for any execution of that step function
 
-For convenience an IAM Group has been set up with the necessary minimum permissions to do this. The name of the group will be `run-MIGRATOR_NAME-postgres-migrator` where `MIGRATOR_NAME` is the value of `migrator_name` as defined in your environment's invocation of the `gpaas-postgres-migrator` Terraform module.
+For convenience an IAM policy and IAM group have been set up with the necessary minimum permissions to do this. The name of both will be `run-MIGRATOR_NAME-postgres-migrator` where `MIGRATOR_NAME` is the value of `migrator_name` as defined in your environment's invocation of the `gpaas-postgres-migrator` Terraform module.
 
-Adding a regular no-permissions IAM user to this group will empower them to run this script and perform the migration (and nothing else). Note this user requires access to neither the Terraform state nor the state lock table in order to use the migrator. The IAM permissions (or Group membership) detailed above will suffice.
+Adding a regular no-permissions IAM user to this group - or assigning a role the permission - will empower them to run this script and perform the migration (and nothing else). Note this user requires access to neither the Terraform state nor the state lock table in order to use the migrator. The IAM permissions (or Group membership) detailed above will suffice.
 
 ### Terminal outputs
 
