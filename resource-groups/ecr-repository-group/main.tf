@@ -70,8 +70,6 @@ data "aws_iam_policy_document" "pull_repo_images" {
   }
 }
 
-# Add repo policy here, allowing pushes from the buildkit role in both Jenkins accounts
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository_policy#example-usage
 data "aws_iam_policy_document" "allow_push_from_buildkit" {
   statement {
     sid    = "AllowPushFromBuildkit"
