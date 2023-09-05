@@ -69,3 +69,35 @@ data "aws_iam_policy_document" "pull_repo_images" {
     resources = local.repo_arns
   }
 }
+
+# Add repo policy here, allowing pushes from the buildkit role in both Jenkins accounts
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository_policy#example-usage
+data "aws_iam_policy_document" "allow_push_from_buildkit" {
+  statement {
+    sid    = "AllowPushFromBuildkit"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = [
+        "473251818902", # Jenkins dev
+        "974531504241"  # Jenkins prod
+      ]
+    }
+
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:BatchGetImage",
+      "ecr:CompleteLayerUpload",
+      "ecr:InitiateLayerUpload",
+      "ecr:PutImage",
+      "ecr:UploadLayerPart",
+    ]
+  }
+}
+
+resource "aws_ecr_repository_policy" "this" {
+  for_each   = aws_ecr_repository.repo
+  repository = each.value.name
+  policy     = data.aws_iam_policy_document.allow_push_from_buildkit.json
+}
