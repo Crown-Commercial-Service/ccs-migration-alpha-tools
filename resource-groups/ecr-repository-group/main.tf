@@ -69,3 +69,35 @@ data "aws_iam_policy_document" "pull_repo_images" {
     resources = local.repo_arns
   }
 }
+
+# Allows pushes from the two Jenkins accounts. IAM permissions within those accounts
+# provide fine-grained control above and beyond this.
+data "aws_iam_policy_document" "allow_push_from_jenkins_accounts" {
+  statement {
+    sid    = "AllowPushFromJenkinsAccounts"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = [
+        "473251818902", # Jenkins dev
+        "974531504241"  # Jenkins prod
+      ]
+    }
+
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:BatchGetImage",
+      "ecr:CompleteLayerUpload",
+      "ecr:InitiateLayerUpload",
+      "ecr:PutImage",
+      "ecr:UploadLayerPart",
+    ]
+  }
+}
+
+resource "aws_ecr_repository_policy" "this" {
+  for_each   = aws_ecr_repository.repo
+  repository = each.value.name
+  policy     = data.aws_iam_policy_document.allow_push_from_jenkins_accounts.json
+}
