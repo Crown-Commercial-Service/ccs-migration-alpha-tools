@@ -70,10 +70,11 @@ data "aws_iam_policy_document" "pull_repo_images" {
   }
 }
 
-# Allows pushes from the two Jenkins accounts
-data "aws_iam_policy_document" "allow_push_from_buildkit" {
+# Allows pushes from the two Jenkins accounts. IAM permissions within those accounts
+# provide fine-grained control above and beyond this.
+data "aws_iam_policy_document" "allow_push_from_jenkins_accounts" {
   statement {
-    sid    = "AllowPushFromBuildkit"
+    sid    = "AllowPushFromJenkinsAccounts"
     effect = "Allow"
 
     principals {
@@ -98,5 +99,5 @@ data "aws_iam_policy_document" "allow_push_from_buildkit" {
 resource "aws_ecr_repository_policy" "this" {
   for_each   = aws_ecr_repository.repo
   repository = each.value.name
-  policy     = data.aws_iam_policy_document.allow_push_from_buildkit.json
+  policy     = data.aws_iam_policy_document.allow_push_from_jenkins_accounts.json
 }
