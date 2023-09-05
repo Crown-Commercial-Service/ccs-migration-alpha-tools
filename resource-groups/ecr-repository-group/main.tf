@@ -70,7 +70,7 @@ data "aws_iam_policy_document" "pull_repo_images" {
   }
 }
 
-# Allows pushes from the buildkit role in both Jenkins accounts
+# Allows pushes from the two Jenkins accounts
 data "aws_iam_policy_document" "allow_push_from_buildkit" {
   statement {
     sid    = "AllowPushFromBuildkit"
