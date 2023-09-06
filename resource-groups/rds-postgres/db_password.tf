@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "read_postgres_connection_url_ssm" {
   version = "2012-10-17"
 
   statement {
-    sid = "AllowReadDbUrlSecret"
+    sid = "AllowRead${replace(var.db_name, "/[-_/]/", "")}DbUrlSecret"
 
     effect = "Allow"
 
