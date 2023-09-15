@@ -4,7 +4,7 @@ output "db_clients_security_group_id" {
 }
 
 output "postgres_connection_url_ssm_parameter_arn" {
-  description = "ARN of the SSM paramter which contains the DB Connection URL"
+  description = "ARN of the SSM parameter which contains the DB Connection URL"
   value       = aws_ssm_parameter.postgres_connection_url.arn
 }
 
