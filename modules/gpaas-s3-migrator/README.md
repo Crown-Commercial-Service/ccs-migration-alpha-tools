@@ -131,7 +131,14 @@ _For details, see [the original GOV.UK docs](my-app-s3-service)._
 
 The migrator comes with a script to initiate, monitor and report the results of the migration. It requires no configuration.
 
-[The script itself](../../scripts/gpaas_s3_migrator/run_migration.py) contains the instructions for its operation. You should consult these before proceeding.
+[The script itself](../../scripts/gpaas_s3_migrator/run_migration.py) contains the instructions for its operation. You should consult these before proceeding, however for ease of reference the command will look like this:
+
+```bash
+scripts/core/gpaas_s3_migrator/run_migration.py MIGRATOR_NAME
+```
+where `MIGRATOR_NAME` is the value of `migrator_name` as defined in your environment's invocation of the `gpaas-s3-migrator` Terraform module. 
+
+Note: You *must* have gone through [the setup for running Python scripts](../../scripts/README.md) beforehand.
 
 Note that the script only starts the migration process and then monitors the worklist. The migrations will continue independently of the script. So even if you cancel the script, the migrations thus far initiated will continue.
 
