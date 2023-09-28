@@ -26,9 +26,10 @@ This module adds the following:
 
 * An IAM user for ITHC audit (the ARN for this is in the module outputs)
 * An IAM group for ITHC audit - the audit user is placed into this group and the group has policies:
-    * ReadOnlyAccess
-    * SecurityAudit
-    * A custom policy as defined in [this file](ithc_iam_user.tf) which allows key management, MFA management, etc and blocks SSM access (among other things)
+  * ReadOnlyAccess
+  * SecurityAudit
+  * A custom policy as defined in [this file](ithc_iam_user.tf) which allows key management, MFA management, etc and blocks SSM access (among other things)
+* An EC2 instance for VPC Scanning (the public DNS name for this is in the module outputs, and the username to use for ssh connection is `kali`)
 
 ## Origins
 
