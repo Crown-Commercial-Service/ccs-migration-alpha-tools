@@ -30,6 +30,7 @@ This module adds the following:
   * SecurityAudit
   * A custom policy as defined in [this file](ithc_iam_user.tf) which allows key management, MFA management, etc and blocks SSM access (among other things)
 * An EC2 instance for VPC Scanning (the public DNS name for this is in the module outputs, and the username to use for ssh connection is `kali`)
+* An EC2 instance to act as a connection conduit to Postgres within the database subnet (the public DNS name for this is in the module outputs, and the username to use for ssh connection is `ec2-user`)
 
 ## Origins
 
