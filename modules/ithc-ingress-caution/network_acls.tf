@@ -58,4 +58,3 @@ resource "aws_network_acl_rule" "database__allow_ephemeral_public_out" {
   rule_number    = 1
   to_port        = 65535
 }
-"
