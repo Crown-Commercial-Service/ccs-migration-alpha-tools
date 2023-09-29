@@ -9,7 +9,7 @@ resource "aws_network_acl_rule" "public__allow_ssh_everywhere_in" {
   network_acl_id = var.public_subnets_nacl_id
   protocol       = "tcp"
   rule_action    = "allow"
-  rule_number    = 1
+  rule_number    = index(var.ithc_operative_cidr_safelist, each.value) + 1
   to_port        = 22
 }
 
@@ -58,3 +58,4 @@ resource "aws_network_acl_rule" "database__allow_ephemeral_public_out" {
   rule_number    = 1
   to_port        = 65535
 }
+"
