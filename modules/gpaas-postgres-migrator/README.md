@@ -89,6 +89,21 @@ The script produces a progress update line every 5 seconds.
 
 At the end of the script, it will report the success or failure of the migrator state machine. If for any reason the state machine was unsuccessful, you will find details of its operation within the execution record for that run. Execution records can be located easily within the state machine page, which can be found [in this list in the AWS console](https://eu-west-2.console.aws.amazon.com/states/home?region=eu-west-2#/statemachines).
 
+### Verify the execution logs
+
+Because of the critical nature of this task, it is strongly recommended that at the end of the run, you inspect the CloudWatch logs output from each of the two main tasks: extract & load. These will be called:
+
+* pg_migrate_MIGRATOR_NAME_extract
+* pg_migrate_MIGRATOR_NAME_load
+
+where `MIGRATOR_NAME` is the value of `migrator_name` as defined in your environment's invocation of the `gpaas-postgres-migrator` Terraform module.
+
+You may find it more convenient to tail these with the AWS command line tool, e.g:
+
+```bash
+aws logs tail pg_migrate_MIGRATOR_NAME_extract --follow
+```
+
 ## Uninstalling the Migrator and all its resources
 
 Once the application is migrated from GPaaS it is unlikely that you will require the migrator any longer.
