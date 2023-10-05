@@ -21,7 +21,7 @@ module "load_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "psql $DB_CONNECTION_URL < $DUMP_FILENAME"
+        "psql -v ON_ERROR_STOP=1 $DB_CONNECTION_URL < $DUMP_FILENAME"
       ]
       port = null
       secret_environment_variables = [
