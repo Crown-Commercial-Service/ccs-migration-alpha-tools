@@ -10,7 +10,7 @@ locals {
       cpu         = vars.cpu
       entrypoint  = lookup(var.override_entrypoints, name, null)
       environment = vars.environment_variables
-      essential   = vars.essential || true
+      essential   = vars.essential != null ? vars.essential : true
       healthCheck = vars.healthcheck_command == null ? null : {
         command     = ["CMD-SHELL", vars.healthcheck_command]
         interval    = 30
