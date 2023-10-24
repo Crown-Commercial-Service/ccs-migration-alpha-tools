@@ -14,6 +14,12 @@ variable "engine_version" {
   default     = "OpenSearch_1.3" # Eschewed more recent 2.5 because DMP in GPaaS is running v1 AFAIK
 }
 
+variable "instance_count" {
+  type        = number
+  description = "Number of instances in the cluster"
+  default     = 2
+}
+
 variable "instance_type" {
   type        = string
   description = "Type of compute instance to provide for the OpenSearch domain"
