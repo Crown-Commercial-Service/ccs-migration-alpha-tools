@@ -85,25 +85,14 @@ resource "aws_network_acl_rule" "web__deny_25565_everywhere_out" {
   to_port        = 25565
 }
 
-resource "aws_network_acl_rule" "web__allow_ephemeral_public_a_out" {
-  cidr_block     = local.subnet_cidr_blocks.public.a
+resource "aws_network_acl_rule" "web__allow_ephemeral_everywhere_out" {
+  cidr_block     = "0.0.0.0/0"
   egress         = true
   from_port      = 1024
   network_acl_id = aws_network_acl.web_subnet.id
   protocol       = "tcp"
   rule_action    = "allow"
   rule_number    = 5100
-  to_port        = 65535
-}
-
-resource "aws_network_acl_rule" "web__allow_ephemeral_public_b_out" {
-  cidr_block     = local.subnet_cidr_blocks.public.b
-  egress         = true
-  from_port      = 1024
-  network_acl_id = aws_network_acl.web_subnet.id
-  protocol       = "tcp"
-  rule_action    = "allow"
-  rule_number    = 5200
   to_port        = 65535
 }
 
