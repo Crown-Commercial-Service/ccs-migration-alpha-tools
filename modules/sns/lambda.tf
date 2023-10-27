@@ -73,5 +73,5 @@ resource "aws_lambda_permission" "allow_event_bridge" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.route53_notifier.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.route53_create_hosted_zone_us.arn
+  source_arn    = aws_cloudwatch_event_rule.route53_create_hosted_zone_eu.arn
 }

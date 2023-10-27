@@ -30,7 +30,7 @@ def lambda_handler(event, context):
         logger.info(f"SNS publish response: {json.dumps(response)}")
         return {
             'statusCode': 200,
-            'body': json.dumps('Notification sent succesfully!'),
+            'body': json.dumps('Notification sent successfully!'),
             'response': response
         }
 

@@ -6,17 +6,17 @@ resource "aws_cloudwatch_event_rule" "route53_create_hosted_zone_us" {
   description = "Capture new Route 53 hosted zone event when it is created in us-east-1"
 
   event_pattern = jsonencode({
-    "source": [
+    "source" : [
       "aws.route53"
     ],
-    "detail-type": [
+    "detail-type" : [
       "AWS Console Sign In via CloudTrail"
     ],
-    "detail": {
-      "eventSource": [
+    "detail" : {
+      "eventSource" : [
         "route53.amazonaws.com"
       ],
-      "eventName": [
+      "eventName" : [
         "CreateHostedZone"
       ]
     }
@@ -27,10 +27,8 @@ resource "aws_cloudwatch_event_rule" "route53_create_hosted_zone_us" {
 resource "aws_cloudwatch_event_target" "eu_event_bus" {
   provider = aws.global-service-region
 
-  rule      = aws_cloudwatch_event_rule.route53_create_hosted_zone_us.name
-  # Optional
-  # target_id = "Route53HostedZoneNotificationLambda"
-  arn       = aws_cloudwatch_event_rule.route53_create_hosted_zone_eu.arn
+  rule = aws_cloudwatch_event_rule.route53_create_hosted_zone_us.name
+  arn  = aws_cloudwatch_event_rule.route53_create_hosted_zone_eu.arn
 }
 
 # Event rule in eu-west-2 to capture the forwarded event
@@ -39,17 +37,17 @@ resource "aws_cloudwatch_event_rule" "route53_create_hosted_zone_eu" {
   description = "Capture Route 53 hosted zone event"
 
   event_pattern = jsonencode({
-    "source": [
+    "source" : [
       "aws.route53"
     ],
-    "detail-type": [
+    "detail-type" : [
       "AWS Console Sign In via CloudTrail"
     ],
-    "detail": {
-      "eventSource": [
+    "detail" : {
+      "eventSource" : [
         "route53.amazonaws.com"
       ],
-      "eventName": [
+      "eventName" : [
         "CreateHostedZone"
       ]
     }
@@ -58,8 +56,6 @@ resource "aws_cloudwatch_event_rule" "route53_create_hosted_zone_eu" {
 
 # Target for the eu-west-2 Event rule to invoke the Lambda function
 resource "aws_cloudwatch_event_target" "lambda_function_in_eu" {
-  rule      = aws_cloudwatch_event_rule.route53_create_hosted_zone_eu.name
-  # Optional
-  # target_id = "Route53HostedZoneNotificationLambda"
-  arn       = aws_lambda_function.route53_notifier.arn
+  rule = aws_cloudwatch_event_rule.route53_create_hosted_zone_eu.name
+  arn  = aws_lambda_function.route53_notifier.arn
 }
