@@ -1,6 +1,7 @@
 import json
 import boto3
 import logging
+import os
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -9,7 +10,7 @@ logger.setLevel(logging.INFO)
 def lambda_handler(event, context):
 
     sns_client = boto3.client('sns')
-    topic_arn = 'arn:aws:sns:eu-west-2:473251818902:testHostedZone'
+    topic_arn = os.environ['TOPIC_ARN']
     logger.info(f"Received event: {json.dumps(event)}")
 
     try:

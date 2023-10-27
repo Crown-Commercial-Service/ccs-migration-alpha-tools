@@ -24,7 +24,7 @@ resource "aws_cloudwatch_event_rule" "route53_create_hosted_zone_us" {
 }
 
 # us-east-1 needs to target the default event bus in eu-west-2
-resource "aws_cloudwatch_event_target" "eu_event_bus" {
+resource "aws_cloudwatch_event_target" "target_eu" {
   provider = aws.global-service-region
 
   rule = aws_cloudwatch_event_rule.route53_create_hosted_zone_us.name

@@ -1,4 +1,4 @@
-resource "aws_iam_role" "lambda_role" {
+resource "aws_iam_role" "lambda_route53" {
   name = "lambda_role_for_route53_notification"
 
   assume_role_policy = jsonencode({
@@ -7,7 +7,6 @@ resource "aws_iam_role" "lambda_role" {
       {
         Action = "sts:AssumeRole",
         Effect = "Allow"
-        Sid    = ""
         Principal = {
           Service = "lambda.amazonaws.com"
         },
@@ -18,7 +17,7 @@ resource "aws_iam_role" "lambda_role" {
 
 resource "aws_iam_role_policy" "lambda_policy" {
   name = "lambda_policy_for_route53_notification"
-  role = aws_iam_role.lambda_role.id
+  role = aws_iam_role.lambda_route53.id
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -51,6 +50,9 @@ resource "null_resource" "zip_lambda_function" {
   provisioner "local-exec" {
     command = "zip -j ${path.module}/lambda_function.zip ${path.module}/lambda_function.py"
   }
+
+  # The Lambda function will run every time when terraform is applied.
+  # This ensures the Lambda function's deployment is always up-to-date with the latest script changes.
   triggers = {
     always_run = "${timestamp()}"
   }
@@ -58,13 +60,18 @@ resource "null_resource" "zip_lambda_function" {
 
 # The Lambda function
 resource "aws_lambda_function" "route53_notifier" {
-  filename      = "${path.module}/lambda_function.zip"
-  function_name = "route53_notifier"
-  handler       = "lambda_function.lambda_handler"
-  role          = aws_iam_role.lambda_role.arn
-  runtime       = "python3.8"
-
+  filename         = "${path.module}/lambda_function.zip"
+  function_name    = "route53_notifier"
+  handler          = "lambda_function.lambda_handler"
+  role             = aws_iam_role.lambda_route53.arn
+  runtime          = "python3.8"
   source_code_hash = filebase64sha256("${path.module}/lambda_function.zip")
+
+  environment {
+    variables = {
+      TOPIC_ARN = aws_sns_topic.route53_notifications.arn
+    }
+  }
 }
 
 # Grant EventBridge permissions to invoke the Lambda function
