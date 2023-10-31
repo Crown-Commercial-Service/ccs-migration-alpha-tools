@@ -1,8 +1,11 @@
 terraform {
   required_providers {
-    aws.default-region        = {}
-    aws.global-service-region = {}
-
+    aws = {
+      configuration_aliases = [
+        aws.default-region,
+        aws.global-service-region
+      ]
+    }
   }
 }
 
