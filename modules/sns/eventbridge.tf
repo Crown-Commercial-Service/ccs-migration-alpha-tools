@@ -6,7 +6,7 @@ terraform {
 
 # us-east-1
 resource "aws_cloudwatch_event_rule" "route53_create_hosted_zone_us" {
-  provider = aws.global-service-region
+  provider = aws
 
   name        = "route53-create-hosted-zone-rule-us"
   description = "Capture new Route 53 hosted zone event when it is created in us-east-1"
@@ -31,7 +31,7 @@ resource "aws_cloudwatch_event_rule" "route53_create_hosted_zone_us" {
 
 # us-east-1 needs to target the default event bus in eu-west-2
 resource "aws_cloudwatch_event_target" "target_eu" {
-  provider = aws.global-service-region
+  provider = aws
 
   rule = aws_cloudwatch_event_rule.route53_create_hosted_zone_us.name
   arn  = aws_cloudwatch_event_rule.route53_create_hosted_zone_eu.arn
