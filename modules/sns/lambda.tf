@@ -46,16 +46,22 @@ resource "aws_iam_role_policy" "lambda_policy" {
   })
 }
 
-resource "null_resource" "zip_lambda_function" {
-  provisioner "local-exec" {
-    command = "zip -j ${path.module}/lambda_function.zip ${path.module}/lambda_function.py"
-  }
+# resource "null_resource" "zip_lambda_function" {
+#   provisioner "local-exec" {
+#     command = "zip -j ${path.module}/lambda_function.zip ${path.module}/lambda_function.py"
+#   }
 
-  # The Lambda function will run every time when terraform is applied.
-  # This ensures the Lambda function's deployment is always up-to-date with the latest script changes.
-  triggers = {
-    always_run = "${timestamp()}"
-  }
+#   # The Lambda function will run every time when terraform is applied.
+#   # This ensures the Lambda function's deployment is always up-to-date with the latest script changes.
+#   triggers = {
+#     always_run = "${timestamp()}"
+#   }
+# }
+
+data "archive_file" "lambda_function" {
+  type = "zip"
+  source_file = "${path.module}/lambda_function.py"
+  output_path = "${path.module}/lambda_function.zip"
 }
 
 # The Lambda function
@@ -65,7 +71,7 @@ resource "aws_lambda_function" "route53_notifier" {
   handler          = "lambda_function.lambda_handler"
   role             = aws_iam_role.lambda_route53.arn
   runtime          = "python3.8"
-  source_code_hash = filebase64sha256("${path.module}/lambda_function.zip")
+  source_code_hash = data.archive_file.lambda_function.output_base64sha256
 
   environment {
     variables = {
