@@ -1,3 +1,9 @@
+terraform {
+  required_providers {
+    aws = {}
+  }
+}
+
 # us-east-1
 resource "aws_cloudwatch_event_rule" "route53_create_hosted_zone_us" {
   provider = aws.global-service-region
