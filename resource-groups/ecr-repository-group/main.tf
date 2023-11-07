@@ -1,7 +1,10 @@
 resource "aws_ecr_repository" "repo" {
-  for_each             = toset(var.repository_names)
-  name                 = each.value
-  force_delete         = var.is_ephemeral
+  for_each     = toset(var.repository_names)
+  name         = each.value
+  force_delete = var.is_ephemeral
+  image_scanning_configuration {
+    scan_on_push = true
+  }
   image_tag_mutability = "MUTABLE"
 
   encryption_configuration {
@@ -78,7 +81,7 @@ data "aws_iam_policy_document" "allow_push_from_jenkins_accounts" {
     effect = "Allow"
 
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = [
         "473251818902", # Jenkins dev
         "974531504241"  # Jenkins prod
