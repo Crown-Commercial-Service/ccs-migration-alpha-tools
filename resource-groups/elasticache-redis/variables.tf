@@ -3,7 +3,7 @@ variable "cluster_id" {
   description = "ID (name) to give"
   validation {
     condition     = can(regex("[a-z0-9\\-]+", var.cluster_id))
-    error_message = "The cluster_id can only contain lower case a-z, 0-9 and hyphens(-)"
+    error_message = "The cluster_id can only contain lower case a-z, 0-9 and hyphens(-)."
   }
 }
 
