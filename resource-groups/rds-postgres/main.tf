@@ -15,12 +15,14 @@ resource "aws_db_instance" "db" {
   final_snapshot_identifier       = var.skip_final_snapshot ? null : var.final_snapshot_identifier
   identifier                      = var.db_name # NB RDS identifiers use hyphens, not underscores
   instance_class                  = var.db_instance_class
+  iops                            = 20000
   multi_az                        = true
   password                        = random_password.db.result
   port                            = var.postgres_port
   publicly_accessible             = false
   skip_final_snapshot             = var.skip_final_snapshot
   storage_encrypted               = true
+  storage_type                    = "io1"
   username                        = var.db_username
   vpc_security_group_ids          = [aws_security_group.db.id]
 }
