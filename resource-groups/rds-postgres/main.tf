@@ -5,6 +5,7 @@ resource "aws_db_subnet_group" "subnet_group" {
 
 resource "aws_db_instance" "db" {
   allocated_storage               = var.allocated_storage_gb
+  auto_minor_version_upgrade      = false
   allow_major_version_upgrade     = false
   backup_retention_period         = var.backup_retention_period_days
   db_name                         = var.db_name # NB Postgres db names use underscores, not hyphens
