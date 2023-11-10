@@ -5,12 +5,12 @@ module "extract_task" {
   aws_region     = var.aws_region
   container_definitions = {
     pg_dump = {
-      cpu                   = 2048
+      cpu                   = 8192
       environment_variables = []
       essential             = true
       healthcheck_command   = null
       image                 = var.cf_config.cf_cli_docker_image
-      memory                = 4096
+      memory                = 16384
       mounts = [
         {
           mount_point = "/mnt/efs0"
@@ -21,7 +21,7 @@ module "extract_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "apk update && apk add --no-cache postgresql-client && cf install-plugin -f conduit && cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} && cf conduit ${var.cf_config.db_service_instance} -- pg_dump --file $DUMP_FILENAME --no-acl --no-owner"
+        "apk update && apk add --no-cache postgresql-client && cf install-plugin -f conduit && rm -rf $DUMP_FILENAME && cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} && cf conduit ${var.cf_config.db_service_instance} -- pg_dump -j 8 -Fd --file $DUMP_FILENAME --no-acl --no-owner"
       ]
       port = null
       # ECS Execution role will need access to these - see aws_iam_role_policy.ecs_execution_role__read_cf_creds_ssm
@@ -33,8 +33,8 @@ module "extract_task" {
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
   family_name            = "pg_migrate_${var.migrator_name}_extract"
-  task_cpu               = 2048
-  task_memory            = 4096
+  task_cpu               = 8192
+  task_memory            = 16384
   volumes = [
     {
       access_point_id = aws_efs_access_point.db_dump.id
