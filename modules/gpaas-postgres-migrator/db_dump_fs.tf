@@ -5,6 +5,8 @@ resource "aws_efs_file_system" "db_dump" {
     "Name" = "${var.resource_name_prefixes.normal}:PGMIGRATOR:${upper(var.migrator_name)}"
     "TYPE" = "EFS"
   }
+
+  throughput_mode = "elastic"
 }
 
 resource "aws_efs_access_point" "db_dump" {
