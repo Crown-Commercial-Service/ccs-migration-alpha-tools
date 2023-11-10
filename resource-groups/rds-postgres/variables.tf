@@ -32,6 +32,12 @@ variable "final_snapshot_identifier" {
   default     = "final-snapshot"
 }
 
+variable "iops" {
+  type = string
+  description = "IOPS volumes"
+  default = "20000"
+}
+
 variable "postgres_engine_version" {
   type        = string
   description = "Version number of db engine to use"
@@ -62,6 +68,12 @@ variable "skip_final_snapshot" {
 variable "subnet_ids" {
   type        = list(string)
   description = "List of IDs of subnets for DB subnet groups"
+}
+
+variable "storage_type" {
+  type = string
+  description = "Storage type"
+  default = "io1"
 }
 
 variable "vpc_id" {
