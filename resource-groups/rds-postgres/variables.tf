@@ -39,9 +39,9 @@ variable "final_snapshot_identifier" {
 }
 
 variable "iops" {
-  type = string
+  type        = number
   description = "IOPS volumes"
-  default = "20000"
+  default     = 0
 }
 
 variable "postgres_engine_version" {
@@ -77,9 +77,9 @@ variable "subnet_ids" {
 }
 
 variable "storage_type" {
-  type = string
+  type        = string
   description = "Storage type"
-  default = "io1"
+  default     = "gp3"
 }
 
 variable "vpc_id" {
