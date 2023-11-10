@@ -4,12 +4,6 @@ variable "allocated_storage_gb" {
   default     = 10
 }
 
-variable "aws_region" {
-  type        = string
-  default     = "eu-west-2"
-  description = "AWS Region"
-}
-
 variable "backup_retention_period_days" {
   type        = number
   description = "Number of days for which to keep backups"
