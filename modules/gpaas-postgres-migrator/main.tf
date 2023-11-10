@@ -156,8 +156,8 @@ data "aws_iam_policy_document" "sfn_perform_migration" {
     ]
 
     resources = [
-      module.extract_task.task_definition_arn,
-      module.load_task.task_definition_arn
+      "${module.extract_task.task_definition_arn_without_revision}:*",
+      "${module.load_task.task_definition_arn_without_revision}:*"
     ]
   }
 
