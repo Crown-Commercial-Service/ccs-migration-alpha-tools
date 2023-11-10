@@ -76,6 +76,12 @@ variable "subnet_ids" {
   description = "List of IDs of subnets for DB subnet groups"
 }
 
+variable "storage_iops" {
+  type        = number
+  description = "Storage provisioned IOPS"
+  default     = 0
+}
+
 variable "storage_type" {
   type        = string
   description = "Storage type"
