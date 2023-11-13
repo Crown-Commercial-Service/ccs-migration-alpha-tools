@@ -4,6 +4,12 @@ variable "allocated_storage_gb" {
   default     = 10
 }
 
+variable "apply_immediately" {
+  type        = bool
+  description = "Whether to apply changes immediately or in the next maintenance window"
+  default     = false
+}
+
 variable "backup_retention_period_days" {
   type        = number
   description = "Number of days for which to keep backups"
