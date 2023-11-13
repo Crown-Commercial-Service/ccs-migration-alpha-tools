@@ -67,7 +67,7 @@ variable "subnet_ids" {
 variable "storage_iops" {
   type        = number
   description = "Storage provisioned IOPS"
-  default     = 0
+  default     = null
 }
 
 variable "storage_type" {
