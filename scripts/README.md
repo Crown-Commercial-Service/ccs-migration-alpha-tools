@@ -51,7 +51,15 @@ source venv/bin/activate
 
 [Pip-Tools](https://pypi.org/project/pip-tools/) is used to compile basic, primary package requirements and identify all downstream dependencies.
 
-The assumption here is that that folder has its own `requirements.in` file whose contents will be merged with the top-level project's `requirements.in` file.
+The assumption here is that the top-level scripts folder has its own `requirements.in` file whose contents will be merged with the top-level project's `requirements.in` file. **If your scripts folder is newly set up and has no `requirements.in` file** then you're advised to set one up with only a comment inside it to provide clarity for other engineers, for example:
+
+```
+# Add only package requirements which are in addition to those
+# expressed in core/requirements.in
+```
+scripts/requirements.in
+
+Note this step is necssary to avoid errors in the step which follows:
 
 ```bash
 pip install pip-tools
