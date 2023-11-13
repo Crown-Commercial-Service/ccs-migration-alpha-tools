@@ -15,7 +15,7 @@ resource "aws_db_instance" "db" {
   final_snapshot_identifier       = var.skip_final_snapshot ? null : var.final_snapshot_identifier
   identifier                      = var.db_name # NB RDS identifiers use hyphens, not underscores
   instance_class                  = var.db_instance_class
-  iops                            = var.iops
+  iops                            = var.storage_iops
   multi_az                        = true
   password                        = random_password.db.result
   port                            = var.postgres_port

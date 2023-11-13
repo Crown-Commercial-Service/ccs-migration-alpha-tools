@@ -32,12 +32,6 @@ variable "final_snapshot_identifier" {
   default     = "final-snapshot"
 }
 
-variable "iops" {
-  type        = number
-  description = "IOPS volumes"
-  default     = 0
-}
-
 variable "postgres_engine_version" {
   type        = string
   description = "Version number of db engine to use"
