@@ -51,13 +51,13 @@ variable "extract_task_memory" {
 
 variable "load_task_cpu" {
   type        = number
-  default     = 2048
+  default     = 8192
   description = "CPU resource to allocate to the load task, in millicores"
 }
 
 variable "load_task_memory" {
   type        = number
-  default     = 4096 
+  default     = 16384
   description = "Memory resource to allocate to the load task, in MiB"
 }
 
