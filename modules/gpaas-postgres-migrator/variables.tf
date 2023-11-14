@@ -37,6 +37,30 @@ variable "ecs_execution_role" {
   description = "Details of the role which is assumed by the ECS execution processes"
 }
 
+variable "extract_task_cpu" {
+  type        = number
+  default     = 2048
+  description = "CPU resource to allocate to the extract task, in millicores"
+}
+
+variable "extract_task_memory" {
+  type        = number
+  default     = 4096
+  description = "Memory resource to allocate to the extract task, in MiB"
+}
+
+variable "load_task_cpu" {
+  type        = number
+  default     = 2048
+  description = "CPU resource to allocate to the load task, in millicores"
+}
+
+variable "load_task_memory" {
+  type        = number
+  default     = 4096 
+  description = "Memory resource to allocate to the load task, in MiB"
+}
+
 variable "migrator_name" {
   description = "A name to distinguish this migrator"
   type        = string
