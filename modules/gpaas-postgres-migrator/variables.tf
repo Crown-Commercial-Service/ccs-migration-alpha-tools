@@ -37,6 +37,11 @@ variable "ecs_execution_role" {
   description = "Details of the role which is assumed by the ECS execution processes"
 }
 
+variable "efs_subnet_ids" {
+  type        = set(string)
+  description = "IDs of the subnest in which to create the EFS mount points"
+}
+
 variable "extract_task_cpu" {
   type        = number
   default     = 2048
