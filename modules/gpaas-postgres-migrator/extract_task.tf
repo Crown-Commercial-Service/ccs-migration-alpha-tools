@@ -5,12 +5,12 @@ module "extract_task" {
   aws_region     = var.aws_region
   container_definitions = {
     pg_dump = {
-      cpu                   = 8192
+      cpu                   = var.extract_task_cpu
       environment_variables = []
       essential             = true
       healthcheck_command   = null
       image                 = var.cf_config.cf_cli_docker_image
-      memory                = 16384
+      memory                = var.extract_task_memory
       mounts = [
         {
           mount_point = "/mnt/efs0"
@@ -33,8 +33,8 @@ module "extract_task" {
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
   family_name            = "pg_migrate_${var.migrator_name}_extract"
-  task_cpu               = 8192
-  task_memory            = 16384
+  task_cpu               = var.extract_task_cpu
+  task_memory            = var.extract_task_memory
   volumes = [
     {
       access_point_id = aws_efs_access_point.db_dump.id
