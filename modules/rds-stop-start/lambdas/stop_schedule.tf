@@ -28,7 +28,7 @@ resource "aws_scheduler_schedule" "weekends_schedule" {
 
   target {
     arn      = "arn:aws:scheduler:::aws-sdk:lambda:invoke"
-    role_arn = aws_iam_role.lambda_stop_role.arn
+    role_arn = aws_iam_role.eventbridge_scheduler_role.arn
 
     input = jsonencode({
       resources = [{

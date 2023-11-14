@@ -19,7 +19,6 @@ def start(resources):
   ecs = boto3.client('ecs')
   rds = boto3.client('rds')
 
-
   for resource in resources:
     if resource['type'] == 'rds_db_instance':
       try:

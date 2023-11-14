@@ -28,7 +28,7 @@ resource "aws_iam_role_policy" "lambda_start_policy" {
     Statement = [
       {
         Action = [
-          "rds:StartDBInstance"
+          "rds:StartDBInstance",
         ],
         Effect   = "Allow",
         Resource = "*"
