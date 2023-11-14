@@ -21,7 +21,7 @@ module "load_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "pg_restore -c -d $DB_CONNECTION_URL -j 8 --no-acl --no-owner $DUMP_FILENAME && rm -rf $DUMP_FILENAME"
+        "pg_restore -c -d $DB_CONNECTION_URL -j ${var.load_task_pgrestore_workers} --no-acl --no-owner $DUMP_FILENAME && rm -rf $DUMP_FILENAME"
       ]
       port = null
       secret_environment_variables = [
