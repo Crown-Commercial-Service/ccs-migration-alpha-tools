@@ -1,9 +1,9 @@
 resource "aws_lambda_function" "rds_start_function" {
   function_name = "RDSStopFunction"
-  runtime = "python3.8"
-  handler = "lambda_function.lambda_handler"
-  role = aws_iam_role.rds_lambda_role.arn
-  filename = "modules/rds-stop-start/lambdas/start_stop_rds.py"
+  runtime       = "python3.8"
+  handler       = "lambda_function.lambda_handler"
+  role          = aws_iam_role.rds_lambda_role.arn
+  filename      = "modules/rds-stop-start/lambdas/start_stop_rds.py"
 }
 
 resource "aws_iam_role" "lambda_start_role" {
@@ -30,7 +30,7 @@ resource "aws_iam_role_policy" "lambda_start_policy" {
         Action = [
           "rds:StartDBInstance"
         ],
-        Effect = "Allow",
+        Effect   = "Allow",
         Resource = "*"
       },
     ]
