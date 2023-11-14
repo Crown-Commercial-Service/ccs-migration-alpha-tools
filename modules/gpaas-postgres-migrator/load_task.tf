@@ -5,12 +5,12 @@ module "load_task" {
   aws_region     = var.aws_region
   container_definitions = {
     pg_restore = {
-      cpu                   = 8192
+      cpu                   = var.load_task_cpu
       environment_variables = []
       essential             = true
       healthcheck_command   = null
       image                 = var.postgres_docker_image
-      memory                = 16384
+      memory                = var.load_task_memory
       mounts = [
         {
           mount_point = "/mnt/efs0"
@@ -32,8 +32,8 @@ module "load_task" {
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
   family_name            = "pg_migrate_${var.migrator_name}_load"
-  task_cpu               = 8192
-  task_memory            = 16384
+  task_cpu               = var.load_task_cpu
+  task_memory            = var.load_task_memory
   volumes = [
     {
       access_point_id = aws_efs_access_point.db_dump.id
