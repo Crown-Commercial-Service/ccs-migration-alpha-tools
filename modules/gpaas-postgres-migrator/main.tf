@@ -42,7 +42,7 @@ resource "aws_sfn_state_machine" "perform_migration" {
               "Environment": [
                 {
                   "Name": "DUMP_FILENAME",
-                  "Value": "/mnt/efs0/${var.migrator_name}.sql"
+                  "Value": "/mnt/efs0/${var.migrator_name}.dir"
                 }
               ]
             }
@@ -68,11 +68,11 @@ resource "aws_sfn_state_machine" "perform_migration" {
         "Overrides": {
           "ContainerOverrides": [
             {
-              "Name": "psql",
+              "Name": "pg_restore",
               "Environment": [
                 {
                   "Name": "DUMP_FILENAME",
-                  "Value": "/mnt/efs0/${var.migrator_name}.sql"
+                  "Value": "/mnt/efs0/${var.migrator_name}.dir"
                 }
               ]
             }
@@ -156,8 +156,8 @@ data "aws_iam_policy_document" "sfn_perform_migration" {
     ]
 
     resources = [
-      module.extract_task.task_definition_arn,
-      module.load_task.task_definition_arn
+      "${module.extract_task.task_definition_arn_without_revision}:*",
+      "${module.load_task.task_definition_arn_without_revision}:*"
     ]
   }
 

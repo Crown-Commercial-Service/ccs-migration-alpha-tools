@@ -9,6 +9,11 @@
 #     provide those properties here as module outputs (db_connection_*), even though methods
 #     1 and 2 here are mutually redundant.
 #
+output "availability_zone" {
+  description = "Availability zone of the RDS instance"
+  value       = aws_db_instance.db.availability_zone
+}
+
 output "db_clients_security_group_id" {
   description = "ID of Security Group, membership of which grants routing access to the DB"
   value       = aws_security_group.db_clients.id

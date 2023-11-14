@@ -4,13 +4,13 @@ module "load_task" {
   aws_account_id = var.aws_account_id
   aws_region     = var.aws_region
   container_definitions = {
-    psql = {
-      cpu                   = 2048
+    pg_restore = {
+      cpu                   = var.load_task_cpu
       environment_variables = []
       essential             = true
       healthcheck_command   = null
       image                 = var.postgres_docker_image
-      memory                = 4096
+      memory                = var.load_task_memory
       mounts = [
         {
           mount_point = "/mnt/efs0"
@@ -21,7 +21,7 @@ module "load_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "psql -v ON_ERROR_STOP=1 $DB_CONNECTION_URL < $DUMP_FILENAME"
+        "pg_restore -c -d $DB_CONNECTION_URL -j ${var.load_task_pgrestore_workers} --no-acl --no-owner $DUMP_FILENAME && rm -rf $DUMP_FILENAME"
       ]
       port = null
       secret_environment_variables = [
@@ -32,8 +32,8 @@ module "load_task" {
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
   family_name            = "pg_migrate_${var.migrator_name}_load"
-  task_cpu               = 2048
-  task_memory            = 4096
+  task_cpu               = var.load_task_cpu
+  task_memory            = var.load_task_memory
   volumes = [
     {
       access_point_id = aws_efs_access_point.db_dump.id
