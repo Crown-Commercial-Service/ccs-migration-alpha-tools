@@ -39,6 +39,7 @@ variable "ecs_execution_role" {
 
 variable "efs_subnet_ids" {
   type        = set(string)
+  default     = []
   description = "IDs of the subnest in which to create the EFS mount points"
 }
 
