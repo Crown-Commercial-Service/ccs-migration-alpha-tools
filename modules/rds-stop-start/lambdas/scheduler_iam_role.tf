@@ -18,6 +18,12 @@ resource "aws_iam_role" "eventbridge_scheduler_role" {
                     "iam:PassedToService": "scheduler.amazonaws.com"
                 }
             }
+        },
+        {
+            "Sid": "AllowLambdaFunction",
+            "Effect": "Allow",
+            "Action": "lambda:InvokeFunction",
+            "Resource": "*"
         }
       ]
     }

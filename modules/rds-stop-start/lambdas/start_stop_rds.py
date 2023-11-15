@@ -27,27 +27,38 @@ def start(resources):
       except Exception as e:
         return f"Error starting RDS instance: {str(e)}"
     elif resource['type'] == 'ecs_service':
+      cluster_name = resource['cluster_name']
+      service_name = resource['service_name']
       try:
-        response = ecs.start_service(DBInstanceIdentifier=resource['identifier'])
+        response = ecs.update_service(
+          cluster = cluster_name,
+          service = service_name,
+          desiredCount = resource['desiredCount']
+        )
         return response
       except Exception as e:
         return f"Error starting ECS service: {str(e)}"
 
-def stop_rds_instance(instance_identifier):
+def stop(resources):
   ecs = boto3.client('ecs')
   rds = boto3.client('rds')
 
   for resource in resources:
     if resource['type'] == 'rds_db_instance':
       try:
-        response = rds.stop_db_instance(DBInstanceIdentifier=instance_identifier['identifier'])
+        response = rds.stop_db_instance(DBInstanceIdentifier=resource['identifier'])
         return response
       except Exception as e:
         return f"Error stopping RDS instance: {str(e)}"
     elif resource['type'] == 'ecs_service':
+      cluster_name = resource['cluster_name']
+      service_name = resource['service_name']
       try:
-        response = ecs.stop_service(DBInstanceIdentifier=resource['identifier'])
+        response = ecs.update_service(
+          cluster = cluster_name,
+          service = service_name,
+          desiredCount = 0
+        )
         return response
       except Exception as e:
         return f"Error stopping ECS service: {str(e)}"
-

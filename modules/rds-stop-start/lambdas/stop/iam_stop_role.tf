@@ -34,7 +34,8 @@ resource "aws_iam_role_policy" "lambda_stop_policy" {
     Statement = [
       {
         Action = [
-          "rds:StopDBInstance"
+          "rds:StopDBInstance",
+          "ecs:UpdateService"
         ],
         Effect   = "Allow",
         Resource = "*"
