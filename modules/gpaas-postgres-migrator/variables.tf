@@ -45,19 +45,19 @@ variable "efs_subnet_ids" {
 
 variable "extract_task_cpu" {
   type        = number
-  default     = 2048
+  default     = 4096
   description = "CPU resource to allocate to the extract task, in millicores"
 }
 
 variable "extract_task_memory" {
   type        = number
-  default     = 4096
+  default     = 8192
   description = "Memory resource to allocate to the extract task, in MiB"
 }
 
 variable "extract_task_pgdump_workers" {
   type        = number
-  default     = 2
+  default     = 4
   description = "Number of pgdump workers, one per CPU core"
 }
 
