@@ -7,7 +7,7 @@ resource "aws_lambda_function" "rds_start_function" {
 }
 
 resource "aws_iam_role" "lambda_start_role" {
-  assume_role_policy = jsondecode({
+  assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
@@ -23,7 +23,7 @@ resource "aws_iam_role" "lambda_start_role" {
 
 resource "aws_iam_role_policy" "lambda_start_policy" {
   role = aws_iam_role.lambda_start_role.id
-  policy = jsondecode({
+  policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
