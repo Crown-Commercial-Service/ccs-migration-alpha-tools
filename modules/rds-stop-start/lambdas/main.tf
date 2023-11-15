@@ -1,6 +1,6 @@
 resource "aws_iam_role" "eventbridge_scheduler_role" {
   name = "eventbridge-scheduler-role"
-  assume_role_policy = jsondecode(
+  assume_role_policy = jsonencode(
     {
       "Version" : "2012-10-17",
       "Statement" : [
