@@ -8,6 +8,11 @@ output "task_definition_arn" {
   value       = aws_ecs_task_definition.task.arn
 }
 
+output "task_definition_arn_without_revision" {
+  description = "ARN of the task definition, without the revision"
+  value       = aws_ecs_task_definition.task.arn_without_revision
+}
+
 output "task_family_name" {
   description = "Family name for the task"
   value       = aws_ecs_task_definition.task.family

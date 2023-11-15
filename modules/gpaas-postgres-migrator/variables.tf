@@ -37,6 +37,48 @@ variable "ecs_execution_role" {
   description = "Details of the role which is assumed by the ECS execution processes"
 }
 
+variable "efs_subnet_ids" {
+  type        = set(string)
+  default     = []
+  description = "IDs of the subnest in which to create the EFS mount points"
+}
+
+variable "extract_task_cpu" {
+  type        = number
+  default     = 4096
+  description = "CPU resource to allocate to the extract task, in millicores"
+}
+
+variable "extract_task_memory" {
+  type        = number
+  default     = 8192
+  description = "Memory resource to allocate to the extract task, in MiB"
+}
+
+variable "extract_task_pgdump_workers" {
+  type        = number
+  default     = 4
+  description = "Number of pgdump workers, one per CPU core"
+}
+
+variable "load_task_cpu" {
+  type        = number
+  default     = 8192
+  description = "CPU resource to allocate to the load task, in millicores"
+}
+
+variable "load_task_memory" {
+  type        = number
+  default     = 16384
+  description = "Memory resource to allocate to the load task, in MiB"
+}
+
+variable "load_task_pgrestore_workers" {
+  type        = number
+  default     = 8
+  description = "Number of pgrestore workers, one per CPU core"
+}
+
 variable "migrator_name" {
   description = "A name to distinguish this migrator"
   type        = string

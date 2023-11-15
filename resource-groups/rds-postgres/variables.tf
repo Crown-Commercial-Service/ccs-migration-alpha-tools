@@ -4,6 +4,12 @@ variable "allocated_storage_gb" {
   default     = 10
 }
 
+variable "apply_immediately" {
+  type        = bool
+  description = "Whether to apply changes immediately or in the next maintenance window"
+  default     = false
+}
+
 variable "backup_retention_period_days" {
   type        = number
   description = "Number of days for which to keep backups"
@@ -62,6 +68,18 @@ variable "skip_final_snapshot" {
 variable "subnet_ids" {
   type        = list(string)
   description = "List of IDs of subnets for DB subnet groups"
+}
+
+variable "storage_iops" {
+  type        = number
+  description = "Storage provisioned IOPS"
+  default     = null
+}
+
+variable "storage_type" {
+  type        = string
+  description = "Storage type"
+  default     = "gp3"
 }
 
 variable "vpc_id" {
