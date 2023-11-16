@@ -1,22 +1,3 @@
-# resource "aws_cloudwatch_event_rule" "weekdays_schedule" {
-#   name = "rds_weekdays_schedule"
-#   description = "Trigger start RDS instances on weekdays"
-#   schedule_expression = "cron(0 8 ? * MON-FRI *)"
-# }
-
-# resource "aws_cloudwatch_event_target" "trigger_lambda_weekdays" {
-#   rule = aws_cloudwatch_event_rule.weekdays_schedule.name
-#   arn = aws_lambda_function.rds_start_function.arn
-# }
-
-# resource "aws_lambda_permission" "allow_weekdays_cloudwatch_rds_lambda" {
-#   statement_id = "AllowExecutionFromCloudWatch"
-#   action = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.rds_start_function.function_name
-#   principal = "events.amazonaws.com"
-#   source_arn = aws_cloudwatch_event_rule.weekdays_schedule.arn
-# }
-
 resource "aws_scheduler_schedule" "weekdays_schedule" {
   name = "weekdays-schedule"
 
