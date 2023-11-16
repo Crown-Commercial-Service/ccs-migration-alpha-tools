@@ -55,7 +55,7 @@ def run_migration(migrator_name):
 
     # Implement a timeout, so we only watch for say five minutes, then detach and print a message
     # telling the user to observe the Step Function in the AWS Console.
-    # The security token times ouut after one hour and we don't want to keep Jenkins agents hanging 
+    # The security token times out after one hour and we don't want to keep Jenkins agents hanging 
     # around either
     while True:
         time.sleep(5)
