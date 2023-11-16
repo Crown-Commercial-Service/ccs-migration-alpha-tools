@@ -1,0 +1,37 @@
+{
+  "resources": [
+    {
+      "identifier": "api",
+      "type": "rds_db_instance"
+    },
+    {
+      "identifier": "frontend",
+      "type": "rds_db_instance"
+    },
+    {
+      "desiredCount": 1,
+      "identifier": "api",
+      "type": "ecs_service"
+    },
+    {
+      "desiredCount": 1,
+      "identifier": "frontend",
+      "type": "ecs_service"
+    },
+    {
+      "desiredCount": 1,
+      "identifier": "admin",
+      "type": "ecs_service"
+    },
+    {
+      "desiredCount": 1,
+      "identifier": "ingestion_worker",
+      "type": "ecs_service"
+    },
+    {
+      "desiredCount": 1,
+      "identifier": "default_worker",
+      "type": "ecs_service"
+    }
+  ]
+}
