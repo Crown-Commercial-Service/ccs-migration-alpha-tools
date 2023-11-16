@@ -55,7 +55,7 @@ def run_migration(migrator_name):
 
     started = time.time()
     while True:
-        time.sleep(5)
+        time.sleep(30)
         execution_info = sfn_client.describe_execution(executionArn=execution_arn)
         execution_status = execution_info["status"]
         click.echo(f"Execution status: {execution_status}")
