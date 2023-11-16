@@ -8,7 +8,7 @@ resource "aws_scheduler_schedule" "weekdays_schedule" {
   schedule_expression = "cron(0 8 ? * MON-FRI *)"
 
   target {
-    arn      = "arn:aws:lambda:eu-west-2:938662338283:function:RDSStartFunction"
+    arn      = "arn:aws:lambda:eu-west-2:938662338283:function:EnvironmentStartFunction"
     role_arn = aws_iam_role.eventbridge_scheduler_role.arn
 
     input = jsonencode({
