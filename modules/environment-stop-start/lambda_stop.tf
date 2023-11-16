@@ -1,12 +1,12 @@
-resource "aws_lambda_function" "rds_stop_function" {
+resource "aws_lambda_function" "stop" {
   function_name = "EnvironmentStopFunction"
   runtime       = "python3.8"
   handler       = "lambda_function.lambda_handler"
-  role          = aws_iam_role.lambda_stop_role.arn
+  role          = aws_iam_role.stop.arn
   filename      = "${path.module}/lambdas/start_stop_rds.zip"
 }
 
-resource "aws_iam_role" "lambda_stop_role" {
+resource "aws_iam_role" "stop" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -21,9 +21,9 @@ resource "aws_iam_role" "lambda_stop_role" {
   })
 }
 
-resource "aws_iam_role_policy" "lambda_stop_policy" {
+resource "aws_iam_role_policy" "stopy" {
   name = "lambda-stop-policy"
-  role = aws_iam_role.lambda_stop_role.id
+  role = aws_iam_role.stop.id
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
