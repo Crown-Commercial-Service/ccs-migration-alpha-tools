@@ -3,7 +3,7 @@ resource "aws_lambda_function" "rds_stop_function" {
   runtime       = "python3.8"
   handler       = "lambda_function.lambda_handler"
   role          = aws_iam_role.lambda_stop_role.arn
-  filename      = "${path.module}/start_stop_rds.zip"
+  filename      = "${path.module}/lambdas/start_stop_rds.zip"
 }
 
 resource "aws_iam_role" "lambda_stop_role" {
