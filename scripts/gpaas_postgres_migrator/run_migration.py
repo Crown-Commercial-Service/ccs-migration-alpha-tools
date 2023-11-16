@@ -53,12 +53,14 @@ def run_migration(migrator_name):
     execution_arn = execution_response["executionArn"]
     click.echo(f"Started execution {execution_arn}; waiting for termination.")
 
-    # Implement a timeout, so we only watch for say five minutes, then detach and print a message
-    # telling the user to observe the Step Function in the AWS Console.
-    # The security token times out after one hour and we don't want to keep Jenkins agents hanging 
-    # around either
+    started = time.time()
     while True:
         time.sleep(5)
+        # Stop watching the Step Function after five minutes. The security token times out after 
+        # one hour and we don't want to keep Jenkins agents hanging around either.
+        if time.time() >= started + 300:
+            print('Task has been running for five minutes, please monitor Step Function in AWS Console. Detaching...')
+            break
         execution_info = sfn_client.describe_execution(executionArn=execution_arn)
         execution_status = execution_info["status"]
         click.echo(f"Execution status: {execution_status}")
