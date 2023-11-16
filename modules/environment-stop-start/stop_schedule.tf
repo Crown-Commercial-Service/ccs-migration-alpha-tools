@@ -1,14 +1,14 @@
-resource "aws_scheduler_schedule" "weekends_schedule" {
-  name = "weekends-schedule"
+resource "aws_scheduler_schedule" "mon_fri_stop" {
+  name = "environment-stop-weekdays"
 
   flexible_time_window {
     mode = "OFF"
   }
 
-  schedule_expression = "cron(0 18 ? * FRI-SUN *)"
+  schedule_expression = "cron(0 18 ? * MON-FRI *)"
 
   target {
-    arn      = "arn:aws:lambda:eu-west-2:938662338283:function:EnvironmentStartFunction"
+    arn      = aws_lambda_function.stop.arn
     role_arn = aws_iam_role.eventbridge_scheduler_role.arn
 
     input = jsonencode({

@@ -1,5 +1,5 @@
-resource "aws_scheduler_schedule" "weekdays_schedule" {
-  name = "weekdays-schedule"
+resource "aws_scheduler_schedule" "mon_fri_start" {
+  name = "environment-start-weekdays"
 
   flexible_time_window {
     mode = "OFF"
@@ -7,8 +7,10 @@ resource "aws_scheduler_schedule" "weekdays_schedule" {
 
   schedule_expression = "cron(0 8 ? * MON-FRI *)"
 
+  state = "DISABLED"
+
   target {
-    arn      = "arn:aws:lambda:eu-west-2:938662338283:function:EnvironmentStartFunction"
+    arn      = aws_lambda_function.start.arn
     role_arn = aws_iam_role.eventbridge_scheduler_role.arn
 
     input = jsonencode({
