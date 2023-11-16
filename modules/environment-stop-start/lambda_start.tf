@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "start" {
-  function_name = "EnvironmentStartFunction"
+  function_name = "EnvironmentStart"
   runtime       = "python3.8"
   handler       = "lambda_function.lambda_handler"
   role          = aws_iam_role.start.arn

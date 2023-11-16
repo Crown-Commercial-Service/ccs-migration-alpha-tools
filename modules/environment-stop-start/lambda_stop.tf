@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "stop" {
-  function_name = "EnvironmentStopFunction"
+  function_name = "EnvironmentStop"
   runtime       = "python3.8"
   handler       = "lambda_function.lambda_handler"
   role          = aws_iam_role.stop.arn
