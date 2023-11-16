@@ -21,7 +21,7 @@ module "extract_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "apk update && apk add --no-cache postgresql-client && cf install-plugin -f conduit && rm -rf $DUMP_FILENAME && cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} && cf conduit ${var.cf_config.db_service_instance} -- pg_dump -j ${var.extract_task_pgdump_workers} -Fd --file $DUMP_FILENAME --no-acl --no-owner"
+        "apk update && apk add --no-cache postgresql-client && cf install-plugin -f conduit --app-name ${var.migrator_name}-pg-dump && rm -rf $DUMP_FILENAME && cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} && cf conduit ${var.cf_config.db_service_instance} -- pg_dump -j ${var.extract_task_pgdump_workers} -Fd --file $DUMP_FILENAME --no-acl --no-owner"
       ]
       port = null
       # ECS Execution role will need access to these - see aws_iam_role_policy.ecs_execution_role__read_cf_creds_ssm
