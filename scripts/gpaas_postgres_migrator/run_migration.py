@@ -64,7 +64,7 @@ def run_migration(migrator_name):
         # Stop watching the Step Function after five minutes. The security token times out after 
         # one hour and we don't want to keep Jenkins agents hanging around either.
         if time.time() >= started + 300:
-            print('Task has been running for five minutes, please monitor Step Function in AWS Console. Detaching...')
+            print('Task has been running for five minutes, please monitor Step Function in the AWS Console. Detaching...')
             break
 
     if execution_status == "SUCCEEDED":
