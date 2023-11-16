@@ -6,11 +6,6 @@ resource "aws_iam_role" "eventbridge_scheduler_role" {
       "Statement" : [
         {
           "Effect" : "Allow",
-          "Action" : "scheduler:*",
-          "Resource" : "*"
-        },
-        {
-          "Effect" : "Allow",
           "Action" : "iam:PassRole",
           "Resource" : "arn:aws:iam::*:role/*",
           "Condition" : {
@@ -33,6 +28,7 @@ resource "aws_iam_role_policy" "allow-eventbridge-scheduler" {
       {
         Action = [
           "lambda:InvokeFunction",
+          "scheduler:*",
         ]
         Effect   = "Allow"
         Resource = "*"
