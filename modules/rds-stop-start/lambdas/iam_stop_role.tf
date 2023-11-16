@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "rds_stop_function" {
-  function_name = "RDSStopFunction"
+  function_name = "EnvironmentStopFunction"
   runtime       = "python3.8"
   handler       = "lambda_function.lambda_handler"
   role          = aws_iam_role.lambda_stop_role.arn
