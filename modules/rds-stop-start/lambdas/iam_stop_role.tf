@@ -22,6 +22,7 @@ resource "aws_iam_role" "lambda_stop_role" {
 }
 
 resource "aws_iam_role_policy" "lambda_stop_policy" {
+  name = "lambda-stop-policy"
   role = aws_iam_role.lambda_stop_role.id
   policy = jsonencode({
     Version = "2012-10-17",

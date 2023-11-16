@@ -22,6 +22,7 @@ resource "aws_iam_role" "lambda_start_role" {
 }
 
 resource "aws_iam_role_policy" "lambda_start_policy" {
+  name = "lambda-start-policy"
   role = aws_iam_role.lambda_start_role.id
   policy = jsonencode({
     Version = "2012-10-17",

@@ -18,16 +18,27 @@ resource "aws_iam_role" "eventbridge_scheduler_role" {
               "iam:PassedToService" : "scheduler.amazonaws.com"
             }
           }
-        },
-        {
-          "Sid" : "AllowLambdaFunction",
-          "Effect" : "Allow",
-          "Action" : "lambda:InvokeFunction",
-          "Resource" : "*"
         }
       ]
     }
   )
+}
+
+resource "aws_iam_role_policy" "allow-eventbridge-scheduler" {
+  name = "allow-eventbridge-scheduler"
+  role = aws_iam_role.eventbridge_scheduler_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "lambda:InvokeFunction",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "eventbridge_scheduler_policy_attachment" {
