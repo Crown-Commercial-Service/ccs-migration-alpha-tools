@@ -5,13 +5,10 @@ resource "aws_iam_role" "eventbridge_scheduler_role" {
       "Version" : "2012-10-17",
       "Statement" : [
         {
-          "Effect" : "Allow",
-          "Action" : "iam:PassRole",
-          "Resource" : "arn:aws:iam::*:role/*",
-          "Condition" : {
-            "StringLike" : {
-              "iam:PassedToService" : "scheduler.amazonaws.com"
-            }
+          Effect : "Allow",
+          Action : "sts:AssumeRole",
+          Principal = {
+            Service = "scheduler.amazonaws.com"
           }
         }
       ]
