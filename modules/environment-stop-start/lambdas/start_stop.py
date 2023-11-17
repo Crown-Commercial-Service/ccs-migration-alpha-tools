@@ -19,8 +19,8 @@ def lambda_handler(event, context):
 def start():
   f = open('resources.json')
   data = json.load(f)
-  ecs = boto3.client('ecs')
-  rds = boto3.client('rds')
+  ecs = boto3.client('ecs', region_name='eu-west-2')
+  rds = boto3.client('rds', region_name='eu-west-2')
 
   for resource in data['resources']:
     if resource['type'] == 'rds_db_instance':
