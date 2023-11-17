@@ -5,6 +5,7 @@ resource "aws_lambda_function" "stop" {
   role             = aws_iam_role.stop.arn
   filename         = data.archive_file.start_stop.output_path
   source_code_hash = data.archive_file.start_stop.output_base64sha256
+  timeout          = 600
 }
 
 resource "aws_iam_role" "stop" {
