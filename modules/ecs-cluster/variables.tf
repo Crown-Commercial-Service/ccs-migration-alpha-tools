@@ -3,6 +3,12 @@ variable "cluster_name" {
   description = "Name to give to this ECS Cluster"
 }
 
+variable "container_insights" {
+  type        = string
+  default     = "enabled"
+  description = "Whether container insights should be 'enabled' or 'disabled'"
+}
+
 /* This should be declared outside this module - at the top level - and
    passed in, to avoid circular dependencies with the various instances
    of the ecs-service modules

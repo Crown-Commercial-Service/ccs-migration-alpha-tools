@@ -18,3 +18,8 @@ resource "aws_ecs_cluster_capacity_providers" "fargate" {
     capacity_provider = "FARGATE"
   }
 }
+
+resource "aws_ecs_account_setting_default" "container_insights" {
+  name  = "containerInsights"
+  value = var.container_insights
+}
