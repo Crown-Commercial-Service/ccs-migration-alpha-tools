@@ -1,9 +1,10 @@
 resource "aws_lambda_function" "stop" {
-  function_name = "environment-stop"
-  runtime       = "python3.9"
-  handler       = "start_stop.lambda_handler"
-  role          = aws_iam_role.stop.arn
-  filename      = data.archive_file.start_stop.output_path
+  function_name    = "environment-stop"
+  runtime          = "python3.9"
+  handler          = "start_stop.lambda_handler"
+  role             = aws_iam_role.stop.arn
+  filename         = data.archive_file.start_stop.output_path
+  source_code_hash = data.archive_file.start_stop.output_base64sha256
 }
 
 resource "aws_iam_role" "stop" {
