@@ -45,5 +45,5 @@ resource "aws_iam_role_policy" "stop" {
 
 resource "aws_iam_role_policy_attachment" "basic_execution_stop" {
   role       = aws_iam_role.stop.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSLambdaBasicExecutionRole"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
