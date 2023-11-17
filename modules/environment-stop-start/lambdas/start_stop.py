@@ -17,11 +17,12 @@ def lambda_handler(event, context):
     return "No action specified in the event"
 
 def start():
-  resources = json.load("resources.json")
+  f = open('resources.json')
+  data = json.load(f)
   ecs = boto3.client('ecs')
   rds = boto3.client('rds')
 
-  for resource in resources:
+  for resource in data['resources']:
     if resource['type'] == 'rds_db_instance':
       try:
         response = rds.start_db_instance(DBInstanceIdentifier=resource['identifier'])
@@ -42,10 +43,12 @@ def start():
         return f"Error starting ECS service: {str(e)}"
 
 def stop(resources):
+  f = open('resources.json')
+  data = json.load(f)
   ecs = boto3.client('ecs')
   rds = boto3.client('rds')
 
-  for resource in resources:
+  for resource in data['resources']:
     if resource['type'] == 'rds_db_instance':
       try:
         response = rds.stop_db_instance(DBInstanceIdentifier=resource['identifier'])
