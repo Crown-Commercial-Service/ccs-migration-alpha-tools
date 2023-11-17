@@ -3,6 +3,6 @@ data "archive_file" "start_stop" {
     local_file.resources
   ]
   type        = "zip"
-  source_file = "${path.module}/lambdas/start_stop.py"
-  output_path = "${path.module}/lambdas/start_stop.zip"
+  source_dir = "${path.module}/lambdas"
+  output_path = "${path.module}/start_stop.zip"
 }
