@@ -31,7 +31,10 @@ resource "aws_iam_role_policy" "start" {
       {
         Action = [
           "rds:StartDBInstance",
-          "ecs:UpdateService"
+          "ecs:UpdateService",
+          "logs:CreateLogStream",
+          "logs:DescribeLogStreams",
+          "logs:CreateLogGroup"
         ],
         Effect   = "Allow",
         Resource = "*"

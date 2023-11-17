@@ -26,7 +26,7 @@ def start():
     if resource['type'] == 'rds_db_instance':
       try:
         response = rds.start_db_instance(DBInstanceIdentifier=resource['identifier'])
-        return response
+        print(response)
       except Exception as e:
         return f"Error starting RDS instance: {str(e)}"
     elif resource['type'] == 'ecs_service':
@@ -36,9 +36,11 @@ def start():
           service = resource['service_name'],
           desiredCount = resource['desiredCount']
         )
-        return response
+        print(response)
       except Exception as e:
         return f"Error starting ECS service: {str(e)}"
+
+  return "Successfully started all resources"
 
 def stop():
   f = open('resources.json')
@@ -50,7 +52,7 @@ def stop():
     if resource['type'] == 'rds_db_instance':
       try:
         response = rds.stop_db_instance(DBInstanceIdentifier=resource['identifier'])
-        return response
+        print(response)
       except Exception as e:
         return f"Error stopping RDS instance: {str(e)}"
     elif resource['type'] == 'ecs_service':
@@ -60,6 +62,8 @@ def stop():
           service = resource['service_name'],
           desiredCount = 0
         )
-        return response
+        print(response)
       except Exception as e:
         return f"Error stopping ECS service: {str(e)}"
+
+  return "Successfully stopped all resources"
