@@ -30,12 +30,10 @@ def start():
       except Exception as e:
         return f"Error starting RDS instance: {str(e)}"
     elif resource['type'] == 'ecs_service':
-      cluster_name = resource['cluster_name']
-      service_name = resource['service_name']
       try:
         response = ecs.update_service(
-          cluster = cluster_name,
-          service = service_name,
+          cluster = resource['cluster_name'],
+          service = resource['service_name'],
           desiredCount = resource['desiredCount']
         )
         return response
@@ -56,12 +54,10 @@ def stop():
       except Exception as e:
         return f"Error stopping RDS instance: {str(e)}"
     elif resource['type'] == 'ecs_service':
-      cluster_name = resource['cluster_name']
-      service_name = resource['service_name']
       try:
         response = ecs.update_service(
-          cluster = cluster_name,
-          service = service_name,
+          cluster = resource['cluster_name'],
+          service = resource['service_name'],
           desiredCount = 0
         )
         return response
