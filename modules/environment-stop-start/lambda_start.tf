@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "start" {
   function_name = "environment-start"
   runtime       = "python3.9"
-  handler       = "lambda_function.lambda_handler"
+  handler       = "start_stop.lambda_handler"
   role          = aws_iam_role.start.arn
   filename      = data.archive_file.start_stop.output_path
 }

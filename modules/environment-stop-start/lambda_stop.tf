@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "stop" {
   function_name = "environment-stop"
   runtime       = "python3.9"
-  handler       = "lambda_function.lambda_handler"
+  handler       = "start_stop.lambda_handler"
   role          = aws_iam_role.stop.arn
   filename      = data.archive_file.start_stop.output_path
 }
