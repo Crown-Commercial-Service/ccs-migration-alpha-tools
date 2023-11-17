@@ -42,7 +42,7 @@ def start():
       except Exception as e:
         return f"Error starting ECS service: {str(e)}"
 
-def stop(resources):
+def stop():
   f = open('resources.json')
   data = json.load(f)
   ecs = boto3.client('ecs')
