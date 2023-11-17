@@ -42,3 +42,8 @@ resource "aws_iam_role_policy" "start" {
     ]
   })
 }
+
+resource "aws_iam_role_policy_attachment" "basic_execution_start" {
+  role       = aws_iam_role.start.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSLambdaBasicExecutionRole"
+}

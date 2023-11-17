@@ -22,7 +22,7 @@ resource "aws_iam_role" "stop" {
   })
 }
 
-resource "aws_iam_role_policy" "stopy" {
+resource "aws_iam_role_policy" "stop" {
   name = "lambda-stop-policy"
   role = aws_iam_role.stop.id
   policy = jsonencode({
@@ -41,4 +41,9 @@ resource "aws_iam_role_policy" "stopy" {
       },
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "basic_execution_stop" {
+  role       = aws_iam_role.stop.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSLambdaBasicExecutionRole"
 }
