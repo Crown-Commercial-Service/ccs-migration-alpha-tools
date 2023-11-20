@@ -31,9 +31,10 @@ resource "aws_iam_role_policy" "stop" {
     Statement = [
       {
         Action = [
+          "rds:DescribeDBInstances",
           "rds:StopDBInstance",
           "ecs:UpdateService",
-          "rds:DescribeDBInstances",
+          "ecs:DescribeServices",
           "logs:CreateLogStream",
           "logs:DescribeLogStreams",
           "logs:CreateLogGroup"
