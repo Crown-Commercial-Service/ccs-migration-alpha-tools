@@ -40,7 +40,7 @@ def start():
       try:
         response = ecs.update_service(
           cluster = resource['cluster_name'],
-          services = [resource['service_name']]
+          service = [resource['service_name']]
         )
         service = response['services'][0]
         current_count = service['desiredCount']
