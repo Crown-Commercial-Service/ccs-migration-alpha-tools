@@ -68,7 +68,7 @@ def stop():
   for resource in data['resources']:
     if resource['type'] == 'rds_db_instance':
       try:
-        response = rds.describe_db_instance(DBInstanceIdentifier=resource['identifier'])
+        response = rds.describe_db_instances(DBInstanceIdentifier=resource['identifier'])
         db_instance = response['DBInstances'][0]
         status = db_instance['DBInstanceStatus']
 
