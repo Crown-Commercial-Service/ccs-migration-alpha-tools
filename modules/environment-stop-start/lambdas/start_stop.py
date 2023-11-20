@@ -84,12 +84,12 @@ def stop():
       try:
         response = ecs.describe_services(
           cluster = resource['cluster_name'],
-          services = resource['service_name'],
+          services = [resource['service_name']]
         )
         service = response['services'][0]
         current_count = service['desiredCount']
 
-        if current_count == resource['desiredCount']:
+        if current_count == 0:
           print(f"ECS service '{resource['service_name']}' is already stopped.")
         else:
           update_response = ecs.update_service(
