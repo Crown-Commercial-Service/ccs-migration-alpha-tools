@@ -32,6 +32,7 @@ resource "aws_iam_role_policy" "start" {
       {
         Action = [
           "rds:StartDBInstance",
+          "rds:DescribeDBInstances",
           "ecs:UpdateService",
           "logs:CreateLogStream",
           "logs:DescribeLogStreams",

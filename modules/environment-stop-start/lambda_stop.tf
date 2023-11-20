@@ -33,6 +33,7 @@ resource "aws_iam_role_policy" "stop" {
         Action = [
           "rds:StopDBInstance",
           "ecs:UpdateService",
+          "rds:DescribeDBInstances",
           "logs:CreateLogStream",
           "logs:DescribeLogStreams",
           "logs:CreateLogGroup"
