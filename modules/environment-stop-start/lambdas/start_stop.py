@@ -38,9 +38,9 @@ def start():
         return f"Error starting RDS instance: {str(e)}"
     elif resource['type'] == 'ecs_service':
       try:
-        response = ecs.update_service(
+        response = ecs.describe_services(
           cluster = resource['cluster_name'],
-          service = [resource['service_name']]
+          services = [resource['service_name']]
         )
         service = response['services'][0]
         current_count = service['desiredCount']
@@ -82,14 +82,14 @@ def stop():
 
     elif resource['type'] == 'ecs_service':
       try:
-        response = ecs.update_service(
+        response = ecs.describe_services(
           cluster = resource['cluster_name'],
-          service = resource['service_name'],
+          services = resource['service_name'],
         )
         service = response['services'][0]
         current_count = service['desiredCount']
 
-        if current_count == 0:
+        if current_count == resource['desiredCount']:
           print(f"ECS service '{resource['service_name']}' is already stopped.")
         else:
           update_response = ecs.update_service(
