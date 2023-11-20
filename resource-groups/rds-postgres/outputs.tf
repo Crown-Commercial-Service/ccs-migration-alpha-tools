@@ -46,6 +46,11 @@ output "db_connection_username" {
   value       = aws_db_instance.db.username
 }
 
+output "postgres_connection_password_ssm_parameter_arn" {
+  description = "ARN of the SSM parameter which contains the DB Connection password"
+  value       = aws_ssm_parameter.postgres_connection_password.arn
+}
+
 output "postgres_connection_url_ssm_parameter_arn" {
   description = "ARN of the SSM parameter which contains the DB Connection URL"
   value       = aws_ssm_parameter.postgres_connection_url.arn
@@ -54,6 +59,11 @@ output "postgres_connection_url_ssm_parameter_arn" {
 output "rds_db_endpoint" {
   description = "Endpoint to which to connect for access to this database"
   value       = aws_db_instance.db.endpoint
+}
+
+output "read_postgres_connection_password_ssm_policy_document_json" {
+  description = "JSON policy doc allowing read access to the DB Connection password parameter in SSM"
+  value       = data.aws_iam_policy_document.read_postgres_connection_password_ssm.json
 }
 
 output "read_postgres_connection_url_ssm_policy_document_json" {
