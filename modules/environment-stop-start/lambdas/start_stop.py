@@ -29,11 +29,12 @@ def start():
         db_instance = response['DBInstances'][0]
         status = db_instance['DBInstanceStatus']
 
-        if status == 'available':
+        if status == 'stopped':
           print(f"RDS instance '{resource['identifier']}' is already started")
-        else:
           response = rds.start_db_instance(DBInstanceIdentifier=resource['identifier'])
           print(response)
+        else:
+          print(f"RDS instance '{resource['identifier']}' is not started")
       except Exception as e:
         return f"Error starting RDS instance: {str(e)}"
     elif resource['type'] == 'ecs_service':
@@ -72,11 +73,12 @@ def stop():
         db_instance = response['DBInstances'][0]
         status = db_instance['DBInstanceStatus']
 
-        if status == 'stopped':
+        if status == 'available':
           print(f"RDS instance '{resource['identifier']}' is already stopped.")
-        else:
           stop_response = rds.stop_db_instance(DBInstanceIdentifier=resource['identifier'])
           print(stop_response)
+        else:
+          print(f"RDS instance '{resource['identifier']}' is not stopped")
       except Exception as e:
         return f"Error stopping RDS instance: {str(e)}"
 
