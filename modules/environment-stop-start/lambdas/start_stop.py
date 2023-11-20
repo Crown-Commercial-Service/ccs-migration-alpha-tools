@@ -30,7 +30,7 @@ def start():
         status = db_instance['DBInstanceStatus']
 
         if status == 'stopped':
-          print(f"RDS instance '{resource['identifier']}' is already started")
+          print(f"RDS instance '{resource['identifier']}' is starting")
           response = rds.start_db_instance(DBInstanceIdentifier=resource['identifier'])
           print(response)
         else:
@@ -74,7 +74,7 @@ def stop():
         status = db_instance['DBInstanceStatus']
 
         if status == 'available':
-          print(f"RDS instance '{resource['identifier']}' is already stopped.")
+          print(f"RDS instance '{resource['identifier']}' is stopping.")
           stop_response = rds.stop_db_instance(DBInstanceIdentifier=resource['identifier'])
           print(stop_response)
         else:
