@@ -1,4 +1,4 @@
-module "extract_task" {
+module "stats_task" {
   source = "../../resource-groups/ecs-fargate-task-definition"
 
   aws_account_id = var.aws_account_id
@@ -26,7 +26,7 @@ module "extract_task" {
         cf install-plugin -f conduit && rm -rf $DUMP_FILENAME &&
         cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} &&
         cf conduit --app-name ccs-${var.migrator_name}-migration-pg-dump ${var.cf_config.db_service_instance} --
-        pg_dump -j ${var.extract_task_pgdump_workers} -Fd --file $DUMP_FILENAME --no-acl --no-owner
+        psql \dtpg_dump -j ${var.extract_task_pgdump_workers} -Fd --file $DUMP_FILENAME --no-acl --no-owner
         EOT
       ]
       port = null
