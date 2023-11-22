@@ -4,7 +4,7 @@ apk update && apk add --no-cache postgresql-client python3 && cf install-plugin 
 cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} &&
 cf conduit --app-name ccs-${var.migrator_name}-migration-table-row-counts-$RANDOM ${var.cf_config.db_service_instance} -- psql -c '\dt+'
 %{~ for table in var.count_rows_tables } -c "SELECT '${table}' AS table, COUNT(*) FROM ${table}"%{ endfor }
-%{~ for table in var.estimate_rows_tables } -c "SELECT '${table}' AS table, reltuples FROM pg_class WHERE relname = '${table}'"%{ endfor }
+%{~ for table in var.estimate_rows_tables } -c "SELECT '${table}' AS table, reltuples AS estimate FROM pg_class WHERE relname = '${table}'"%{ endfor }
   EOF
 }
 
