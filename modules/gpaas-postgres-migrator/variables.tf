@@ -22,7 +22,7 @@ variable "cf_config" {
 variable "count_rows_tables" {
   type        = set(string)
   default     = []
-  description = "Tables for which to do an accurate row count"
+  description = "Tables for which to do an accurate row count. Use for tables under ~10GB in size."
 }
 
 variable "db_clients_security_group_id" {
@@ -52,7 +52,7 @@ variable "efs_subnet_ids" {
 variable "estimate_rows_tables" {
   type        = set(string)
   default     = []
-  description = "Tables for which to do an estimated row count"
+  description = "Tables for which to do an estimated row count. Use for tables over ~10GB in size."
 }
 
 variable "extract_task_cpu" {
