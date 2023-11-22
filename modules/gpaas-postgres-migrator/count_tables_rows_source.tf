@@ -26,7 +26,13 @@ module "stats_task" {
         cf install-plugin -f conduit && rm -rf $DUMP_FILENAME &&
         cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} &&
         cf conduit --app-name ccs-${var.migrator_name}-migration-pg-dump ${var.cf_config.db_service_instance} --
-        psql \dtpg_dump -j ${var.extract_task_pgdump_workers} -Fd --file $DUMP_FILENAME --no-acl --no-owner
+        psql 
+        %{ for table in var.count_rows_tables ~}
+        -c "SELECT '${table}' AS table, COUNT(*) FROM ${table}"
+        %{ endfor ~}
+        %{ for table in var.estimate_rows_tables ~}
+        -c "SELECT '${table}' AS table, reltuples FROM pg_class WHERE relname = '${table}'"
+        %{ endfor ~}
         EOT
       ]
       port = null
