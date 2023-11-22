@@ -22,6 +22,23 @@ resource "aws_sfn_state_machine" "perform_migration" {
       "ResultPath": null,
       "Next": "Extract PG dump from CF"
     },
+    "Get Table Row Counts and Estimates": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::ecs:runTask.sync",
+      "Parameters": {
+        "Cluster": "${var.ecs_cluster_arn}",
+        "TaskDefinition": "${module.table_rows_source.task_definition_arn}",
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups.$": "States.Array('${aws_security_group.migrate_extract_task.id}', '${aws_security_group.db_dump_fs_clients.id}')",
+            "Subnets": ["${var.subnet_id}"]
+          }
+        }
+      },
+      "ResultPath": null,
+      "Next": "Extract PG dump from CF"
+    },
     "Extract PG dump from CF": {
       "Type": "Task",
       "Resource": "arn:aws:states:::ecs:runTask.sync",
