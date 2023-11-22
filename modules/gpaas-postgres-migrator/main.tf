@@ -173,6 +173,7 @@ data "aws_iam_policy_document" "sfn_perform_migration" {
     ]
 
     resources = [
+      "${module.table_rows_source.task_definition_arn_without_revision}:*",
       "${module.extract_task.task_definition_arn_without_revision}:*",
       "${module.load_task.task_definition_arn_without_revision}:*"
     ]
