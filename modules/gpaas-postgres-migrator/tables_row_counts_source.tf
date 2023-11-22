@@ -40,8 +40,4 @@ module "table_rows_source" {
   family_name            = "pg_migrate_${var.migrator_name}_table_row_counts"
   task_cpu               = var.extract_task_cpu
   task_memory            = var.extract_task_memory
-
-  depends_on = [
-    aws_efs_mount_target.db_dump
-  ]
 }
