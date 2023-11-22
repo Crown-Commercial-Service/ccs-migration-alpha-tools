@@ -1,4 +1,15 @@
-module "extract_task" {
+locals {
+  table_rows_source_command = <<EOF
+apk update && apk add --no-cache postgresql-client python3 && cf install-plugin -f conduit && rm -rf $DUMP_FILENAME &&
+cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} &&
+cf conduit --app-name ccs-${var.migrator_name}-migration-table-row-counts-$RANDOM ${var.cf_config.db_service_instance} -- psql -c '\dt+'
+%{~ for table in var.count_rows_tables } -c "SELECT '${table}' AS table, COUNT(*) FROM ${table}"%{ endfor }
+%{~ for table in var.estimate_rows_tables } -c "SELECT '${table}' AS table, to_char(reltuples, 'FM9999999999999999999999999999999')::numeric
+AS estimate FROM pg_class WHERE relname = '${table}'"%{ endfor }
+  EOF
+}
+
+module "table_rows_source" {
   source = "../../resource-groups/ecs-fargate-task-definition"
 
   aws_account_id = var.aws_account_id
@@ -11,17 +22,10 @@ module "extract_task" {
       healthcheck_command   = null
       image                 = var.cf_config.cf_cli_docker_image
       memory                = var.extract_task_memory
-      mounts = [
-        {
-          mount_point = "/mnt/efs0"
-          read_only   = false
-          volume_name = "efs0"
-        }
-      ]
-      # N.B. $DUMP_FILENAME is injected by the Step Function task
+      mounts                = []
       override_command = [
         "sh", "-c",
-        "apk update && apk add --no-cache postgresql-client && cf install-plugin -f conduit && rm -rf $DUMP_FILENAME && cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} && cf conduit --app-name ccs-${var.migrator_name}-migration-pg-dump-$RANDOM ${var.cf_config.db_service_instance} -- pg_dump -j ${var.extract_task_pgdump_workers} -Fd --file $DUMP_FILENAME --no-acl --no-owner"
+        replace(local.table_rows_source_command, "/\\n/", " ")
       ]
       port = null
       # ECS Execution role will need access to these - see aws_iam_role_policy.ecs_execution_role__read_cf_creds_ssm
@@ -32,18 +36,8 @@ module "extract_task" {
     }
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
-  family_name            = "pg_migrate_${var.migrator_name}_extract"
+  family_name            = "pg_migrate_${var.migrator_name}_table_row_counts"
   task_cpu               = var.extract_task_cpu
   task_memory            = var.extract_task_memory
-  volumes = [
-    {
-      access_point_id = aws_efs_access_point.db_dump.id
-      file_system_id  = aws_efs_file_system.db_dump.id
-      volume_name     = "efs0"
-    }
-  ]
-
-  depends_on = [
-    aws_efs_mount_target.db_dump
-  ]
+  volumes                = []
 }

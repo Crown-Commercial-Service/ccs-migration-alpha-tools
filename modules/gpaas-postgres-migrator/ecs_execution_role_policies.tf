@@ -6,6 +6,7 @@ data "aws_iam_policy_document" "migrator_policy" {
   override_policy_documents = [
     # Main ECS execution role needs access to decrypt and inject SSM params as env vars
     data.aws_iam_policy_document.read_cf_creds_ssm.json,
+    module.table_rows_source.write_task_logs_policy_document_json,
     module.extract_task.write_task_logs_policy_document_json,
     module.load_task.write_task_logs_policy_document_json,
   ]
