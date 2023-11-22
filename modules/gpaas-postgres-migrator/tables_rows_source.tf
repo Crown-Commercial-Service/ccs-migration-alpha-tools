@@ -15,7 +15,7 @@ module "table_rows_source" {
   aws_account_id = var.aws_account_id
   aws_region     = var.aws_region
   container_definitions = {
-    pg_dump = {
+    psql = {
       cpu                   = var.extract_task_cpu
       environment_variables = []
       essential             = true
@@ -36,7 +36,7 @@ module "table_rows_source" {
     }
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
-  family_name            = "pg_migrate_${var.migrator_name}_table_row_counts"
+  family_name            = "pg_migrate_${var.migrator_name}_table_rows_source"
   task_cpu               = var.extract_task_cpu
   task_memory            = var.extract_task_memory
   volumes                = []
