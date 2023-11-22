@@ -14,7 +14,7 @@ module "load_task" {
       mounts = [
         {
           mount_point = "/mnt/efs0"
-          read_only   = true
+          read_only   = false
           volume_name = "efs0"
         }
       ]
