@@ -15,7 +15,7 @@ module "table_rows_source" {
       override_command = [
         "sh", "-c",
         <<EOT
-        apk update && apk add --no-cache postgresql-client python3 &&
+        "apk update && apk add --no-cache postgresql-client python3 &&
         cf install-plugin -f conduit && rm -rf $DUMP_FILENAME &&
         cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} &&
         cf conduit --app-name ccs-${var.migrator_name}-migration-table-row-counts-$RANDOM ${var.cf_config.db_service_instance} --
@@ -25,7 +25,7 @@ module "table_rows_source" {
         %{ endfor ~}
         %{ for table in var.estimate_rows_tables ~}
         -c "SELECT '${table}' AS table, reltuples FROM pg_class WHERE relname = '${table}'"
-        %{ endfor ~}
+        %{ endfor ~}"
         EOT
       ]
       port = null

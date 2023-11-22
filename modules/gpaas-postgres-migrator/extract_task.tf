@@ -22,11 +22,11 @@ module "extract_task" {
       override_command = [
         "sh", "-c",
         <<EOT
-        apk update && apk add --no-cache postgresql-client python3 &&
+        "apk update && apk add --no-cache postgresql-client python3 &&
         cf install-plugin -f conduit && rm -rf $DUMP_FILENAME &&
         cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} &&
         cf conduit --app-name ccs-${var.migrator_name}-migration-pg-dump-$RANDOM ${var.cf_config.db_service_instance} --
-        pg_dump -j ${var.extract_task_pgdump_workers} -Fd --file $DUMP_FILENAME --no-acl --no-owner
+        pg_dump -j ${var.extract_task_pgdump_workers} -Fd --file $DUMP_FILENAME --no-acl --no-owner"
         EOT
       ]
       port = null
