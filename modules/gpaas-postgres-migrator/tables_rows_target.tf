@@ -18,7 +18,7 @@ module "table_rows_target" {
       environment_variables = []
       essential             = true
       healthcheck_command   = null
-      image                 = var.cf_config.cf_cli_docker_image
+      image                 = var.postgres_docker_image
       memory                = var.extract_task_memory
       mounts                = []
       override_command = [
