@@ -20,7 +20,7 @@ resource "aws_sfn_state_machine" "perform_migration" {
         "ConditionExpression": "attribute_not_exists(Locked)"
       },
       "ResultPath": null,
-      "Next": "Extract PG dump from CF"
+      "Next": "Get Table Row Counts and Estimates"
     },
     "Get Table Row Counts and Estimates": {
       "Type": "Task",
