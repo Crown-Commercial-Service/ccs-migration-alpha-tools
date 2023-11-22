@@ -11,6 +11,7 @@ module "table_rows_source" {
       healthcheck_command   = null
       image                 = var.cf_config.cf_cli_docker_image
       memory                = var.extract_task_memory
+      mounts                = []
       override_command = [
         "sh", "-c",
         <<EOT
@@ -39,4 +40,5 @@ module "table_rows_source" {
   family_name            = "pg_migrate_${var.migrator_name}_table_row_counts"
   task_cpu               = var.extract_task_cpu
   task_memory            = var.extract_task_memory
+  volumes                = []
 }
