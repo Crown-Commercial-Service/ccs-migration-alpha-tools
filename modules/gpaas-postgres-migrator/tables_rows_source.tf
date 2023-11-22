@@ -15,7 +15,7 @@ module "table_rows_source" {
   aws_account_id = var.aws_account_id
   aws_region     = var.aws_region
   container_definitions = {
-    pg_dump = {
+    psql = {
       cpu                   = var.extract_task_cpu
       environment_variables = []
       essential             = true
