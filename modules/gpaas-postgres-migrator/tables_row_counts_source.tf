@@ -1,3 +1,13 @@
+locals {
+  table_rows_source_command = <<EOF
+    apk update && apk add --no-cache postgresql-client python3 && cf install-plugin -f conduit && rm -rf $DUMP_FILENAME &&
+    cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} &&
+    cf conduit --app-name ccs-${var.migrator_name}-migration-table-row-counts-$RANDOM ${var.cf_config.db_service_instance} -- psql -c '\\dt+'
+    %{ for table in var.count_rows_tables } -c 'SELECT \\'${table}\\' AS table, COUNT(*) FROM ${table}'%{ endfor }
+    %{ for table in var.estimate_rows_tables } -c 'SELECT \\'${table}\\' AS table, reltuples FROM pg_class WHERE relname = \\'${table}\\''%{ endfor }
+  EOF
+}
+
 module "table_rows_source" {
   source = "../../resource-groups/ecs-fargate-task-definition"
 
@@ -14,7 +24,7 @@ module "table_rows_source" {
       mounts                = []
       override_command = [
         "sh", "-c",
-        "apk update && apk add --no-cache postgresql-client python3 && cf install-plugin -f conduit && rm -rf $DUMP_FILENAME && cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} && cf conduit --app-name ccs-${var.migrator_name}-migration-table-row-counts-$RANDOM ${var.cf_config.db_service_instance} -- psql -c '\\dt+'%{ for table in var.count_rows_tables } -c 'SELECT \\'${table}\\' AS table, COUNT(*) FROM ${table}'%{ endfor }%{ for table in var.estimate_rows_tables } -c 'SELECT \\'${table}\\' AS table, reltuples FROM pg_class WHERE relname = \\'${table}\\''%{ endfor }"
+        replace(local.table_rows_source_command, "/\\n/", " ")
       ]
       port = null
       # ECS Execution role will need access to these - see aws_iam_role_policy.ecs_execution_role__read_cf_creds_ssm
