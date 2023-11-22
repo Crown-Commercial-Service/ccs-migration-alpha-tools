@@ -44,16 +44,9 @@ module "table_rows_source" {
     }
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
-  family_name            = "pg_migrate_${var.migrator_name}_extract"
+  family_name            = "pg_migrate_${var.migrator_name}_table_row_counts"
   task_cpu               = var.extract_task_cpu
   task_memory            = var.extract_task_memory
-  volumes = [
-    {
-      access_point_id = aws_efs_access_point.db_dump.id
-      file_system_id  = aws_efs_file_system.db_dump.id
-      volume_name     = "efs0"
-    }
-  ]
 
   depends_on = [
     aws_efs_mount_target.db_dump
