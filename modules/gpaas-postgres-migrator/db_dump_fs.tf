@@ -65,7 +65,7 @@ resource "aws_efs_mount_target" "db_dump" {
   for_each        = var.efs_subnet_ids
   file_system_id  = aws_efs_file_system.db_dump.id
   security_groups = [aws_security_group.db_dump_fs.id]
-  subnet_id       = each.value
+  subnet_id       = each.value.id
 }
 
 resource "aws_security_group" "db_dump_fs" {
