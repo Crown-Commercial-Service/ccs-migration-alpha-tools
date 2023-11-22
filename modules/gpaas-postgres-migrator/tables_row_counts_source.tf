@@ -11,13 +11,6 @@ module "table_rows_source" {
       healthcheck_command   = null
       image                 = var.cf_config.cf_cli_docker_image
       memory                = var.extract_task_memory
-      mounts = [
-        {
-          mount_point = "/mnt/efs0"
-          read_only   = false
-          volume_name = "efs0"
-        }
-      ]
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
