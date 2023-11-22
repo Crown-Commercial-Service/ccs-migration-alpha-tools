@@ -20,9 +20,9 @@ resource "aws_sfn_state_machine" "perform_migration" {
         "ConditionExpression": "attribute_not_exists(Locked)"
       },
       "ResultPath": null,
-      "Next": "Get Table Row Counts and Estimates"
+      "Next": "Get Table Row Counts and Estimates from Source"
     },
-    "Get Table Row Counts and Estimates": {
+    "Get Table Row Counts and Estimates from Source": {
       "Type": "Task",
       "Resource": "arn:aws:states:::ecs:runTask.sync",
       "Parameters": {
@@ -31,7 +31,7 @@ resource "aws_sfn_state_machine" "perform_migration" {
         "NetworkConfiguration": {
           "AwsvpcConfiguration": {
             "AssignPublicIp": "DISABLED",
-            "SecurityGroups.$": "States.Array('${aws_security_group.migrate_extract_task.id}', '${aws_security_group.db_dump_fs_clients.id}')",
+            "SecurityGroups.$": "States.Array('${aws_security_group.migrate_extract_task.id}')",
             "Subnets": ["${var.subnet_id}"]
           }
         }
@@ -94,6 +94,23 @@ resource "aws_sfn_state_machine" "perform_migration" {
               ]
             }
           ]
+        }
+      },
+      "ResultPath": null,
+      "Next": "Get Table Row Counts and Estimates from Target"
+    },
+    "Get Table Row Counts and Estimates from Target": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::ecs:runTask.sync",
+      "Parameters": {
+        "Cluster": "${var.ecs_cluster_arn}",
+        "TaskDefinition": "${module.table_rows_target.task_definition_arn}",
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups.$": "States.Array('${aws_security_group.migrate_load_task.id}', '${var.db_clients_security_group_id}')",
+            "Subnets": ["${var.subnet_id}"]
+          }
         }
       },
       "ResultPath": null,
