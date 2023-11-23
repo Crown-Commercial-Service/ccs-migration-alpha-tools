@@ -11,7 +11,7 @@ BEGIN
       EXECUTE 'DROP TABLE IF EXISTS ' || tabname.tablename || ' CASCADE';
    END LOOP;
 END $$;"
-&& pg_restore -d $DB_CONNECTION_URL -j ${var.load_task_pgrestore_workers} --no-acl --no-owner $DUMP_FILENAME
+&& pg_restore -d $DB_CONNECTION_URL --exit-on-error -j ${var.load_task_pgrestore_workers} --no-acl --no-owner $DUMP_FILENAME
   EOF
 }
 
