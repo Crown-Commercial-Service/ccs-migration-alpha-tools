@@ -76,6 +76,12 @@ variable "storage_iops" {
   default     = null
 }
 
+variable "storage_throughput" {
+  type        = number
+  description = "Storage throughput in MiBps"
+  default     = null
+}
+
 variable "storage_type" {
   type        = string
   description = "Storage type"

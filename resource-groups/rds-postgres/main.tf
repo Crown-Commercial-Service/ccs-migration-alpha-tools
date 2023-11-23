@@ -24,6 +24,7 @@ resource "aws_db_instance" "db" {
   publicly_accessible             = false
   skip_final_snapshot             = var.skip_final_snapshot
   storage_encrypted               = true
+  storage_throughput              = var.storage_throughput
   storage_type                    = var.storage_type
   username                        = var.db_username
   vpc_security_group_ids          = [aws_security_group.db.id]
