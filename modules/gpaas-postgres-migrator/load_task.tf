@@ -2,7 +2,7 @@ locals {
   # Drops all tables first, then does the pg_restore
   # N.B. $DUMP_FILENAME is injected by the Step Function task
   load_command = <<EOF
-psql -d $DB_CONNECTION_URL -c "DO $$
+psql -d $DB_CONNECTION_URL -c "DO $delim$
 DECLARE
    tabname RECORD;
 BEGIN
@@ -10,7 +10,7 @@ BEGIN
    LOOP
       EXECUTE 'DROP TABLE IF EXISTS ' || tabname.tablename || ' CASCADE';
    END LOOP;
-END $$;"
+END $delim$;"
 && pg_restore -d $DB_CONNECTION_URL --exit-on-error -j ${var.load_task_pgrestore_workers} --no-acl --no-owner $DUMP_FILENAME
   EOF
 }
