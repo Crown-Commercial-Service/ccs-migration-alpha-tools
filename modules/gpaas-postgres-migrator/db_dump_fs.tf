@@ -63,7 +63,7 @@ EOF
 
 resource "aws_efs_mount_target" "db_dump" {
   depends_on = [
-    aws_subnet.application
+    module.tailspend_full.module.vpc.aws_subnet.application
   ]
   for_each        = var.efs_subnet_ids
   file_system_id  = aws_efs_file_system.db_dump.id
