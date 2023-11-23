@@ -1,3 +1,20 @@
+locals {
+  # Drops all tables first, then does the pg_restore
+  # N.B. $DUMP_FILENAME is injected by the Step Function task
+  load_command = <<EOF
+psql -d $DB_CONNECTION_URL -c "DO $$
+DECLARE
+   tabname RECORD;
+BEGIN
+   FOR tabname IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename != 'spatial_ref_sys')
+   LOOP
+      EXECUTE 'DROP TABLE IF EXISTS ' || tabname.tablename || ' CASCADE';
+   END LOOP;
+END $$;"
+&& pg_restore --clean --if-exists -d $DB_CONNECTION_URL -j ${var.load_task_pgrestore_workers} --no-acl --no-owner $DUMP_FILENAME
+  EOF
+}
+
 module "load_task" {
   source = "../../resource-groups/ecs-fargate-task-definition"
 
@@ -18,10 +35,9 @@ module "load_task" {
           volume_name = "efs0"
         }
       ]
-      # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "pg_restore --clean --if-exists -d $DB_CONNECTION_URL -j ${var.load_task_pgrestore_workers} --no-acl --no-owner $DUMP_FILENAME"
+        replace(local.load_command, "/\\n/", " ")
       ]
       port = null
       secret_environment_variables = [
