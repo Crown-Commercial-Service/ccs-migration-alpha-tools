@@ -20,6 +20,23 @@ resource "aws_sfn_state_machine" "perform_migration" {
         "ConditionExpression": "attribute_not_exists(Locked)"
       },
       "ResultPath": null,
+      "Next": "Get Table Row Counts and Estimates from Source"
+    },
+    "Get Table Row Counts and Estimates from Source": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::ecs:runTask.sync",
+      "Parameters": {
+        "Cluster": "${var.ecs_cluster_arn}",
+        "TaskDefinition": "${module.table_rows_source.task_definition_arn}",
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups.$": "States.Array('${aws_security_group.migrate_extract_task.id}')",
+            "Subnets": ["${var.subnet_id}"]
+          }
+        }
+      },
+      "ResultPath": null,
       "Next": "Extract PG dump from CF"
     },
     "Extract PG dump from CF": {
@@ -77,6 +94,23 @@ resource "aws_sfn_state_machine" "perform_migration" {
               ]
             }
           ]
+        }
+      },
+      "ResultPath": null,
+      "Next": "Get Table Row Counts and Estimates from Target"
+    },
+    "Get Table Row Counts and Estimates from Target": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::ecs:runTask.sync",
+      "Parameters": {
+        "Cluster": "${var.ecs_cluster_arn}",
+        "TaskDefinition": "${module.table_rows_target.task_definition_arn}",
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups.$": "States.Array('${aws_security_group.migrate_load_task.id}', '${var.db_clients_security_group_id}')",
+            "Subnets": ["${var.subnet_id}"]
+          }
         }
       },
       "ResultPath": null,
@@ -156,6 +190,8 @@ data "aws_iam_policy_document" "sfn_perform_migration" {
     ]
 
     resources = [
+      "${module.table_rows_source.task_definition_arn_without_revision}:*",
+      "${module.table_rows_target.task_definition_arn_without_revision}:*",
       "${module.extract_task.task_definition_arn_without_revision}:*",
       "${module.load_task.task_definition_arn_without_revision}:*"
     ]

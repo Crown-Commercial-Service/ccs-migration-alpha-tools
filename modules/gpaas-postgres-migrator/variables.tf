@@ -19,6 +19,12 @@ variable "cf_config" {
   description = "Parameters for configuring the CloudFoundry interactions of this migrator's extract task"
 }
 
+variable "count_rows_tables" {
+  type        = set(string)
+  default     = []
+  description = "Tables for which to do an accurate row count. Use for tables under ~10GB in size."
+}
+
 variable "db_clients_security_group_id" {
   type        = string
   description = "ID of VPC security group, membership of which allows access to the Postgres db"
@@ -41,6 +47,12 @@ variable "efs_subnet_ids" {
   type        = set(string)
   default     = []
   description = "IDs of the subnest in which to create the EFS mount points"
+}
+
+variable "estimate_rows_tables" {
+  type        = set(string)
+  default     = []
+  description = "Tables for which to do an estimated row count. Use for tables over ~10GB in size."
 }
 
 variable "extract_task_cpu" {

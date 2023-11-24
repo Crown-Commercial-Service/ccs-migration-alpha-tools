@@ -14,14 +14,14 @@ module "load_task" {
       mounts = [
         {
           mount_point = "/mnt/efs0"
-          read_only   = true
+          read_only   = false
           volume_name = "efs0"
         }
       ]
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "pg_restore --clean --if-exists -d $DB_CONNECTION_URL -j ${var.load_task_pgrestore_workers} --no-acl --no-owner $DUMP_FILENAME && rm -rf $DUMP_FILENAME"
+        "pg_restore --clean --if-exists -d $DB_CONNECTION_URL -j ${var.load_task_pgrestore_workers} --no-acl --no-owner $DUMP_FILENAME"
       ]
       port = null
       secret_environment_variables = [
@@ -41,24 +41,4 @@ module "load_task" {
       volume_name     = "efs0"
     }
   ]
-}
-
-resource "aws_security_group" "migrate_load_task" {
-  name        = "${var.resource_name_prefixes.normal}:PGMIGRATOR:${upper(var.migrator_name)}:ECSTASK:LOAD"
-  description = "Migrator Load task"
-  vpc_id      = var.vpc_id
-
-  tags = {
-    Name = "${var.resource_name_prefixes.normal}:PGMIGRATOR:${upper(var.migrator_name)}:ECSTASK:LOAD"
-  }
-}
-
-resource "aws_security_group_rule" "migrate_load_task_https_out_anywhere" {
-  cidr_blocks       = ["0.0.0.0/0"]
-  description       = "Allow https out from load task to anywhere"
-  from_port         = 443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.migrate_load_task.id
-  to_port           = 443
-  type              = "egress"
 }
