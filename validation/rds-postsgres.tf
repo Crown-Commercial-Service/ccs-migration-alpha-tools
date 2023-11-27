@@ -6,7 +6,7 @@ module "rds_postgres" {
   db_instance_class            = "db.m1.medium"
   db_name                      = "db"
   db_username                  = "username"
-  postgres_engine_version      = "14.7"
+  postgres_engine_version      = "14.8"
   postgres_port                = 8888
   resource_name_prefixes = {
     normal        = "CORE:DEMO"
