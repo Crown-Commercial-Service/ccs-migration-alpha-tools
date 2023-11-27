@@ -44,6 +44,12 @@ variable "parameter_group_name" {
   description = "Name of Parameter Group to use"
 }
 
+variable "performance_insights_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to enable Performance Insights"
+}
+
 variable "postgres_engine_version" {
   type        = string
   description = "Version number of db engine to use"

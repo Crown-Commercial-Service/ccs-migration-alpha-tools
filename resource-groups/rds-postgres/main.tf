@@ -21,6 +21,7 @@ resource "aws_db_instance" "db" {
   multi_az                        = true
   password                        = random_password.db.result
   parameter_group_name            = var.parameter_group_name
+  performance_insights_enabled    = var.performance_insights_enabled
   port                            = var.postgres_port
   publicly_accessible             = false
   skip_final_snapshot             = var.skip_final_snapshot
