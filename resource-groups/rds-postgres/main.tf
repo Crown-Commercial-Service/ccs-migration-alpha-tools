@@ -20,6 +20,7 @@ resource "aws_db_instance" "db" {
   iops                            = var.storage_iops
   multi_az                        = true
   password                        = random_password.db.result
+  parameter_group_name            = var.parameter_group_name
   port                            = var.postgres_port
   publicly_accessible             = false
   skip_final_snapshot             = var.skip_final_snapshot
