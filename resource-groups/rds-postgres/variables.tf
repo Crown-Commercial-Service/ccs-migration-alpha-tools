@@ -38,6 +38,12 @@ variable "final_snapshot_identifier" {
   default     = "final-snapshot"
 }
 
+variable "parameter_group_name" {
+  type = string
+  default = null
+  description = "Name of Parameter Group to use"
+}
+
 variable "postgres_engine_version" {
   type        = string
   description = "Version number of db engine to use"
