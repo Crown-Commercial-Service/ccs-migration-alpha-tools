@@ -19,6 +19,7 @@ resource "aws_db_instance" "db" {
   instance_class                  = var.db_instance_class
   iops                            = var.storage_iops
   monitoring_interval             = var.monitoring_interval
+  monitoring_role_arn             = var.monitoring_role_arn
   multi_az                        = true
   password                        = random_password.db.result
   parameter_group_name            = var.parameter_group_name

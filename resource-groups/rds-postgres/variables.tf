@@ -44,6 +44,12 @@ variable "monitoring_interval" {
   description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance. 0 is disabled"
 }
 
+variable "monitoring_role_arn" {
+  type        = string
+  default     = null
+  description = "ARN of IAM role for Enhanced Monitoring"
+}
+
 variable "parameter_group_name" {
   type = string
   default = null
