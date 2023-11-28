@@ -2,7 +2,6 @@ module "cloudwatch_log_group_iam" {
   source = "../../resource-groups/cloudwatch-log-group-iam"
 
   log_group_arns = [
-    arn:aws:logs:eu-west-1:685221540012:log-group:pg_migrate_api_table_rows_source
     "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_extract",
     "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_load",
     "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_table_rows_source",
