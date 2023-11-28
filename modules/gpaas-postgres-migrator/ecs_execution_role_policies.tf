@@ -2,10 +2,10 @@ module "cloudwatch_log_group_iam" {
   source = "../../resource-groups/cloudwatch-log-group-iam"
 
   log_group_arns = [
-    "arn:aws:logs:${aws_region}:${aws_account_id}:pg_migrate_${var.migrator_name}_extract",
-    "arn:aws:logs:${aws_region}:${aws_account_id}:pg_migrate_${var.migrator_name}_load",
-    "arn:aws:logs:${aws_region}:${aws_account_id}:pg_migrate_${var.migrator_name}_table_rows_source",
-    "arn:aws:logs:${aws_region}:${aws_account_id}:pg_migrate_${var.migrator_name}_table_rows_task"
+    "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:pg_migrate_${var.migrator_name}_extract",
+    "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:pg_migrate_${var.migrator_name}_load",
+    "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:pg_migrate_${var.migrator_name}_table_rows_source",
+    "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:pg_migrate_${var.migrator_name}_table_rows_task"
   ]
 }
 
@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "migrator_policy" {
 }
 
 resource "aws_iam_role_policy" "ecs_execution_role__migrator_policy" {
-  name   = "${var.migrator_name}-migrator-policy"
+  name   = "${var.var.migrator_name}-migrator-policy"
   role   = var.ecs_execution_role.name
   policy = data.aws_iam_policy_document.migrator_policy.json
 }
