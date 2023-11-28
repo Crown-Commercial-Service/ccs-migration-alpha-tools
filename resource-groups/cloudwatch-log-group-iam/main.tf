@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "write_log_group" {
   }
 
   statement {
-    sid = "CreateLogStreams"
+    sid = "PutLogs"
     actions = [
       "logs:PutLogEvents"
     ]
