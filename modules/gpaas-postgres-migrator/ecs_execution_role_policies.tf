@@ -5,7 +5,7 @@ module "cloudwatch_log_group_iam" {
     "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_extract",
     "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_load",
     "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_table_rows_source",
-    "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_table_rows_task"
+    "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_table_rows_target"
   ]
 }
 
