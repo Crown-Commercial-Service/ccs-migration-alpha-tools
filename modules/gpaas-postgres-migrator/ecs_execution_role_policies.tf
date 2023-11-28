@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "migrator_policy" {
   source_policy_documents = [
     # Main ECS execution role needs access to decrypt and inject SSM params as env vars
     data.aws_iam_policy_document.read_cf_creds_ssm.json,
-    module.cloudwatch_log_group_iam.write_task_logs_policy_document_json
+    module.cloudwatch_log_group_iam.write_log_group_policy_document_json
   ]
 }
 
