@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "write_log_group" {
     ]
     effect = "Allow"
     resources = [
-      for g in var.var.log_group_names: "${g}:*"
+      for g in var.var.log_group_names : "${g}:*"
     ]
   }
 
@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "write_log_group" {
     ]
     effect = "Allow"
     resources = [
-      for g in var.var.log_group_names: "${g}:log-stream:*"
+      for g in var.var.log_group_names : "${g}:log-stream:*"
     ]
   }
 }
