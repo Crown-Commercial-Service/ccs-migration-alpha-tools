@@ -5,7 +5,7 @@ Collection of resources to specify a Task Definition in Elastic Container Servic
 Includes (non-exhaustive):
 
 * Task Definition
-* Task Role and JSON document describing the IAM permission to pass the Task Role
+* Task Role
 
 There is a lot of commonality with the original ECS Task Definition resource group but the decision was taken _not_ to refactor them into a single module because it would introduce a lot of tightly-structured logic into a construct which (tbh) already stretches the idea of clear declarative code a little bit.
 
