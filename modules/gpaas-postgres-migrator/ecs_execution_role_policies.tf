@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "migrator_policy" {
 }
 
 resource "aws_iam_role_policy" "ecs_execution_role__migrator_policy" {
-  name   = "${var.var.migrator_name}-migrator-policy"
+  name   = "${var.migrator_name}-migrator-policy"
   role   = var.ecs_execution_role.name
   policy = data.aws_iam_policy_document.migrator_policy.json
 }
