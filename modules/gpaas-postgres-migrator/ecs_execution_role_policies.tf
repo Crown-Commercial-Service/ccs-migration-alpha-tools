@@ -1,15 +1,22 @@
+module "cloudwatch_log_group_iam" {
+  source = "../../resource-groups/cloudwatch-log-group-iam"
+
+  log_group_arns = [
+    "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_extract",
+    "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_load",
+    "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_table_rows_source",
+    "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:pg_migrate_${var.migrator_name}_table_rows_target"
+  ]
+}
+
 # Permissions which need to be granted to the main project's ECS Execution role
 #
 data "aws_iam_policy_document" "migrator_policy" {
   version = "2012-10-17"
-  # We are expecting repeated Sids of "DescribeAllLogGroups", hence `overwrite` rather than `source`
-  override_policy_documents = [
+  source_policy_documents = [
     # Main ECS execution role needs access to decrypt and inject SSM params as env vars
     data.aws_iam_policy_document.read_cf_creds_ssm.json,
-    module.table_rows_source.write_task_logs_policy_document_json,
-    module.table_rows_target.write_task_logs_policy_document_json,
-    module.extract_task.write_task_logs_policy_document_json,
-    module.load_task.write_task_logs_policy_document_json,
+    module.cloudwatch_log_group_iam.write_log_group_policy_document_json
   ]
 }
 
