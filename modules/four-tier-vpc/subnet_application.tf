@@ -83,7 +83,7 @@ resource "aws_network_acl_rule" "application__allow_http_application_a_in" {
   network_acl_id = aws_network_acl.application_subnet.id
   protocol       = "tcp"
   rule_action    = "allow"
-  rule_number    = 5100
+  rule_number    = 5002
   to_port        = 80
 }
 
@@ -94,7 +94,7 @@ resource "aws_network_acl_rule" "application__allow_http_application_b_in" {
   network_acl_id = aws_network_acl.application_subnet.id
   protocol       = "tcp"
   rule_action    = "allow"
-  rule_number    = 5101
+  rule_number    = 5003
   to_port        = 80
 }
 
