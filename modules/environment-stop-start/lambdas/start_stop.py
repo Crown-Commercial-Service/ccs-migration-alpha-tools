@@ -66,10 +66,14 @@ def start():
   return "Successfully started all resources"
 
 def stop():
-  f = open('resources.json')
-  data = json.load(f)
+  # f = open('resources.json')
+  # data = json.load(f)
+
+  ddb = boto3.client('dynamodb', region_name="eu=west-2")
   ecs = boto3.client('ecs', region_name='eu-west-2')
   rds = boto3.client('rds', region_name='eu-west-2')
+
+  data = ddb.get_item('start_stop', 'resources')
 
   for resource in data['resources']:
     if resource['type'] == 'rds_db_instance':
