@@ -70,7 +70,29 @@ resource "aws_network_acl_rule" "web__allow_http_public_b_in" {
   network_acl_id = aws_network_acl.web_subnet.id
   protocol       = "tcp"
   rule_action    = "allow"
-  rule_number    = 5100
+  rule_number    = 5001
+  to_port        = 80
+}
+
+resource "aws_network_acl_rule" "web__allow_http_web_a_in" {
+  cidr_block     = local.subnet_cidr_blocks.web.a
+  egress         = false
+  from_port      = 80
+  network_acl_id = aws_network_acl.web_subnet.id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 5002
+  to_port        = 80
+}
+
+resource "aws_network_acl_rule" "web__allow_http_web_b_in" {
+  cidr_block     = local.subnet_cidr_blocks.web.b
+  egress         = false
+  from_port      = 80
+  network_acl_id = aws_network_acl.web_subnet.id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 5003
   to_port        = 80
 }
 
