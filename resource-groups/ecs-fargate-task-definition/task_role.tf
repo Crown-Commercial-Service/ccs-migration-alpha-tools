@@ -29,7 +29,11 @@ data "aws_iam_policy_document" "pass_task_role" {
     sid = "Pass${replace(var.family_name, "/[-_]/", "")}TaskRole"
     actions = [
       "iam:GetRole",
-      "iam:PassRole"
+      "iam:PassRole",
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel"
     ]
     effect = "Allow"
     resources = [
