@@ -1,6 +1,4 @@
 locals {
-  aws_account_id         = data.aws_caller_identity.current.account_id
-  aws_region             = data.aws_region.current.name
   dist_package_full_path = "${var.dist_folder_path}/${var.dist_package_filename}"
 }
 
@@ -62,7 +60,7 @@ resource "aws_iam_role" "lambda_exec" {
 resource "aws_iam_role_policy" "lambda_exec__write_logs" {
   name   = "write-logs"
   role   = aws_iam_role.lambda_exec.name
-  policy = module.cloudwatch_log_group_iam.write_log_group_policy_document_json
+  policy = module.lambda_log_group.write_log_group_policy_document_json
 }
 
 data "aws_iam_policy_document" "invoke_lambda" {
