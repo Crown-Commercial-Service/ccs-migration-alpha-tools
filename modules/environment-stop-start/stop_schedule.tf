@@ -10,7 +10,5 @@ resource "aws_scheduler_schedule" "mon_fri_stop" {
   target {
     arn      = aws_lambda_function.stop.arn
     role_arn = aws_iam_role.eventbridge_scheduler_role.arn
-
-    input = jsonencode(local_file.resources)
   }
 }
