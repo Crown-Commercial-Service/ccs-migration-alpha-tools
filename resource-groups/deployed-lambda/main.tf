@@ -60,7 +60,7 @@ resource "aws_iam_role" "lambda_exec" {
 resource "aws_iam_role_policy" "lambda_exec__write_logs" {
   name   = "write-logs"
   role   = aws_iam_role.lambda_exec.name
-  policy = module.lambda_log_group.write_log_group_policy_document_json
+  policy = module.cloudwatch_log_group_iam.write_log_group_policy_document_json
 }
 
 data "aws_iam_policy_document" "invoke_lambda" {

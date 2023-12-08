@@ -55,6 +55,9 @@ resource "aws_lambda_event_source_mapping" "objects_to_migrate" {
 module "migrate_batch_of_objects_lambda" {
   source = "../../resource-groups/deployed-lambda"
 
+  aws_account_id = var.aws_account_id
+  aws_region     = var.aws_region
+
   dist_folder_path      = "${path.module}/lambdas/dist"
   dist_package_filename = "migrate_batch_of_objects.zip"
   dist_package_hash = {

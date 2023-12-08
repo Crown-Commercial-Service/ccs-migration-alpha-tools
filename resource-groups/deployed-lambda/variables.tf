@@ -1,3 +1,13 @@
+variable "aws_account_id" {
+  type        = string
+  description = "ID of the account into which deployments are performed"
+}
+
+variable "aws_region" {
+  type        = string
+  description = "Region for resource deployment"
+}
+
 variable "dist_folder_path" {
   type        = string
   description = "(Relative) path to the folder in which the dist package (zip file) can be found"

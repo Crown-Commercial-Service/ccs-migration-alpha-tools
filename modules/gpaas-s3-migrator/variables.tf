@@ -1,3 +1,13 @@
+variable "aws_account_id" {
+  type        = string
+  description = "ID of the account into which deployments are performed"
+}
+
+variable "aws_region" {
+  type        = string
+  description = "Region for resource deployment"
+}
+
 variable "lambda_dist_bucket_id" {
   description = "ID of the bucket through which to distribute Lambda function source"
   type        = string
