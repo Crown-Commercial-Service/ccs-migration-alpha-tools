@@ -1,5 +1,5 @@
-variable "log_group_arns" {
+variable "log_group_names" {
   type        = set(string)
   default     = []
-  description = "Log group ARNs"
+  description = "Log group names"
 }
