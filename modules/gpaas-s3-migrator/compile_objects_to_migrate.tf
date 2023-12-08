@@ -55,9 +55,6 @@ resource "aws_iam_role_policy" "compile_objects_to_migrate_sfn__invoke_compile_o
 module "compile_objects_to_migrate_lambda" {
   source = "../../resource-groups/deployed-lambda"
 
-  aws_account_id = var.aws_account_id
-  aws_region     = var.aws_region
-
   dist_folder_path      = "${path.module}/lambdas/dist"
   dist_package_filename = "compile_objects_to_migrate.zip"
   dist_package_hash     = {

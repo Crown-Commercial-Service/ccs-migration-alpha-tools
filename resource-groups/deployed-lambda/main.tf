@@ -1,4 +1,6 @@
 locals {
+  aws_account_id         = data.aws_caller_identity.current.account_id
+  aws_region             = data.aws_region.current.name
   dist_package_full_path = "${var.dist_folder_path}/${var.dist_package_filename}"
 }
 
