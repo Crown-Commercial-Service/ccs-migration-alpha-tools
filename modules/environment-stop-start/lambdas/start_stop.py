@@ -21,7 +21,9 @@ def start():
   ecs = boto3.client('ecs', region_name='eu-west-2')
   rds = boto3.client('rds', region_name='eu-west-2')
 
-  for resource in 'resources':
+  resources = json.loads(os.getenv('RESOURCES'))
+
+  for resource in resources:
     if resource['type'] == 'rds_db_instance':
       try:
         response = rds.describe_db_instances(DBInstanceIdentifier=resource['identifier'])

@@ -6,6 +6,12 @@ resource "aws_lambda_function" "stop" {
   filename         = data.archive_file.start_stop.output_path
   source_code_hash = data.archive_file.start_stop.output_base64sha256
   timeout          = 600
+
+  environment {
+    variables = {
+      RESOURCES = jsonencode(var.resources)
+    }
+  }
 }
 
 resource "aws_iam_role" "stop" {
