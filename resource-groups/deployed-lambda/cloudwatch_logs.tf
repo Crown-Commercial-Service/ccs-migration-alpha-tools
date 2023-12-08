@@ -7,6 +7,6 @@ module "cloudwatch_log_group_iam" {
   source = "../cloudwatch-log-group-iam"
 
   log_group_arns = [
-    "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:/aws/lambda/${aws_lambda_function.function.function_name}"
+    "arn:aws:logs:${local.aws_region}:${local.aws_account_id}:log-group:/aws/lambda/${aws_lambda_function.function.function_name}"
   ]
 }
