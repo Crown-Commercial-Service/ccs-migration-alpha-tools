@@ -37,7 +37,6 @@ resource "aws_iam_role_policy" "stop" {
     Statement = [
       {
         Action = [
-          "dynamodb:GetItem",
           "rds:DescribeDBInstances",
           "rds:StopDBInstance",
           "ecs:UpdateService",

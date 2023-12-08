@@ -37,7 +37,6 @@ resource "aws_iam_role_policy" "start" {
     Statement = [
       {
         Action = [
-          "dynamodb:GetItem",
           "rds:DescribeDBInstances",
           "rds:StartDBInstance",
           "ecs:DescribeServices",
