@@ -17,7 +17,6 @@ def lambda_handler(event, context):
     return "No action specified in the event"
 
 def start():
-
   ecs = boto3.client('ecs', region_name='eu-west-2')
   rds = boto3.client('rds', region_name='eu-west-2')
 
@@ -63,7 +62,6 @@ def start():
   return "Successfully started all resources"
 
 def stop():
-
   ecs = boto3.client('ecs', region_name='eu-west-2')
   rds = boto3.client('rds', region_name='eu-west-2')
 
