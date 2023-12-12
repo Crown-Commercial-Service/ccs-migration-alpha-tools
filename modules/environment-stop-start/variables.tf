@@ -1,5 +1,5 @@
 variable "resources" {
-  default     = {}
+  default     = []
   description = "HCL representation of the JSON"
-  type        = map(any)
+  type        = set(map(any))
 }

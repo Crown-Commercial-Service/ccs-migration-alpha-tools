@@ -12,7 +12,5 @@ resource "aws_scheduler_schedule" "mon_fri_start" {
   target {
     arn      = aws_lambda_function.start.arn
     role_arn = aws_iam_role.eventbridge_scheduler_role.arn
-
-    input = jsonencode(local_file.resources)
   }
 }

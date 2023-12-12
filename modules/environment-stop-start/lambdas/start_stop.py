@@ -17,12 +17,12 @@ def lambda_handler(event, context):
     return "No action specified in the event"
 
 def start():
-  f = open('resources.json')
-  data = json.load(f)
   ecs = boto3.client('ecs', region_name='eu-west-2')
   rds = boto3.client('rds', region_name='eu-west-2')
 
-  for resource in data['resources']:
+  resources = json.loads(os.getenv('RESOURCES'))
+
+  for resource in resources:
     if resource['type'] == 'rds_db_instance':
       try:
         response = rds.describe_db_instances(DBInstanceIdentifier=resource['identifier'])
@@ -44,15 +44,16 @@ def start():
           services = [resource['service_name']]
         )
         service = response['services'][0]
-        current_count = service['desiredCount']
+        current_count = int(service['desiredCount'])
+        desired_count = int(resource['desiredCount'])
 
-        if current_count == resource['desiredCount']:
+        if current_count == desired_count:
           print(f"ECS service {resource['service_name']} is already at the desired count of {current_count}.")
         else:
           update_response = ecs.update_service(
             cluster = resource['cluster_name'],
             service = resource['service_name'],
-            desiredCount = resource['desiredCount']
+            desiredCount = desired_count
           )
           print(update_response)
       except Exception as e:
@@ -61,12 +62,12 @@ def start():
   return "Successfully started all resources"
 
 def stop():
-  f = open('resources.json')
-  data = json.load(f)
   ecs = boto3.client('ecs', region_name='eu-west-2')
   rds = boto3.client('rds', region_name='eu-west-2')
 
-  for resource in data['resources']:
+  resources = json.loads(os.getenv('RESOURCES'))
+
+  for resource in resources:
     if resource['type'] == 'rds_db_instance':
       try:
         response = rds.describe_db_instances(DBInstanceIdentifier=resource['identifier'])
