@@ -1,13 +1,25 @@
+resource "aws_elasticache_replication_group" "rg" {
+  at_rest_encryption_enabled  = true
+  automatic_failover_enabled  = true
+  engine                      = "redis"
+  engine_version              = var.engine_version
+  preferred_cache_cluster_azs = ["eu-west-1a", "eu-west-1b"] # This will need to use a variable for the region
+  replication_group_id        = "${var.cluster_id}-rep-group"
+  node_type                   = var.node_type
+  num_cache_clusters          = var.num_cache_nodes
+  parameter_group_name        = "default.redis6.x"
+  port                        = 6379
+  security_group_ids          = [aws_security_group.cluster.id]
+  subnet_group_name           = aws_elasticache_subnet_group.cluster.name
+
+  lifecycle {
+    ignore_changes = [num_cache_clusters]
+  }
+}
+
 resource "aws_elasticache_cluster" "cluster" {
   cluster_id           = var.cluster_id
-  engine               = "redis"
-  node_type            = var.node_type
-  num_cache_nodes      = var.num_cache_nodes
-  parameter_group_name = "default.redis6.x"
-  engine_version       = var.engine_version
-  port                 = 6379
-  security_group_ids   = [aws_security_group.cluster.id]
-  subnet_group_name    = aws_elasticache_subnet_group.cluster.name
+  replication_group_id = aws_elasticache_replication_group.rg.id
 }
 
 locals {
