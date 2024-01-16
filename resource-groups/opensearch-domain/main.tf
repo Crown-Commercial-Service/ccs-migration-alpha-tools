@@ -40,6 +40,13 @@ resource "aws_opensearch_domain" "domain" {
     aws_iam_service_linked_role.opensearch
   ]
 
+  lifecycle {
+    ignore_changes = [
+      # Workaround for https://github.com/hashicorp/terraform-provider-aws/issues/27371
+      advanced_options["override_main_response_version"]
+    ]
+  }
+
   tags = {
     Domain = var.domain_name
   }
