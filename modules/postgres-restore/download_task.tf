@@ -24,6 +24,10 @@ module "download_task" {
         "apk update && apk add aws-cli && aws s3 cp --recursive s3://digitalmarketplace-database-backups-nft/nft-202401191508/ ."
       ]
       port = null
+      # Leaving it empty for now because of the structure of the variable
+      secret_environment_variables = [
+        {}
+      ]
     }
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
