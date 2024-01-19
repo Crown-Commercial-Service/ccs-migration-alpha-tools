@@ -9,7 +9,7 @@ module "download_task" {
       environment_variables = []
       essential             = true
       healthcheck_command   = null
-      image                 = var.cf_config.cf_cli_docker_image
+      image                 = "alpine:latest"
       memory                = var.download_task_memory
       mounts = [
         {
@@ -21,14 +21,9 @@ module "download_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "apk update && apk add --no-cache postgresql-client && cf install-plugin -f conduit && rm -rf $DUMP_FILENAME && cf login -a ${var.cf_config.api_endpoint} -u $CF_USERNAME -p $CF_PASSWORD -o ${var.cf_config.org} -s ${var.cf_config.space} && cf conduit --app-name ccs-${var.restore_name}-migration-pg-dump-$RANDOM ${var.cf_config.db_service_instance} -- pg_dump -j ${var.download_task_pgdump_workers} -Fd --file $DUMP_FILENAME --no-acl --no-owner"
+        "apk update && apk add aws-cli && aws s3 cp --recursive s3://digitalmarketplace-database-backups-nft/nft-202401191508/ ."
       ]
       port = null
-      # ECS Execution role will need access to these - see aws_iam_role_policy.ecs_execution_role__read_cf_creds_ssm
-      secret_environment_variables = [
-        { "name" : "CF_PASSWORD", "valueFrom" : aws_ssm_parameter.cf_password.arn },
-        { "name" : "CF_USERNAME", "valueFrom" : aws_ssm_parameter.cf_username.arn }
-      ]
     }
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
