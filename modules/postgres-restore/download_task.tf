@@ -37,13 +37,13 @@ module "download_task" {
   task_memory            = var.download_task_memory
   volumes = [
     {
-      access_point_id = aws_efs_access_point.db_dump.id
-      file_system_id  = aws_efs_file_system.db_dump.id
+      access_point_id = aws_efs_access_point.db_restore.id
+      file_system_id  = aws_efs_file_system.db_restore.id
       volume_name     = "efs0"
     }
   ]
 
   depends_on = [
-    aws_efs_mount_target.db_dump
+    aws_efs_mount_target.db_restore
   ]
 }
