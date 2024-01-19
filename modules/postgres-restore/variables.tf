@@ -8,6 +8,11 @@ variable "aws_region" {
   description = "Region for resource deployment"
 }
 
+variable "alpine_image" {
+  type = string
+  default = "alpine:latest"
+}
+
 variable "count_rows_tables" {
   type        = set(string)
   default     = []

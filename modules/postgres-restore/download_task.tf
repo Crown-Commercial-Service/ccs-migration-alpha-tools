@@ -9,7 +9,7 @@ module "download_task" {
       environment_variables = []
       essential             = true
       healthcheck_command   = null
-      image                 = "alpine:latest"
+      image                 = var.alpine_image
       memory                = var.download_task_memory
       mounts = [
         {
