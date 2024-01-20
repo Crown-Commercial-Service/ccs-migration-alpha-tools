@@ -1,4 +1,4 @@
-resource "aws_security_group" "download_task" {
+resource "aws_security_group" "restore_download_task" {
   name        = "${var.resource_name_prefixes.normal}:PGRESTORE:${upper(var.restore_name)}:ECSTASK:DOWNLOAD"
   description = "Restore Download task"
   vpc_id      = var.vpc_id

@@ -12,23 +12,6 @@ resource "aws_sfn_state_machine" "perform_restore" {
       "Resource": "arn:aws:states:::ecs:runTask.sync",
       "Parameters": {
         "Cluster": "${var.ecs_cluster_arn}",
-        "TaskDefinition": "${module.table_rows_source.task_definition_arn}",
-        "NetworkConfiguration": {
-          "AwsvpcConfiguration": {
-            "AssignPublicIp": "DISABLED",
-            "SecurityGroups.$": "States.Array('${aws_security_group.restore_download_task.id}')",
-            "Subnets": ["${var.subnet_id}"]
-          }
-        }
-      },
-      "ResultPath": null,
-      "Next": "Download PG dump from S3"
-    },
-    "Download PG dump from S3": {
-      "Type": "Task",
-      "Resource": "arn:aws:states:::ecs:runTask.sync",
-      "Parameters": {
-        "Cluster": "${var.ecs_cluster_arn}",
         "TaskDefinition": "${module.download_task.task_definition_arn}",
         "NetworkConfiguration": {
           "AwsvpcConfiguration": {
