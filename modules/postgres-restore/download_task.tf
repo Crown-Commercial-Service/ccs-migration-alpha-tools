@@ -25,9 +25,7 @@ module "download_task" {
       ]
       port = null
       # Leaving it empty for now because of the structure of the variable
-      secret_environment_variables = [
-        {}
-      ]
+      secret_environment_variables = []
     }
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
