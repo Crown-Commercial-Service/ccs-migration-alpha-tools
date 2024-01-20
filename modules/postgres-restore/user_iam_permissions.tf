@@ -35,7 +35,7 @@ data "aws_iam_policy_document" "run_restore" {
   }
 
   statement {
-    sid = "AllowDescribePerformMigrationSfnExecution"
+    sid = "AllowDescribePerformRestoreSfnExecution"
 
     effect = "Allow"
 
@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "run_restore" {
     ]
 
     resources = [
-      "${replace(aws_sfn_state_machine.perform_migration.arn, "stateMachine", "execution")}:*"
+      "${replace(aws_sfn_state_machine.perform_restore.arn, "stateMachine", "execution")}:*"
     ]
   }
 }
