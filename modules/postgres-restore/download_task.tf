@@ -31,7 +31,7 @@ module "download_task" {
     }
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
-  family_name            = "pg_migrate_${var.restore_name}_download"
+  family_name            = "pg_restore_${var.restore_name}_download"
   task_cpu               = var.download_task_cpu
   task_memory            = var.download_task_memory
   volumes = [

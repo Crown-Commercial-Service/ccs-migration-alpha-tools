@@ -16,7 +16,7 @@ resource "aws_sfn_state_machine" "perform_restore" {
         "NetworkConfiguration": {
           "AwsvpcConfiguration": {
             "AssignPublicIp": "DISABLED",
-            "SecurityGroups.$": "States.Array('${aws_security_group.migrate_download_task.id}')",
+            "SecurityGroups.$": "States.Array('${aws_security_group.restore_download_task.id}')",
             "Subnets": ["${var.subnet_id}"]
           }
         }
@@ -33,7 +33,7 @@ resource "aws_sfn_state_machine" "perform_restore" {
         "NetworkConfiguration": {
           "AwsvpcConfiguration": {
             "AssignPublicIp": "DISABLED",
-            "SecurityGroups.$": "States.Array('${aws_security_group.migrate_download_task.id}', '${aws_security_group.db_restore_fs_clients.id}')",
+            "SecurityGroups.$": "States.Array('${aws_security_group.restore_download_task.id}', '${aws_security_group.db_restore_fs_clients.id}')",
             "Subnets": ["${var.subnet_id}"]
           }
         },

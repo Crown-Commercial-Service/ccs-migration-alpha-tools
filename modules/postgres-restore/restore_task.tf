@@ -31,7 +31,7 @@ module "restore_task" {
     }
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
-  family_name            = "pg_migrate_${var.restore_name}_restore"
+  family_name            = "pg_restore_${var.restore_name}"
   task_cpu               = var.restore_task_cpu
   task_memory            = var.restore_task_memory
   volumes = [

@@ -8,7 +8,7 @@ resource "aws_security_group" "download_task" {
   }
 }
 
-resource "aws_security_group_rule" "migrate_download_task_https_out_anywhere" {
+resource "aws_security_group_rule" "restore_download_task_https_out_anywhere" {
   cidr_blocks       = ["0.0.0.0/0"]
   description       = "Allow https out from download task to anywhere"
   from_port         = 443
