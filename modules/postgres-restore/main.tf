@@ -57,7 +57,7 @@ resource "aws_sfn_state_machine" "perform_restore" {
               "Environment": [
                 {
                   "Name": "DUMP_FILENAME",
-                  "Value": "/mnt/efs0/${var.restore_name}.dir"
+                  "Value": "/mnt/efs0/nft-202401191508/"
                 }
               ]
             }
