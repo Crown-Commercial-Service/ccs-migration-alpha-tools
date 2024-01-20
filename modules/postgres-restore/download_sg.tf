@@ -13,7 +13,7 @@ resource "aws_security_group_rule" "restore_download_task_https_out_anywhere" {
   description       = "Allow https out from download task to anywhere"
   from_port         = 443
   protocol          = "tcp"
-  security_group_id = aws_security_group.download_task.id
+  security_group_id = aws_security_group.restore_download_task.id
   to_port           = 443
   type              = "egress"
 }
