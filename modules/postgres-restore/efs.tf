@@ -70,7 +70,7 @@ resource "aws_efs_mount_target" "db_restore" {
 
 resource "aws_security_group" "db_restore_fs" {
   name        = "${var.resource_name_prefixes.normal}:PGRESTORE:${upper(var.restore_name)}:EFS"
-  description = "FS for db dump during Postgres migration process"
+  description = "FS for db dump during Postgres restore process"
   vpc_id      = var.vpc_id
 
   tags = {
