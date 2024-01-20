@@ -23,7 +23,7 @@ resource "aws_efs_access_point" "db_restore" {
       owner_uid   = 0
       permissions = "700"
     }
-    path = "/pgmigrate"
+    path = "/pgrestore"
   }
 
   tags = {
