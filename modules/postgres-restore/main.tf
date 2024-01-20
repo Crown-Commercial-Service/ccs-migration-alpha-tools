@@ -1,6 +1,6 @@
-resource "aws_sfn_state_machine" "perform_migration" {
-  name     = "perform-${var.restore_name}-postgres-migration"
-  role_arn = aws_iam_role.sfn_perform_migration.arn
+resource "aws_sfn_state_machine" "perform_restore" {
+  name     = "perform-${var.restore_name}-postgres-restore"
+  role_arn = aws_iam_role.sfn_perform_restore.arn
 
   definition = <<EOF
 {
@@ -63,7 +63,7 @@ resource "aws_sfn_state_machine" "perform_migration" {
         "NetworkConfiguration": {
           "AwsvpcConfiguration": {
             "AssignPublicIp": "DISABLED",
-            "SecurityGroups.$": "States.Array('${aws_security_group.migrate_restore_task.id}', '${aws_security_group.db_restore_fs_clients.id}', '${var.db_clients_security_group_id}')",
+            "SecurityGroups.$": "States.Array('${aws_security_group.restore_task.id}', '${aws_security_group.db_restore_fs_clients.id}', '${var.db_clients_security_group_id}')",
             "Subnets": ["${var.subnet_id}"]
           }
         },
@@ -90,7 +90,7 @@ EOF
 
   depends_on = [
     # Some of the permissions are needed _at Terraform apply time_ hence the explicit dependency
-    aws_iam_role_policy.sfn_perform_migration,
+    aws_iam_role_policy.sfn_perform_restore,
   ]
 
   tags = {
@@ -98,8 +98,8 @@ EOF
   }
 }
 
-resource "aws_iam_role" "sfn_perform_migration" {
-  name = "perform-${var.restore_name}-migration-sfn"
+resource "aws_iam_role" "sfn_perform_restore" {
+  name = "perform-${var.restore_name}-restore-sfn"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -116,7 +116,7 @@ resource "aws_iam_role" "sfn_perform_migration" {
   })
 }
 
-data "aws_iam_policy_document" "sfn_perform_migration" {
+data "aws_iam_policy_document" "sfn_perform_restore" {
   version = "2012-10-17"
 
   statement {
@@ -131,20 +131,6 @@ data "aws_iam_policy_document" "sfn_perform_migration" {
 
     resources = [
       var.ecs_execution_role.arn,
-    ]
-  }
-
-  statement {
-    sid = "AllowPutRestoreLockItem"
-
-    effect = "Allow"
-
-    actions = [
-      "dynamodb:PutItem"
-    ]
-
-    resources = [
-      aws_dynamodb_table.restore_lock.arn
     ]
   }
 
@@ -195,7 +181,7 @@ data "aws_iam_policy_document" "sfn_perform_migration" {
   }
 }
 
-resource "aws_iam_role_policy" "sfn_perform_migration" {
-  role   = aws_iam_role.sfn_perform_migration.name
-  policy = data.aws_iam_policy_document.sfn_perform_migration.json
+resource "aws_iam_role_policy" "sfn_perform_restore" {
+  role   = aws_iam_role.sfn_perform_restore.name
+  policy = data.aws_iam_policy_document.sfn_perform_restore.json
 }
