@@ -8,7 +8,7 @@ data "aws_iam_policy_document" "download_task" {
 
     actions = [
       "s3:GetObject",
-      "s3:ListObjects"
+      "s3:ListBucket"
     ]
 
     resources = [
