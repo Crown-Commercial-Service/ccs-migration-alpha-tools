@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "run_restore" {
     ]
 
     resources = [
-      aws_sfn_state_machine.perform_migration.arn
+      aws_sfn_state_machine.perform_restore.arn
     ]
   }
 
