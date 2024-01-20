@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "run_restore" {
   }
 
   statement {
-    sid = "AllowStartPerformMigrationSfn"
+    sid = "AllowStartPerformRestoreSfn"
 
     effect = "Allow"
 
