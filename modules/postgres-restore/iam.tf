@@ -12,8 +12,8 @@ data "aws_iam_policy_document" "download_task" {
     ]
 
     resources = [
-      "digitalmarketplace-database-backups-nft",
-      "digitalmarketplace-database-backups-nft/*"
+      "arn:aws:s3:::digitalmarketplace-database-backups-nft",
+      "arn:aws:s3:::digitalmarketplace-database-backups-nft/*"
     ]
   }
 }
