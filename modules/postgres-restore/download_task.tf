@@ -21,7 +21,7 @@ module "download_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "apk update && apk add aws-cli && aws s3 cp --recursive s3://digitalmarketplace-database-backups-nft/nft-202401191508/ ."
+        "apk update && apk add aws-cli && aws s3 cp --recursive s3://digitalmarketplace-database-backups-nft/nft-202401191508/ /mnt/efs0/"
       ]
       port = null
       # Leaving it empty for now because of the structure of the variable
