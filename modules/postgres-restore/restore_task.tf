@@ -21,7 +21,7 @@ module "restore_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "pg_restore --clean --if-exists -d $DB_CONNECTION_URL -j ${var.restore_task_pgrestore_workers} --no-acl --no-owner $DUMP_FILENAME"
+        "psql $DB_CONNECTION_URL -c 'DROP SCHEMA IF EXISTS public CASCADE;' && pg_restore -d $DB_CONNECTION_URL -j ${var.restore_task_pgrestore_workers} --no-acl --no-owner $DUMP_FILENAME && echo \"pg_restore exit code: $?\""
       ]
       port = null
       secret_environment_variables = [
