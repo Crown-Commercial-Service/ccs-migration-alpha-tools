@@ -77,7 +77,7 @@ EOF
   ]
 
   tags = {
-    GPaasPostgresRestoreName = var.restore_name
+    S3PostgresRestoreName = var.restore_name
   }
 }
 
