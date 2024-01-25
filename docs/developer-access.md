@@ -73,5 +73,8 @@ To list services in an AWS ECS cluster -
 List tasks for a specific cluster -
 `aws ecs list-tasks --cluster <cluster_name>`
 
+List tasks in a specific service -
+`aws ecs list-tasks --cluster <cluster_name> --service-name <service_name>`
+
 Describe tasks to get more details -
 `aws ecs describe-tasks --cluster <cluster_name> --tasks <task_id1> <task_id2> ...`
