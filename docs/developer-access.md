@@ -40,8 +40,18 @@ This will connect to port 8080 on the running container.
 
 #### Connect to remote hosts accessible from the container
 
+Obtain temporary security credentials from AWS and then set them as environment variables in the shell session.
 ```shell
-aws ssm start-session --target "ecs:YOUR_ECS_CLUSTER_NAME_c7feb90c8b61453c8019b48826f8b077_c7feb90c8b61453c8019b48826f8b077-946514567" --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters '{"portNumber":["5432"],"localPortNumber":["5432"],"host":["YOUR_RDS_ENDPOINT.<REGION>.rds.amazonaws.com"]}'
+export $(printf "AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s AWS_SESSION_TOKEN=%s" \
+$(aws sts assume-role \
+--role-arn arn:aws:iam::${AWS_ACCOUNT}:role/<AWS_ACCOUNT_NAME> \
+--role-session-name MySessionName \
+--query "Credentials.[AccessKeyId,SecretAccessKey,SessionToken]" \
+--output text))
+```
+
+```shell
+aws ssm start-session --target "ecs:<YOUR_ECS_CLUSTER_NAME>_<CLUSTER_ID>_<CLUSTER_RUNTIME_ID>" --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters '{"portNumber":["5432"],"localPortNumber":["5432"],"host":["<YOUR_RDS_ENDPOINT>.<REGION>.rds.amazonaws.com"]}'
 ```
 Then, in another terminal session:
 ```shell
@@ -51,8 +61,8 @@ This will open a Postgres Client session with the RDS instance accessible by the
 
 ## Shell access with ECS Exec:
 ```shell
-aws ecs execute-command --cluster <CLUSTER_NAME> \    --task arn:aws:ecs:<REGION>:<AWS_ACCOUNT>:task/YOUR_ECS_CLUSTER_NAME/1316ce88a09e43c9a30927c1833c0246  \
-    --container wsgi \
+aws ecs execute-command --cluster <CLUSTER_NAME> \    --task arn:aws:ecs:<REGION>:<AWS_ACCOUNT>:task/<YOUR_ECS_CLUSTER_NAME>/<TASK_DEFINITION_ARN>  \
+    --container <CONTAINER_NAME> \
     --command "/bin/sh" \
     --interactive
 ```
