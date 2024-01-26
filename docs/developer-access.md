@@ -41,6 +41,13 @@ This will connect to port 8080 on the running container.
 #### Connect to remote hosts accessible from the container
 
 Obtain temporary security credentials from AWS and then set them as environment variables in the shell session.
+* The `printf "AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s AWS_SESSION_TOKEN=%s"` command is used to format the output from the `aws sts assume-role` command into a string that sets environment variables.
+* `export $(...)` command exports the variables, setting them in your environment. Once these environment variables are set, any AWS CLI command or AWS SDK in your session will use these credentials by default.
+* `aws sts assume role` allows you to assume an IAM role. When you assume a role, AWS STS (Security token service) returns a temporary security credentials(an access key ID, a secret access key, and a security token) that you can use to make AWS API calls.
+* `--role-arn` is the ARN of the role you want to assume.
+* `--role-session-name` names the session.
+* `--query` command extracts the necessary credentials from the response.
+* `--output text` formats the output as text.
 ```shell
 export $(printf "AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s AWS_SESSION_TOKEN=%s" \
 $(aws sts assume-role \
@@ -49,7 +56,10 @@ $(aws sts assume-role \
 --query "Credentials.[AccessKeyId,SecretAccessKey,SessionToken]" \
 --output text))
 ```
-
+Start session using AWS Systems manager to establish port forwarding to a remote host.
+* Target parameter `--target "ecs:<YOUR_ECS_CLUSTER_NAME>_<CLUSTER_ID>_<CLUSTER_RUNTIME_ID>"` specifies the target for the session.
+* Document name `--document-name AWS-StartPortForwardingSessionToRemoteHost` specifies the name of the Systems manager document(SSM document) to define the session type.
+* Parameters `--parameters '{"portNumber":["5432"],"localPortNumber":["5432"],"host":["<YOUR_RDS_ENDPOINT>.<REGION>.rds.amazonaws.com"]}'` specifies the parameters for the port forwarding session.
 ```shell
 aws ssm start-session --target "ecs:<YOUR_ECS_CLUSTER_NAME>_<CLUSTER_ID>_<CLUSTER_RUNTIME_ID>" --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters '{"portNumber":["5432"],"localPortNumber":["5432"],"host":["<YOUR_RDS_ENDPOINT>.<REGION>.rds.amazonaws.com"]}'
 ```
