@@ -1,6 +1,6 @@
 resource "aws_iam_role" "task_role" {
-  name        = "${var.family_name}-ecs-task"
-  description = "Role to be assumed by the ${var.family_name} tasks during general operation"
+  name        = "${var.task_name}-ecs-task"
+  description = "Role to be assumed by the ${var.task_name} task during general operation"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

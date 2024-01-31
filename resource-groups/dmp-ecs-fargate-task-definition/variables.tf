@@ -46,7 +46,7 @@ variable "ecs_execution_role_arn" {
 
 variable "family_name" {
   type        = string
-  description = "The name to give to the task definition, across all revisions"
+  description = "The family name to give to the task definition, across all revisions"
 }
 
 variable "override_entrypoints" {
@@ -63,6 +63,11 @@ variable "task_cpu" {
 variable "task_memory" {
   type        = number
   description = "Memory to allocate to each task (where a value of 1024 == 1GB) - Must be >= total of all containers' memory"
+}
+
+variable "task_name" {
+  type        = string
+  description = "The name to give to the task definition, across all revisions"
 }
 
 variable "volumes" {
