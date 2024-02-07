@@ -62,6 +62,7 @@ module "compile_objects_to_migrate_lambda" {
     md5          = data.archive_file.compile_objects_to_migrate_lambda_zip.output_md5
   }
   environment_variables = {
+    S3_SERVICE_KEY_SSM_PARAM_NAME = aws_ssm_parameter.s3_service_key.name
     OBJECTS_TO_MIGRATE_TABLE_NAME = aws_dynamodb_table.objects_to_migrate.name
   }
   function_name         = "${var.migrator_name}-compile-objects-to-migrate"
@@ -79,4 +80,34 @@ resource "aws_iam_role_policy" "compile_objects_to_migrate_lambda__put_objects_t
   name   = "put-objects-to-migrate-item"
   role   = module.compile_objects_to_migrate_lambda.service_role_name
   policy = data.aws_iam_policy_document.put_objects_to_migrate_item.json
+}
+
+resource "aws_iam_role_policy" "compile_objects_to_migrate_lambda__read_s3_service_key_ssm" {
+  name   = "read-s3-service-key-ssm"
+  role   = module.compile_objects_to_migrate_lambda.service_role_name
+  policy = data.aws_iam_policy_document.read_s3_service_key_ssm.json
+}
+
+data "aws_iam_policy_document" "list_objects_in_s3_bucket" {
+  version = "2012-10-17"
+
+  statement {
+    sid = "AllowListS3Objects"
+
+    effect = "Allow"
+
+    actions = [
+      "s3:ListBucket"
+    ]
+
+    resources = [
+      format("arn:aws:s3:::%s", var.source_bucket.bucket_name)
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "compile_objects_to_migrate_lambda__list_objects_in_s3_bucket" {
+  name   = "list-objects-in-s3-bucket"
+  role   = module.compile_objects_to_migrate_lambda.service_role_name
+  policy = data.aws_iam_policy_document.list_objects_in_s3_bucket.json
 }

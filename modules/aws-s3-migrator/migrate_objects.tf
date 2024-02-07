@@ -62,8 +62,9 @@ module "migrate_batch_of_objects_lambda" {
     md5          = data.archive_file.migrate_batch_of_objects_lambda_zip.output_md5
   }
   environment_variables = {
-    TARGET_BUCKET_ID         = var.target_bucket_id
-    TRANSFER_LIST_TABLE_NAME = aws_dynamodb_table.objects_to_migrate.name
+    S3_SERVICE_KEY_SSM_PARAM_NAME = aws_ssm_parameter.s3_service_key.name
+    TARGET_BUCKET_ID              = var.target_bucket_id
+    TRANSFER_LIST_TABLE_NAME      = aws_dynamodb_table.objects_to_migrate.name
   }
   ephemeral_storage_size_mb = 5 * 1024 + 128 # 5GB object limit plus 128MB operational spare
   function_name             = "${var.migrator_name}-migrate-batch-of-objects"
@@ -112,4 +113,10 @@ resource "aws_iam_role_policy" "migrate_batch_of_objects_lambda__update_objects_
   name   = "update-objects-to-migrate-item"
   role   = module.migrate_batch_of_objects_lambda.service_role_name
   policy = data.aws_iam_policy_document.update_objects_to_migrate_item.json
+}
+
+resource "aws_iam_role_policy" "migrate_batch_of_objects_lambda__read_s3_service_key_ssm" {
+  name   = "read-s3-service-key-ssm-migrate"
+  role   = module.migrate_batch_of_objects_lambda.service_role_name
+  policy = data.aws_iam_policy_document.read_s3_service_key_ssm.json
 }

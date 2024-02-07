@@ -1,10 +1,10 @@
 """
 Compile objects to migrate
 
-Reads the complete list of objects to be migrated from a GPaaS-bound S3 bucket
+Reads the complete list of objects to be migrated from a S3 bucket
 and writes their details to a Dynamo DB table for later processing.
 
-For information on setting this up and providing service keys for GPaaS, please see the
+For information on setting this up and providing service keys for S3, please see the
 README.md in this folder.
 
 """
@@ -20,7 +20,7 @@ logger.setLevel(logging.INFO)
 dynamodb_client = boto3.client("dynamodb")
 ssm_client = boto3.client("ssm")
 
-gpaas_service_key_ssm_param_name = os.environ["GPAAS_SERVICE_KEY_SSM_PARAM_NAME"]
+s3_service_key_ssm_param_name = os.environ["S3_SERVICE_KEY_SSM_PARAM_NAME"]
 objects_to_migrate_table_name = os.environ["OBJECTS_TO_MIGRATE_TABLE_NAME"]
 
 
@@ -31,18 +31,16 @@ def lambda_handler(event, context):
     #
     # This Lambda is used "rarely" and in a single hit, so we do not need to set up
     # a cache to minimise SSM API calls.
-    gpaas_service_key_ssm_param = ssm_client.get_parameter(
-        Name=gpaas_service_key_ssm_param_name, WithDecryption=True
+    s3_service_key_ssm_param = ssm_client.get_parameter(
+        Name=s3_service_key_ssm_param_name, WithDecryption=True
     )
-    gpaas_service_key = json.loads(gpaas_service_key_ssm_param["Parameter"]["Value"])
+    s3_service_key = json.loads(s3_service_key_ssm_param["Parameter"]["Value"])
 
     s3_client = boto3.client(
         "s3",
-        aws_access_key_id=gpaas_service_key["aws_access_key_id"],
-        aws_secret_access_key=gpaas_service_key["aws_secret_access_key"],
-        region_name=gpaas_service_key["aws_region"],
+        region_name=s3_service_key["aws_region"],
     )
-    source_bucket_name = gpaas_service_key["bucket_name"]
+    source_bucket_name = s3_service_key["bucket_name"]
 
     key_count = 0
     s3_paginator = s3_client.get_paginator("list_objects_v2")

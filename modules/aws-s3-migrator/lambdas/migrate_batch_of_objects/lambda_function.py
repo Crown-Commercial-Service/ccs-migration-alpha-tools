@@ -2,7 +2,7 @@
 Migrate batch of objects.
 
 Read a batch of new "objects to migrate" records from a Dynamo stream (via SQS)
-and copy the corresponding objects from the GPaaS-bound S3 bucket to the native
+and copy the corresponding objects from the S3 bucket to the native
 AWS bucket.
 
 For information on setting this up and providing service keys for GPaaS, please see the
@@ -26,7 +26,7 @@ ssm_client = boto3.client("ssm")
 # setting up IAM roles for a user from this native account is not possible.
 target_s3_client = boto3.client("s3")
 
-gpaas_service_key_ssm_param_name = os.environ["GPAAS_SERVICE_KEY_SSM_PARAM_NAME"]
+s3_service_key_ssm_param_name = os.environ["S3_SERVICE_KEY_SSM_PARAM_NAME"]
 target_bucket_id = os.environ["TARGET_BUCKET_ID"]
 transfer_list_table_name = os.environ["TRANSFER_LIST_TABLE_NAME"]
 
@@ -65,19 +65,17 @@ def with_caching_source_s3_client(fn):
             source_s3_client = wrapper.source_s3_client
         else:
             logger.info(
-                f"Setting up source s3 client via service key creds in SSM param {gpaas_service_key_ssm_param_name}"
+                f"Setting up source s3 client via service key creds in SSM param {s3_service_key_ssm_param_name}"
             )
-            gpaas_service_key_ssm_param = ssm_client.get_parameter(
-                Name=gpaas_service_key_ssm_param_name, WithDecryption=True
+            s3_service_key_ssm_param = ssm_client.get_parameter(
+                Name=s3_service_key_ssm_param_name, WithDecryption=True
             )
-            gpaas_service_key = json.loads(
-                gpaas_service_key_ssm_param["Parameter"]["Value"]
+            s3_service_key = json.loads(
+                s3_service_key_ssm_param["Parameter"]["Value"]
             )
             source_s3_client = boto3.client(
                 "s3",
-                aws_access_key_id=gpaas_service_key["aws_access_key_id"],
-                aws_secret_access_key=gpaas_service_key["aws_secret_access_key"],
-                region_name=gpaas_service_key["aws_region"],
+                region_name=s3_service_key["aws_region"],
             )
 
         result = fn(source_s3_client, *args, **kwargs)

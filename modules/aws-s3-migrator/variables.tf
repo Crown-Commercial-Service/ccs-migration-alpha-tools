@@ -29,7 +29,10 @@ variable "target_bucket_id" {
   type        = string
 }
 
-# variable "target_bucket_write_objects_policy_document_json" {
-#   description = "JSON describing a policy to allow the writing of objects to the target bucket"
-#   type        = string
-# }
+variable "source_bucket" {
+  description = "Map containing the source bucket name and account ID"
+  type = object({
+    bucket_name = string
+    aws_region  = string
+  })
+}
