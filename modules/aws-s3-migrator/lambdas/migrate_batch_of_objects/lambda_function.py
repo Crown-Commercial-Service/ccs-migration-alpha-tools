@@ -5,7 +5,7 @@ Read a batch of new "objects to migrate" records from a Dynamo stream (via SQS)
 and copy the corresponding objects from the S3 bucket to the native
 AWS bucket.
 
-For information on setting this up and providing service keys for GPaaS, please see the
+For information on setting this up and providing service keys for S3, please see the
 README.md in this folder.
 
 """
@@ -22,7 +22,7 @@ logger.setLevel(logging.INFO)
 
 dynamodb_client = boto3.client("dynamodb")
 ssm_client = boto3.client("ssm")
-# We need two S3 clients - The GPaaS bucket is in a different account and
+# We need two S3 clients - The S3 bucket is in a different account and
 # setting up IAM roles for a user from this native account is not possible.
 target_s3_client = boto3.client("s3")
 

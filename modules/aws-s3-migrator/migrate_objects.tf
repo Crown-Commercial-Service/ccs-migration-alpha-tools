@@ -120,3 +120,29 @@ resource "aws_iam_role_policy" "migrate_batch_of_objects_lambda__read_s3_service
   role   = module.migrate_batch_of_objects_lambda.service_role_name
   policy = data.aws_iam_policy_document.read_s3_service_key_ssm.json
 }
+
+data "aws_iam_policy_document" "download_objects_in_s3_bucket" {
+  version = "2012-10-17"
+
+  statement {
+    sid = "AllowListS3Objects"
+
+    effect = "Allow"
+
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket"
+    ]
+
+    resources = [
+      format("arn:aws:s3:::%s", var.source_bucket.bucket_name),
+      format("arn:aws:s3:::%s/*", var.source_bucket.bucket_name)
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "migrate_batch_of_objects_lambda__download_objects_in_s3_bucket" {
+  name   = "download_objects_in_s3_bucket"
+  role   = module.migrate_batch_of_objects_lambda.service_role_name
+  policy = data.aws_iam_policy_document.download_objects_in_s3_bucket.json
+}
