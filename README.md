@@ -19,6 +19,7 @@ The following folders are in this repo:
 * [validation](validation/README.md) - TF files to exercise the resource definitions held within. Even though this is an alpha, some degree of syntax / correctness checking would seem prudent.
 * [resource-groups](resource-groups/README.md) - Common groupings of AWS resources, presented to reduce repetition during normal usage (e.g. a Fargate task will likely want access to some Cloudwatch logs)
 * [modules](modules/README.md) - These are collections of resources (and resource groups) which together represent composed pieces of functionality with a specific architectural purpose
+* [scripts](scripts/README.md) - A collection of command line scripts designed to present a vaguely homogenous API for CI and Deployment tasks
 
 ## Testing
 
