@@ -41,7 +41,6 @@ locals {
         {
           containerPort = vars.port
           hostPort      = vars.port
-          name          = "default"
           protocol      = "tcp"
         }
       ]
