@@ -65,11 +65,6 @@ variable "task_memory" {
   description = "Memory to allocate to each task (where a value of 1024 == 1GB) - Must be >= total of all containers' memory"
 }
 
-variable "task_name" {
-  type        = string
-  description = "The name to give to the task definition, across all revisions"
-}
-
 variable "volumes" {
   type = list(object({
     access_point_id = string
