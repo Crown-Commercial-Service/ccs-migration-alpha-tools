@@ -40,7 +40,7 @@ locals {
         {
           containerPort = vars.port
           hostPort      = vars.port
-          name          = var.family_name
+          name          = "${var.family_name}-${vars.port}"
           protocol      = "tcp"
         }
       ]
