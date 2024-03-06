@@ -7,6 +7,12 @@ variable "cluster_id" {
   }
 }
 
+variable "elasticache_cluster_apply_immediately" {
+  type        = string
+  description = "Boolean value to decide whether or not to apply elasticache cluster changes immediately"
+  default     = false
+}
+
 variable "engine_version" {
   type        = string
   description = "Version of Redis engine"
