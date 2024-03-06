@@ -1,4 +1,5 @@
 resource "aws_elasticache_cluster" "cluster" {
+  apply_immediately    = var.elasticache_cluster_apply_immediately
   cluster_id           = var.cluster_id
   engine               = "redis"
   node_type            = var.node_type
