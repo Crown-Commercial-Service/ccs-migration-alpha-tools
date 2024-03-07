@@ -2,11 +2,24 @@
 
 ## Overview
 
-This module provides a standardised four-tier subnet VPC which complies with the guidelines set out in [the standards doc](https://crowncommercialservice.atlassian.net/wiki/spaces/GPaaS/pages/3561685032/AWS+3+Tier+Reference+Architecture).
+The architecture models in the original (GPaaS-migrated) services' projects were based around a classic persistent-compute model, with various Load Balancers and Service Instances waiting for requests to process.
+
+This style of structure necessitates a multi-tier network architecture. The purpose of _this_ module is to provide a standardised four-tier subnet VPC which complies with the guidelines set out in [the standards doc](https://crowncommercialservice.atlassian.net/wiki/spaces/GPaaS/pages/3561685032/AWS+3+Tier+Reference+Architecture).
+
+## General structure
+
+Each service which consumes this core IAC repo is at liberty to choose its own network topology or to adopt this module's topology (and optionally [alter the ACL rules](#network-acls-and-customisation-of)).
+
+By default this module provides four tiers of VPC:
+
+1. _public_ - Intended to hold resources which face the public internet, most likely Load Balancers of some kind
+2. _web_ - Holds resources which immediately process incoming requests shared out by the Load Balancer in the preceding tier
+3. _application_ - Compute resources which "do work" and / or service requests from the _web_ components
+4. _database_ - Data persisting components would go in this layer
 
 ## Network ACLs, and customisation of
 
-The module enforces a basic Network ACL to each subnet as per recommendations outlined in the above doc. In general these will be compatible with many apps' requirements but there will of course be a need to customise the rules for specific cases. The need to customise may be triggered by such requirements as (for example):
+The module enforces a basic Network ACL to each subnet as per recommendations outlined in [the standards doc](https://crowncommercialservice.atlassian.net/wiki/spaces/GPaaS/pages/3561685032/AWS+3+Tier+Reference+Architecture). In general these will be compatible with many apps' requirements but there will of course be a need to customise the rules for specific cases. The need to customise may be triggered by such requirements as (for example):
 
 * A service in a web subnet requires direct database access, thus needing to "leap-frog" the application subnets
 * An app adds an EFS volume and needs to allow cross-subnet traffic on the NFS port
