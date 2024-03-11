@@ -13,6 +13,12 @@ variable "elasticache_cluster_apply_immediately" {
   default     = false
 }
 
+variable "elasticache_cluster_parameter_group_name" {
+  type        = string
+  description = "The Parameter Group Name for the Elasticache cluster (defaults to default.redis6.x)"
+  default     = "default.redis6.x"
+}
+
 variable "engine_version" {
   type        = string
   description = "Version of Redis engine"
