@@ -38,7 +38,7 @@ $ curl localhost:8080
 
 This will connect to port 8080 on the running container.
 
-#### Connect to remote hosts accessible from the container
+#### Connect to remote hosts accessible from the container, e.g. RDS databases
 
 Obtain temporary security credentials from AWS and then set them as environment variables in the shell session.
 * The `printf "AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s AWS_SESSION_TOKEN=%s"` command is used to format the output from the `aws sts assume-role` command into a string that sets environment variables.
@@ -68,6 +68,21 @@ Then, in another terminal session:
 $ psql localhost:5432
 ```
 This will open a Postgres Client session with the RDS instance accessible by the running container.
+
+## IAM Database Authentication
+
+It is possible to authenticate to RDS using an IAM user or role instead of a password assigned to a user in the database. This is more secure as it uses a temporary token with a life of 15 minutes, thereby eliminating the risk of password leakage. 
+
+First, start a port-forwarding session, as described above. Once the session is listening on `localhost:5432`, you are ready to proceed. 
+
+In another terminal session, perform these steps to authenticate:
+
+```shell
+wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem # Downloads the RDS root CA certificate
+export RDSHOST="<DATABASE_NAME>.<REGION>.rds.amazonaws.com"
+export PGPASSWORD="$(aws rds generate-db-auth-token --hostname $RDSHOST --port 5432 --region eu-west-2 --username tester)"
+psql "host=localhost port=5432 sslmode=require sslrootcert=global-bundle.pem dbname=ciiapi user=tester2 password=$PGPASSWORD"
+```
 
 ## Shell access with ECS Exec:
 ```shell
