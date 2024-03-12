@@ -79,10 +79,23 @@ In another terminal session, perform these steps to authenticate:
 
 ```shell
 wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem # Downloads the RDS root CA certificate
-export RDSHOST="<DATABASE_NAME>.<REGION>.rds.amazonaws.com"
-export PGPASSWORD="$(aws rds generate-db-auth-token --hostname $RDSHOST --port 5432 --region eu-west-2 --username tester)"
-psql "host=localhost port=5432 sslmode=require sslrootcert=global-bundle.pem dbname=ciiapi user=tester2 password=$PGPASSWORD"
+export RDSHOST="<DATABASE_ENDPOINT>.<REGION>.rds.amazonaws.com"
+export PGPASSWORD="$(aws rds generate-db-auth-token --hostname $RDSHOST --port 5432 --region eu-west-2 --username <USERNAME>)"
+psql "host=localhost port=5432 sslmode=require sslrootcert=global-bundle.pem dbname=<DATABASE_NAME> user=<USERNAME> password=$PGPASSWORD"
 ```
+You should then be connected to the database and dropped into a `psql` session. Common errors are as follows:
+
+* Error relating to the location of `global-bundle.pem`.
+  * Ensure you have downloaded the root CA certificate and specify the correct path to it
+* `psql: error: connection to server at "127.0.0.1", port 5432 failed: FATAL:  PAM authentication failed for user "<USERNAME>"`
+  * Ensure your IAM user or role has permissions to perform the `rds-db:connect` action to the database and the specified user
+  * Ensure you specified the correct details such as database endpoint, region and username
+  * Echo the value of `PGPASSWORD`. The generated token should be several lines long and the first several characters should look like this:
+   ```shell
+   rdspostgres.123456789012.us-west-2.rds.amazonaws.com:5432/?Action=connect&DBUser=jane_doe&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Expires=900...
+   ```
+   
+   
 
 ## Shell access with ECS Exec:
 ```shell
