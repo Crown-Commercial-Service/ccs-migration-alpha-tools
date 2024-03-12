@@ -94,6 +94,9 @@ You should then be connected to the database and dropped into a `psql` session. 
    ```shell
    rdspostgres.123456789012.us-west-2.rds.amazonaws.com:5432/?Action=connect&DBUser=jane_doe&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Expires=900...
    ```
+* IAM authentication must be enabled for the RDS instance. It is disabled by default.
+* The database user must already exist and be assigned the `rds_iam` role.
+* Official AWS documentation is available [here](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html) and [here](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.Connecting.AWSCLI.PostgreSQL.html).
    
    
 
