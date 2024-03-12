@@ -78,7 +78,7 @@ First, start a port-forwarding session, as described above. Once the session is 
 In another terminal session, perform these steps to authenticate:
 
 ```shell
-wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem # Downloads the RDS root CA certificate
+wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem # Downloads the RDS root CA certificate, only needs to be done the first time
 export RDSHOST="<DATABASE_ENDPOINT>.<REGION>.rds.amazonaws.com"
 export PGPASSWORD="$(aws rds generate-db-auth-token --hostname $RDSHOST --port 5432 --region eu-west-2 --username <USERNAME>)"
 psql "host=localhost port=5432 sslmode=require sslrootcert=global-bundle.pem dbname=<DATABASE_NAME> user=<USERNAME> password=$PGPASSWORD"
