@@ -83,7 +83,9 @@ export RDSHOST="<DATABASE_ENDPOINT>.<REGION>.rds.amazonaws.com"
 export PGPASSWORD="$(aws rds generate-db-auth-token --hostname $RDSHOST --port 5432 --region eu-west-2 --username <USERNAME>)"
 psql "host=localhost port=5432 sslmode=require sslrootcert=global-bundle.pem dbname=<DATABASE_NAME> user=<USERNAME> password=$PGPASSWORD"
 ```
-You should then be connected to the database and dropped into a `psql` session. Common errors are as follows:
+You should then be connected to the database and dropped into a `psql` session. 
+
+#### Troubleshooting:
 
 * Error relating to the location of `global-bundle.pem`.
   * Ensure you have downloaded the root CA certificate and specify the correct path to it
