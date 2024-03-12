@@ -38,7 +38,7 @@ $ curl localhost:8080
 
 This will connect to port 8080 on the running container.
 
-#### Connect to remote hosts accessible from the container
+#### Connect to remote hosts accessible from the container, e.g. RDS databases
 
 Obtain temporary security credentials from AWS and then set them as environment variables in the shell session.
 * The `printf "AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s AWS_SESSION_TOKEN=%s"` command is used to format the output from the `aws sts assume-role` command into a string that sets environment variables.
@@ -68,6 +68,39 @@ Then, in another terminal session:
 $ psql localhost:5432
 ```
 This will open a Postgres Client session with the RDS instance accessible by the running container.
+
+## IAM Database Authentication
+
+It is possible to authenticate to RDS using an IAM user or role instead of a password assigned to a user in the database. This is more secure as it uses a temporary token with a life of 15 minutes, thereby eliminating the risk of password leakage. 
+
+First, start a port-forwarding session, as described above. Once the session is listening on `localhost:5432`, you are ready to proceed. 
+
+In another terminal session, perform these steps to authenticate:
+
+```shell
+wget https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem # Downloads the RDS root CA certificate, only needs to be done the first time
+export RDSHOST="<DATABASE_ENDPOINT>.<REGION>.rds.amazonaws.com"
+export PGPASSWORD="$(aws rds generate-db-auth-token --hostname $RDSHOST --port 5432 --region eu-west-2 --username <USERNAME>)"
+psql "host=localhost port=5432 sslmode=require sslrootcert=global-bundle.pem dbname=<DATABASE_NAME> user=<USERNAME> password=$PGPASSWORD"
+```
+You should then be connected to the database and dropped into a `psql` session. 
+
+#### Troubleshooting:
+
+* Error relating to the location of `global-bundle.pem`.
+  * Ensure you have downloaded the root CA certificate and specify the correct path to it
+* `psql: error: connection to server at "127.0.0.1", port 5432 failed: FATAL:  PAM authentication failed for user "<USERNAME>"`
+  * Ensure your IAM user or role has permissions to perform the `rds-db:connect` action to the database and the specified user
+  * Ensure you specified the correct details such as database endpoint, region and username
+  * Echo the value of `PGPASSWORD`. The generated token should be several lines long and the first several characters should look like this:
+   ```shell
+   rdspostgres.123456789012.us-west-2.rds.amazonaws.com:5432/?Action=connect&DBUser=jane_doe&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Expires=900...
+   ```
+* IAM authentication must be enabled for the RDS instance. It is disabled by default.
+* The database user must already exist and be assigned the `rds_iam` role.
+* Official AWS documentation is available [here](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html) and [here](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.Connecting.AWSCLI.PostgreSQL.html).
+   
+   
 
 ## Shell access with ECS Exec:
 ```shell
