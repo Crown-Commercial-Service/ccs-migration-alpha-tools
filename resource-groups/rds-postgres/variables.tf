@@ -4,6 +4,12 @@ variable "allocated_storage_gb" {
   default     = 10
 }
 
+variable "allow_major_version_upgrade" {
+  type        = bool
+  description = "Opt to allow major version upgrade (defaults to false"
+  default     = false
+}
+
 variable "apply_immediately" {
   type        = bool
   description = "Whether to apply changes immediately or in the next maintenance window"
