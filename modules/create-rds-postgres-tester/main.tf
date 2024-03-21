@@ -78,7 +78,7 @@ resource "aws_s3_object" "dependencies" {
   key    = "create_rds_postgres_tester.zip_dependencies.zip"
   source = data.archive_file.dependencies.output_path
 
-  etag = data.archive_file.dependencies
+  etag = data.archive_file.dependencies.output_md5
 }
 
 resource "aws_lambda_layer_version" "dependencies" {
