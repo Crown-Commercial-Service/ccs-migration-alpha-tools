@@ -43,11 +43,6 @@ module "create_rds_postgres_tester_lambda" {
   timeout_seconds = 60
 }
 
-resource "aws_iam_role_policy_attachment" "this" {
-  role       =  module.create_rds_postgres_tester_lambda.service_role_name
-  policy_arn = aws_iam_role_policy.create_rds_postgres_tester_lambda__get_postgres_password.arn
-}
-
 data "archive_file" "create_rds_postgres_tester_lambda_zip" {
   type = "zip"
   source_dir = "${path.module}/lambdas/create_rds_postgres_tester"
