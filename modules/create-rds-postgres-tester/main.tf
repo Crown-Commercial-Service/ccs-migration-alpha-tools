@@ -70,7 +70,7 @@ resource "null_resource" "dependencies" {
 data "archive_file" "dependencies" {
   depends_on  = [null_resource.dependencies]
   output_path = "${path.module}/lambdas/dist/dependencies.zip"
-  source_dir  = "/${path.module}/dependencies"
+  source_dir  = "${path.module}/dependencies"
   type        = "zip"
 }
 
