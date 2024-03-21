@@ -1,6 +1,6 @@
 resource "aws_iam_role_policy" "create_rds_postgres_tester_lambda__get_postgres_password" {
   name   = "get-postgres-password"
-  role   = module.create_rds_postgres_tester_lambda.service_role_name
+  role   = module.this.service_role_name
   policy = data.aws_iam_policy_document.get_postgres_password.json
 }
 
@@ -29,8 +29,8 @@ module "this" {
   dist_package_filename = "create_rds_postgres_tester.zip"
 
   dist_package_hash = {
-    base64sha256 = data.archive_file.create_rds_postgres_tester_lambda_zip.output_base64sha256
-    md5          = data.archive_file.create_rds_postgres_tester_lambda_zip.output_md5
+    base64sha256 = data.archive_file.function.output_base64sha256
+    md5          = data.archive_file.function.output_md5
   }
 
   environment_variables = {
