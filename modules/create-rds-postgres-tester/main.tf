@@ -62,6 +62,7 @@ resource "null_resource" "lambda_layer" {
       cp ${path.module}/lambdas/create_rds_postgres_tester/requirements.txt /tmp/lambda-layer
       cd /tmp/lambda-layer
       pyenv global 3.11.3
+      pip install --upgrade pip
       pip install -r requirements.txt
     EOT
   }
