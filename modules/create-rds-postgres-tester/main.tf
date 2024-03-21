@@ -58,17 +58,18 @@ resource "null_resource" "lambda_layer" {
   # the command to install python and dependencies to the machine and zips
   provisioner "local-exec" {
     command = <<EOT
-      mkdir /tmp/python
-      cd /tmp/python
+      mkdir /tmp/lambda-layer
+      cd /tmp/lambda-layer
       pip3 install -r ${path.module}/lambdas/create_rds_postgres_tester/requirements.txt -t .
     EOT
   }
 }
 
 data "archive_file" "lambda_layer_zip" {
-  type        = "zip"
-  source_dir  = "/tmp/python"
+  depends_on = [ null_resource.lambda_layer ]
   output_path = "${path.module}/lambdas/dist/layer.zip"
+  source_dir  = "/tmp/lambda-layer"
+  type        = "zip"
 }
 
 resource "aws_s3_object" "lambda_layer" {
@@ -85,6 +86,3 @@ resource "aws_lambda_layer_version" "this" {
   skip_destroy        = true
   depends_on          = [aws_s3_object.lambda_layer]
 }
-
-
-
