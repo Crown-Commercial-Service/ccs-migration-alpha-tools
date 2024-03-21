@@ -1,25 +1,3 @@
-resource "aws_iam_role" "create_rds_postgres_tester" {
-  name = "create-rds-postgres-tester"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-
-        Effect = "Allow"
-
-        Sid = "AllowLambdaServiceToAssumeRole"
-
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
 resource "aws_iam_role_policy" "create_rds_postgres_tester_lambda__get_postgres_password" {
   name = "get-postgres-password"
   role = module.create_rds_postgres_tester_lambda.service_role_name
@@ -63,6 +41,11 @@ module "create_rds_postgres_tester_lambda" {
   function_name = "create-rds-postgres-tester"
   lambda_dist_bucket_id = var.lambda_dist_bucket_id
   timeout_seconds = 60
+}
+
+resource "aws_iam_role_policy_attachment" "this" {
+  role       =  module.create_rds_postgres_tester_lambda.service_role_name
+  policy_arn = aws_iam_role_policy.create_rds_postgres_tester_lambda__get_postgres_password.arn
 }
 
 data "archive_file" "create_rds_postgres_tester_lambda_zip" {
