@@ -49,3 +49,42 @@ data "archive_file" "create_rds_postgres_tester_lambda_zip" {
   source_dir  = "${path.module}/lambdas/create_rds_postgres_tester"
   output_path = "${path.module}/lambdas/dist/create_rds_postgres_tester.zip"
 }
+
+# Lambda Layer with requirements.txt
+resource "null_resource" "lambda_layer" {
+  triggers = {
+    requirements = filesha1("${path.module}/lambdas/create_rds_postgres_tester/requirements.txt")
+  }
+  # the command to install python and dependencies to the machine and zips
+  provisioner "local-exec" {
+    command = <<EOT
+      mkdir /tmp/python
+      cd /tmp/python
+      pip3 install -r ${path.module}/lambdas/create_rds_postgres_tester/requirements.txt -t .
+    EOT
+  }
+}
+
+data "archive_file" "lambda_layer_zip" {
+  type        = "zip"
+  source_dir  = "/tmp/python"
+  output_path = "${path.module}/lambdas/dist/layer.zip"
+}
+
+resource "aws_s3_object" "lambda_layer" {
+  bucket = var.lambda_dist_bucket_id
+  key    = "layer.zip"
+  source = "${path.module}/lambdas/dist/layer.zip"
+}
+
+resource "aws_lambda_layer_version" "this" {
+  s3_bucket           = var.lambda_dist_bucket_id
+  s3_key              = aws_s3_object.lambda_layer.key
+  layer_name          = "layer"
+  compatible_runtimes = ["python3.9"]
+  skip_destroy        = true
+  depends_on          = [aws_s3_object.lambda_layer]
+}
+
+
+
