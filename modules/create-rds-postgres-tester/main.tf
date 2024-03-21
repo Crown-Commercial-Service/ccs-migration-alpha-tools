@@ -60,7 +60,7 @@ resource "null_resource" "lambda_layer" {
     command = <<EOT
       pwd
       ls -alh
-      ls -alh ../../core
+      ls -alh ../../core/modules
       mkdir /tmp/lambda-layer
       cd /tmp/lambda-layer
       pyenv global 3.11.3
