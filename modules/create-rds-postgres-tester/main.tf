@@ -84,7 +84,7 @@ resource "aws_s3_object" "dependencies" {
 resource "aws_lambda_layer_version" "dependencies" {
   s3_bucket           = var.lambda_dist_bucket_id
   s3_key              = aws_s3_object.dependencies.key
-  source_code_hash    = filebase64sha256("${path.module}/lambdas/dist/dependencies.zip")
+  source_code_hash    = filebase64sha256(data.archive_file.dependencies.output_path)
   layer_name          = "create-rds-postgres-tester-dependencies"
   compatible_runtimes = ["python3.9"]
   skip_destroy        = true
