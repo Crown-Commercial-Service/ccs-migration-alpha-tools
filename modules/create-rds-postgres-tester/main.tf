@@ -53,9 +53,9 @@ data "archive_file" "function" {
 
 # Lambda Layer with requirements.txt
 resource "null_resource" "dependencies" {
-  # triggers = {
-  #   requirements = filesha1("${path.module}/lambdas/create_rds_postgres_tester/requirements.txt")
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
   # the command to install python and dependencies to the machine and zips
   provisioner "local-exec" {
     command = <<EOT
