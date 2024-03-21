@@ -56,7 +56,6 @@ resource "null_resource" "dependencies" {
   triggers = {
     always_run = "${timestamp()}"
   }
-  # the command to install python and dependencies to the machine and zips
   provisioner "local-exec" {
     command = <<EOT
       cd "${path.module}/dependencies"
