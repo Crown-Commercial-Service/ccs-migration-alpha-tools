@@ -61,7 +61,7 @@ module "create_rds_postgres_tester_lambda" {
   }
 
   function_name = "create-rds-postgres-tester"
-  lambda_dist_bucket_id = var.lambda_dist_bucket_id
+  lambda_dist_bucket_id = aws_s3_bucket.lambda_deploy.id
   timeout_seconds = 60
 }
 
