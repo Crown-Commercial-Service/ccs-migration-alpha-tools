@@ -41,7 +41,7 @@ module "this" {
   function_name         = "create-rds-postgres-tester"
   handler               = "create_rds_postgres_tester.lambda_handler"
   lambda_dist_bucket_id = var.lambda_dist_bucket_id
-  layers                = [aws_lambda_layer_version.dependencies.arn]
+  layer_arns            = [aws_lambda_layer_version.dependencies.arn]
   timeout_seconds       = 60
 }
 
