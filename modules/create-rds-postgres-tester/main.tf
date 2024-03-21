@@ -60,7 +60,7 @@ resource "null_resource" "lambda_layer" {
     command = <<EOT
       mkdir /tmp/lambda-layer
       cd /tmp/lambda-layer
-      pip3 install -r ${path.module}/lambdas/create_rds_postgres_tester/requirements.txt -t .
+      python3 -m pip install -r ${path.module}/lambdas/create_rds_postgres_tester/requirements.txt -t .
     EOT
   }
 }
@@ -75,7 +75,7 @@ data "archive_file" "lambda_layer_zip" {
 resource "aws_s3_object" "lambda_layer" {
   bucket = var.lambda_dist_bucket_id
   key    = "layer.zip"
-  source = "${path.module}/lambdas/dist/layer.zip"
+  source = data.archive_file.lambda_layer_zip.output_path
 }
 
 resource "aws_lambda_layer_version" "this" {
