@@ -61,7 +61,7 @@ resource "null_resource" "dependencies" {
       cd "${path.module}/dependencies"
       pyenv global 3.11.3
       pip install --upgrade pip
-      pip install -r requirements.txt --target .
+      pip install -r requirements.txt --target ./python
     EOT
   }
 }
