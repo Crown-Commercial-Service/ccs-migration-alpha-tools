@@ -75,7 +75,7 @@ data "archive_file" "dependencies" {
 
 resource "aws_s3_object" "dependencies" {
   bucket = var.lambda_dist_bucket_id
-  key    = "create_rds_postgres_tester.zip_dependencies.zip"
+  key    = "create_rds_postgres_tester_dependencies.zip"
   source = data.archive_file.dependencies.output_path
 
   etag = data.archive_file.dependencies.output_md5
@@ -84,7 +84,7 @@ resource "aws_s3_object" "dependencies" {
 resource "aws_lambda_layer_version" "dependencies" {
   s3_bucket           = var.lambda_dist_bucket_id
   s3_key              = aws_s3_object.dependencies.key
-  source_code_hash    = filebase64sha256(data.archive_file.dependencies.output_path)
+  source_code_hash    = data.archive_file.dependencies.output_base64sha256
   layer_name          = "create-rds-postgres-tester-dependencies"
   compatible_runtimes = ["python3.9"]
   skip_destroy        = true
