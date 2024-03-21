@@ -1,6 +1,6 @@
 resource "aws_iam_role_policy" "create_rds_postgres_tester_lambda__get_postgres_password" {
-  name = "get-postgres-password"
-  role = module.create_rds_postgres_tester_lambda.service_role_name
+  name   = "get-postgres-password"
+  role   = module.create_rds_postgres_tester_lambda.service_role_name
   policy = data.aws_iam_policy_document.get_postgres_password.json
 }
 
@@ -30,21 +30,22 @@ module "create_rds_postgres_tester_lambda" {
 
   dist_package_hash = {
     base64sha256 = data.archive_file.create_rds_postgres_tester_lambda_zip.output_base64sha256
-    md5 = data.archive_file.create_rds_postgres_tester_lambda_zip.output_md5
+    md5          = data.archive_file.create_rds_postgres_tester_lambda_zip.output_md5
   }
 
   environment_variables = {
-    DBNAME = var.db_name
+    DBNAME  = var.db_name
     RDSHOST = var.rds_host
   }
 
-  function_name = "create-rds-postgres-tester"
+  function_name         = "create-rds-postgres-tester"
+  handler               = "create_rds_postgres_tester.lambda_handler"
   lambda_dist_bucket_id = var.lambda_dist_bucket_id
-  timeout_seconds = 60
+  timeout_seconds       = 60
 }
 
 data "archive_file" "create_rds_postgres_tester_lambda_zip" {
-  type = "zip"
-  source_dir = "${path.module}/lambdas/create_rds_postgres_tester"
+  type        = "zip"
+  source_dir  = "${path.module}/lambdas/create_rds_postgres_tester"
   output_path = "${path.module}/lambdas/dist/create_rds_postgres_tester.zip"
 }
