@@ -70,7 +70,7 @@ resource "null_resource" "dependencies" {
 }
 
 data "archive_file" "dependencies" {
-  depends_on  = [null_resource.lambda_layer]
+  depends_on  = [null_resource.dependencies]
   output_path = "${path.module}/lambdas/dist/layer.zip"
   source_dir  = "/tmp/lambda-layer"
   type        = "zip"
@@ -79,14 +79,13 @@ data "archive_file" "dependencies" {
 resource "aws_s3_object" "dependencies" {
   bucket = var.lambda_dist_bucket_id
   key    = "create_rds_postgres_tester.zip_dependencies.zip"
-  source = data.archive_file.lambda_layer_zip.output_path
+  source = data.archive_file.dependencies.output_path
 }
 
 resource "aws_lambda_layer_version" "dependencies" {
   s3_bucket           = var.lambda_dist_bucket_id
-  s3_key              = aws_s3_object.lambda_layer.key
+  s3_key              = aws_s3_object.dependencies.key
   layer_name          = "create-rds-postgres-tester-dependencies"
   compatible_runtimes = ["python3.9"]
   skip_destroy        = true
-  depends_on          = [aws_s3_object.lambda_layer]
 }
