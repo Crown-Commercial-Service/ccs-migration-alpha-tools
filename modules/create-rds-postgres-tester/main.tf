@@ -59,9 +59,9 @@ resource "null_resource" "dependencies" {
   # the command to install python and dependencies to the machine and zips
   provisioner "local-exec" {
     command = <<EOT
-      mkdir /tmp/lambda-layer
-      cp ${path.module}/lambdas/create_rds_postgres_tester/requirements.txt /tmp/lambda-layer
-      cd /tmp/lambda-layer
+      mkdir /tmp/lambda-layer-dependencies
+      cp ${path.module}/lambdas/create_rds_postgres_tester/requirements.txt /tmp/lambda-layer-dependencies
+      cd /tmp/lambda-layer-dependencies
       pyenv global 3.11.3
       pip install --upgrade pip
       pip install -r requirements.txt
@@ -72,7 +72,7 @@ resource "null_resource" "dependencies" {
 data "archive_file" "dependencies" {
   depends_on  = [null_resource.dependencies]
   output_path = "${path.module}/lambdas/dist/layer.zip"
-  source_dir  = "/tmp/lambda-layer"
+  source_dir  = "/tmp/lambda-layer-dependencies"
   type        = "zip"
 }
 
