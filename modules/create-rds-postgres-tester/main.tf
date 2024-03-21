@@ -60,9 +60,8 @@ resource "null_resource" "lambda_layer" {
     command = <<EOT
       mkdir /tmp/lambda-layer
       cd /tmp/lambda-layer
-      curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-      python3 get-pip.py
-      pip3 install -r ${path.module}/lambdas/create_rds_postgres_tester/requirements.txt -t .
+      pyenv global 3.9
+      pip install -r ${path.module}/lambdas/create_rds_postgres_tester/requirements.txt -t .
     EOT
   }
 }
