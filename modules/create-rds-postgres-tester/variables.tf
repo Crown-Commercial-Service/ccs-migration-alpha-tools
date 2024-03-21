@@ -13,11 +13,6 @@ variable "db_name" {
   description = "Database name"
 }
 
-variable "lambda_dist_bucket_id" {
-  description = "The name of the bucket via through which to distribute the Lambda code"
-  type = string
-}
-
 variable "rds_host" {
   type = string
   description = "RDS host"
