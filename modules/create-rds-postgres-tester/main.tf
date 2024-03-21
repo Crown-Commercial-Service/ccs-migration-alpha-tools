@@ -58,10 +58,10 @@ resource "null_resource" "dependencies" {
   }
   provisioner "local-exec" {
     command = <<EOT
-      cd "${path.module}/dependencies"
+      cd "${path.module}/dependencies/python"
       pyenv global 3.11.3
       pip install --upgrade pip
-      pip install -r requirements.txt --target ./python
+      pip install -r requirements.txt --target .
     EOT
   }
 }
