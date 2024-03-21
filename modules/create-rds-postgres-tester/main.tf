@@ -64,7 +64,7 @@ resource "null_resource" "dependencies" {
       cd /tmp/lambda-layer-dependencies
       pyenv global 3.11.3
       pip install --upgrade pip
-      pip install -r requirements.txt
+      pip install -r requirements.txt --target .
     EOT
   }
 }
