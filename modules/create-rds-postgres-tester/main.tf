@@ -58,6 +58,8 @@ resource "null_resource" "lambda_layer" {
   # the command to install python and dependencies to the machine and zips
   provisioner "local-exec" {
     command = <<EOT
+      pwd
+      ls -alh
       mkdir /tmp/lambda-layer
       cd /tmp/lambda-layer
       pyenv global 3.11.3
