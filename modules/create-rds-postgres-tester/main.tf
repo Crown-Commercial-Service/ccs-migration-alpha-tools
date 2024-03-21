@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "get_postgres_password" {
   }
 }
 
-module "create_rds_postgres_tester_lambda" {
+module "this" {
   source = "../../resource-groups/deployed-lambda"
 
   dist_folder_path      = "${path.module}/lambdas/dist"
@@ -41,17 +41,18 @@ module "create_rds_postgres_tester_lambda" {
   function_name         = "create-rds-postgres-tester"
   handler               = "create_rds_postgres_tester.lambda_handler"
   lambda_dist_bucket_id = var.lambda_dist_bucket_id
+  layers                = [aws_lambda_layer_version.dependencies.arn]
   timeout_seconds       = 60
 }
 
-data "archive_file" "create_rds_postgres_tester_lambda_zip" {
+data "archive_file" "function" {
   type        = "zip"
   source_dir  = "${path.module}/lambdas/create_rds_postgres_tester"
   output_path = "${path.module}/lambdas/dist/create_rds_postgres_tester.zip"
 }
 
 # Lambda Layer with requirements.txt
-resource "null_resource" "lambda_layer" {
+resource "null_resource" "dependencies" {
   triggers = {
     requirements = filesha1("${path.module}/lambdas/create_rds_postgres_tester/requirements.txt")
   }
@@ -68,23 +69,23 @@ resource "null_resource" "lambda_layer" {
   }
 }
 
-data "archive_file" "lambda_layer_zip" {
-  depends_on = [ null_resource.lambda_layer ]
+data "archive_file" "dependencies" {
+  depends_on  = [null_resource.lambda_layer]
   output_path = "${path.module}/lambdas/dist/layer.zip"
   source_dir  = "/tmp/lambda-layer"
   type        = "zip"
 }
 
-resource "aws_s3_object" "lambda_layer" {
+resource "aws_s3_object" "dependencies" {
   bucket = var.lambda_dist_bucket_id
-  key    = "layer.zip"
+  key    = "create_rds_postgres_tester.zip_dependencies.zip"
   source = data.archive_file.lambda_layer_zip.output_path
 }
 
-resource "aws_lambda_layer_version" "this" {
+resource "aws_lambda_layer_version" "dependencies" {
   s3_bucket           = var.lambda_dist_bucket_id
   s3_key              = aws_s3_object.lambda_layer.key
-  layer_name          = "layer"
+  layer_name          = "create-rds-postgres-tester-dependencies"
   compatible_runtimes = ["python3.9"]
   skip_destroy        = true
   depends_on          = [aws_s3_object.lambda_layer]

@@ -50,6 +50,12 @@ variable "lambda_dist_bucket_id" {
   description = "The name of the bucket via through which to distribute the Lambda code"
 }
 
+variable "layer_arns" {
+  type = list(string)
+  default = null
+  description = "List of layer ARNs to attach to the lambda"
+}
+
 variable "log_retention_days" {
   type        = number
   description = "Number of days for which to keep log entries from this lambda"
