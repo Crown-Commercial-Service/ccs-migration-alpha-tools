@@ -3,15 +3,10 @@ import os
 import psycopg2
 
 
-def create_user():
-  # Replace 'your_rds_instance_endpoint' with the actual endpoint of your RDS instance
-  def create_user():
+def lambda_handler(event, context):
     database_name = os.environ.get('DBNAME')
 
-    iam_role_arn = 'rds_iam'
-
     master_username = 'postgres'
-
     # Retrieve the master password from AWS SSM
     ssm_client = boto3.client('ssm')
     response = ssm_client.get_parameter(Name=f'{database_name}-postgres-connection-password', WithDecryption=True)
@@ -54,7 +49,3 @@ def create_user():
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
-
-
-if __name__ == '__main__':
-  create_user()
