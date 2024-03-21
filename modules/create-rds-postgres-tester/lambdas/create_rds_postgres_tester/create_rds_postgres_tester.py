@@ -1,3 +1,8 @@
+import sys
+
+search_path = sys.path
+print(search_path)
+
 import boto3
 import os
 import psycopg2
