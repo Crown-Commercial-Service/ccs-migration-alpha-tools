@@ -8,16 +8,6 @@ variable "aws_region" {
   description = "Region for resource deployment"
 }
 
-variable "db_clients_security_group_id" {
-  type        = string
-  description = "ID of the security group that allows access to the RDS instance"
-}
-
-variable "db_name" {
-  type        = string
-  description = "Database name"
-}
-
 variable "create_tester_user_task_cpu" {
   type        = number
   default     = 256 # 0.25 vCPU
@@ -34,6 +24,24 @@ variable "create_tester_user_task_pgrestore_workers" {
   type        = number
   default     = 8
   description = "Number of pgrestore workers, one per CPU core"
+}
+
+variable "db_clients_security_group_id" {
+  type        = string
+  description = "ID of the security group that allows access to the RDS instance"
+}
+
+variable "db_name" {
+  type        = string
+  description = "Database name"
+}
+
+variable "ecs_execution_role" {
+  type = object({
+    arn  = string
+    name = string
+  })
+  description = "Details of the role which is assumed by the ECS execution processes"
 }
 
 variable "migrator_name" {
