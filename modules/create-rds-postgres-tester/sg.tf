@@ -14,4 +14,3 @@ resource "aws_security_group" "create_rds_postgres_tester" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-

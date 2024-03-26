@@ -9,7 +9,7 @@ variable "aws_region" {
 }
 
 variable "db_clients_security_group_id" {
-  type = string
+  type        = string
   description = "ID of the security group that allows access to the RDS instance"
 }
 

@@ -29,4 +29,3 @@ module "create_user_task" {
   task_memory            = var.load_task_memory
   volumes                = []
 }
-
