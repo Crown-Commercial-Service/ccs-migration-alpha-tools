@@ -1,91 +1,53 @@
-resource "aws_iam_role_policy" "create_rds_postgres_tester_lambda__get_postgres_password" {
-  name   = "get-postgres-password"
-  role   = module.this.service_role_name
-  policy = data.aws_iam_policy_document.get_postgres_password.json
-}
+resource "aws_sfn_state_machine" "create_rds_postgres_tester" {
+  name     = "create-rds-postgres-tester"
+  role_arn = aws_iam_role.step_function.arn
 
-data "aws_iam_policy_document" "get_postgres_password" {
-  version = "2012-10-17"
-
-  statement {
-    sid = "AllowSSMGetParameter"
-
-    effect = "Allow"
-
-    actions = [
-      "ssm:GetParameter"
-    ]
-
-    resources = [
-      "arn:aws:ssm:${var.aws_region}:${var.aws_account_id}:parameter/${var.db_name}-postgres-connection-password"
-    ]
+  definition = <<EOF
+{
+  "StartAt": "RetrieveSSMParameter",
+  "States": {
+    "RetrieveSSMParameter": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::ssm:getParameter",
+      "Parameters": {
+        "Name": "/${var.db_name}/sql_script",
+        "WithDecryption": true
+        },
+        "Next": "CreateUser"
+      },
+      "CreateUser": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::ecs:runTask.sync",
+        "Parameters": {
+          "Cluster": "${aws_ecs_cluster.ecs_cluster.arn}",
+          "LaunchType": "FARGATE",
+          "TaskDefinition": "${aws_ecs_task_definition.create_user_task.arn}",
+          "NetworkConfiguration": {
+            "awsvpcConfiguration": {
+              "Subnets": ["${var.subnet_id}"],
+              "SecurityGroups": ["${aws_security_group.ecs_security_group.id}"],
+              "AssignPublicIp": "ENABLED"
+            }
+          },
+          "Overrides": {
+            "ContainerOverrides": [
+              {
+                "Name": "pg_create_user",
+                "Environment": [
+                  {
+                    "Name": "DB_CONNECTION_URL",
+                    "Value": "${var.target_db_connection_url_ssm_param_arn}"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "End": true
+      },
+      "End": true
+    }
   }
 }
-
-module "this" {
-  source = "../../resource-groups/deployed-lambda"
-
-  dist_folder_path      = "${path.module}/lambdas/dist"
-  dist_package_filename = "create_rds_postgres_tester.zip"
-
-  dist_package_hash = {
-    base64sha256 = data.archive_file.function.output_base64sha256
-    md5          = data.archive_file.function.output_md5
-  }
-
-  environment_variables = {
-    DBNAME  = var.db_name
-    RDSHOST = var.rds_host
-  }
-
-  function_name         = "create-rds-postgres-tester"
-  handler               = "create_rds_postgres_tester.lambda_handler"
-  lambda_dist_bucket_id = var.lambda_dist_bucket_id
-  layer_arns            = [aws_lambda_layer_version.dependencies.arn]
-  timeout_seconds       = 60
-}
-
-data "archive_file" "function" {
-  type        = "zip"
-  source_dir  = "${path.module}/lambdas/create_rds_postgres_tester"
-  output_path = "${path.module}/lambdas/dist/create_rds_postgres_tester.zip"
-}
-
-# Lambda Layer with requirements.txt
-resource "null_resource" "dependencies" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-  provisioner "local-exec" {
-    command = <<EOT
-      cd "${path.module}/dependencies/python"
-      pyenv global 3.11.3
-      pip install --upgrade pip
-      pip install -r requirements.txt --target .
-    EOT
-  }
-}
-
-data "archive_file" "dependencies" {
-  depends_on  = [null_resource.dependencies]
-  output_path = "${path.module}/lambdas/dist/dependencies.zip"
-  source_dir  = "${path.module}/dependencies"
-  type        = "zip"
-}
-
-resource "aws_s3_object" "dependencies" {
-  bucket = var.lambda_dist_bucket_id
-  key    = "create_rds_postgres_tester_dependencies.zip"
-  source = data.archive_file.dependencies.output_path
-
-  etag = data.archive_file.dependencies.output_md5
-}
-
-resource "aws_lambda_layer_version" "dependencies" {
-  s3_bucket           = var.lambda_dist_bucket_id
-  s3_key              = aws_s3_object.dependencies.key
-  source_code_hash    = data.archive_file.dependencies.output_base64sha256
-  layer_name          = "create-rds-postgres-tester-dependencies"
-  compatible_runtimes = ["python3.9"]
-  skip_destroy        = true
+EOF
 }
