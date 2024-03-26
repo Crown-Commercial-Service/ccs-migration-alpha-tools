@@ -15,7 +15,7 @@ module "create_user_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "aws ssm get-parameter --name /${var.db_name}/sql_script --query 'Parameter.Value' --output text > /tmp/myfile && psql -d connection_string -f /tmp/myfile"
+        "aws ssm get-parameter --name ${var.db_name}-postgres-create-tester-user-sql --query 'Parameter.Value' --output text > /tmp/create_tester_user.sql && psql -d connection_string -f /tmp/create_tester_user.sql"
       ]
       port = null
       secret_environment_variables = [

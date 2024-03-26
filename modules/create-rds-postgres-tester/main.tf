@@ -4,7 +4,7 @@ resource "aws_sfn_state_machine" "create_rds_postgres_tester" {
 
   definition = <<EOF
 {
-  "StartAt": "RetrieveSSMParameter",
+  "StartAt": "CreateUser",
   "States": {
     "CreateUser": {
       "Type": "Task",
@@ -16,7 +16,7 @@ resource "aws_sfn_state_machine" "create_rds_postgres_tester" {
         "NetworkConfiguration": {
           "awsvpcConfiguration": {
             "Subnets": ["${var.subnet_id}"],
-            "SecurityGroups": "States.Array('${aws_security_group.ecs_security_group.id}', '${aws_security_group.create_user_task.id}', ${var.db_clients_security_group_id}')",
+            "SecurityGroups": "States.Array('${var.db_clients_security_group_id}')",
             "AssignPublicIp": "ENABLED"
           }
         },

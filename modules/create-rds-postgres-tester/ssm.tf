@@ -1,5 +1,5 @@
-resource "aws_ssm_parameter" "sql_script" {
-  name        = "/${var.db_name}/sql_script"
+resource "aws_ssm_parameter" "postgres-create-tester-user-sql" {
+  name        = "${var.db_name}-postgres-create-tester-user-sql"
   description = "SQL script to conditionally create the 'tester' user in the Postgres database"
   type        = "String"
   value       = <<EOF
