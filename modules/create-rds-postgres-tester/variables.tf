@@ -18,19 +18,19 @@ variable "db_name" {
   description = "Database name"
 }
 
-variable "load_task_cpu" {
+variable "create_tester_user_task_cpu" {
   type        = number
-  default     = 8192
+  default     = 256 # 0.25 vCPU
   description = "CPU resource to allocate to the load task, in millicores"
 }
 
-variable "load_task_memory" {
+variable "create_tester_user_task_memory" {
   type        = number
-  default     = 16384
+  default     = 512 # 0.5GB
   description = "Memory resource to allocate to the load task, in MiB"
 }
 
-variable "load_task_pgrestore_workers" {
+variable "create_tester_user_task_pgrestore_workers" {
   type        = number
   default     = 8
   description = "Number of pgrestore workers, one per CPU core"

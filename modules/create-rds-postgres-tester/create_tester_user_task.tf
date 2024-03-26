@@ -1,16 +1,16 @@
-module "create_user_task" {
+module "create_tester_user_task" {
   source = "../../resource-groups/ecs-fargate-task-definition"
 
   aws_account_id = var.aws_account_id
   aws_region     = var.aws_region
   container_definitions = {
     pg_restore = {
-      cpu                   = var.load_task_cpu
+      cpu                   = var.create_tester_user_task_cpu
       environment_variables = []
       essential             = true
       healthcheck_command   = null
       image                 = var.postgres_docker_image
-      memory                = var.load_task_memory
+      memory                = var.create_tester_user_task_memory
       mounts                = []
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
@@ -24,8 +24,8 @@ module "create_user_task" {
     }
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
-  family_name            = "pg_migrate_${var.migrator_name}_load"
-  task_cpu               = var.load_task_cpu
-  task_memory            = var.load_task_memory
+  family_name            = "${var.db_name}-postgres-create-tester-user-sql"
+  task_cpu               = var.create_tester_user_task_cpu
+  task_memory            = var.create_tester_user_task_memory
   volumes                = []
 }

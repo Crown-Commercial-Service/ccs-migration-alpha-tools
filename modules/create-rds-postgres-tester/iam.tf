@@ -62,7 +62,7 @@ resource "aws_iam_role_policy_attachment" "step_function_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task__ssm_policy" {
-  role       = module.create_user_task.task_role_name
+  role       = module.create_tester_user_task.task_role_name
   policy_arn = aws_iam_policy.ssm_policy.arn
 }
 
