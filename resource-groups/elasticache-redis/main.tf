@@ -21,8 +21,6 @@ resource "aws_elasticache_replication_group" "rg" {
 resource "aws_elasticache_cluster" "cluster" {
   apply_immediately    = var.elasticache_cluster_apply_immediately
   cluster_id           = var.cluster_id
-  security_group_ids   = [aws_security_group.cluster.id]
-  subnet_group_name    = aws_elasticache_subnet_group.cluster.name
   replication_group_id = aws_elasticache_replication_group.rg.id
 }
 
