@@ -35,7 +35,7 @@ def lambda_handler(event, context):
       DO
       $$
       BEGIN
-      IF NOT EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = '{username}') THEN
+      IF NOT EXISTS (SELECT FROM pg_catalog.pg_user WHERE username = '{username}') THEN
         CREATE USER {username};
         GRANT rds_iam TO {username};
         GRANT SELECT ON ALL TABLES IN SCHEMA public TO {username};

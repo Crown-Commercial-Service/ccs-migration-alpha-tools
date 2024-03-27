@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "ssm_policy" {
 resource "aws_iam_policy" "ssm_policy" {
   name        = "SSMParameterReadPolicy"
   description = "Allows reading the value from the SSM parameter"
-  policy      = data.aws_iam_policy_document.ssm_policy_document.json
+  policy      = data.aws_iam_policy_document.ssm_policy.json
 }
 
 resource "aws_iam_role" "step_function" {
@@ -34,7 +34,7 @@ resource "aws_iam_role" "step_function" {
   })
 }
 
-data "aws_iam_policy_document" "step_function_policy" {
+data "aws_iam_policy_document" "step_function" {
   statement {
     actions = [
       "states:StartExecution",
@@ -50,15 +50,15 @@ data "aws_iam_policy_document" "step_function_policy" {
   }
 }
 
-resource "aws_iam_policy" "step_funtions_policy" {
+resource "aws_iam_policy" "step_funtions" {
   name        = "StepFunctionsPolicy"
   description = "Allows Step Functions to execute tasks and read SSM parameters"
-  policy      = data.aws_iam_policy_document.step_function_policy.json
+  policy      = data.aws_iam_policy_document.step_function.json
 }
 
-resource "aws_iam_role_policy_attachment" "step_function_policy" {
+resource "aws_iam_role_policy_attachment" "step_function" {
   role       = aws_iam_role.step_function.name
-  policy_arn = aws_iam_policy.step_funtions_policy.arn
+  policy_arn = aws_iam_policy.step_funtions.arn
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task__ssm_policy" {
@@ -96,5 +96,5 @@ data "aws_iam_policy_document" "ecs_task_execution" {
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   role       = aws_iam_role.ecs_task_execution.name
-  policy_arn = aws_iam_policy.step_funtions_policy.arn
+  policy_arn = aws_iam_policy.step_funtions.arn
 }
