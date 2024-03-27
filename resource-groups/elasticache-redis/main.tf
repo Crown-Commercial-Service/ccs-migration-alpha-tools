@@ -7,7 +7,7 @@ resource "aws_elasticache_replication_group" "rg" {
   replication_group_id        = "${var.cluster_id}-rep-group"
   node_type                   = var.node_type
   num_cache_clusters          = var.num_cache_nodes
-  parameter_group_name        = "default.redis6.x"
+  parameter_group_name        = var.elasticache_cluster_parameter_group_name
   port                        = 6379
   security_group_ids          = [aws_security_group.cluster.id]
   subnet_group_name           = aws_elasticache_subnet_group.cluster.name
@@ -21,7 +21,6 @@ resource "aws_elasticache_replication_group" "rg" {
 resource "aws_elasticache_cluster" "cluster" {
   apply_immediately    = var.elasticache_cluster_apply_immediately
   cluster_id           = var.cluster_id
-  parameter_group_name = var.elasticache_cluster_parameter_group_name
   port                 = 6379
   security_group_ids   = [aws_security_group.cluster.id]
   subnet_group_name    = aws_elasticache_subnet_group.cluster.name
