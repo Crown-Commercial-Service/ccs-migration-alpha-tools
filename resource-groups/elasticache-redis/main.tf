@@ -11,6 +11,7 @@ resource "aws_elasticache_replication_group" "rg" {
   port                        = 6379
   security_group_ids          = [aws_security_group.cluster.id]
   subnet_group_name           = aws_elasticache_subnet_group.cluster.name
+  transit_encryption_enabled = true
 
   lifecycle {
     ignore_changes = [num_cache_clusters]
