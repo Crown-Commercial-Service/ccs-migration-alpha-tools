@@ -1,9 +1,10 @@
 resource "aws_elasticache_replication_group" "rg" {
   at_rest_encryption_enabled  = true
   automatic_failover_enabled  = true
+  description                 = "replication group"
   engine                      = "redis"
   engine_version              = var.engine_version
-  preferred_cache_cluster_azs = ["eu-west-1a", "eu-west-1b"] # This will need to use a variable for the region
+  preferred_cache_cluster_azs = ["eu-west-2a", "eu-west-2b"]
   replication_group_id        = "${var.cluster_id}-rep-group"
   node_type                   = var.node_type
   num_cache_clusters          = var.num_cache_nodes
