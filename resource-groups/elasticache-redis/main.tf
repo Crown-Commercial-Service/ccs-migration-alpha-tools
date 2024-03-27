@@ -1,6 +1,6 @@
 resource "aws_elasticache_replication_group" "rg" {
   at_rest_encryption_enabled  = true
-  automatic_failover_enabled  = true
+  automatic_failover_enabled  = false
   description                 = "replication group"
   engine                      = "redis"
   engine_version              = var.engine_version
