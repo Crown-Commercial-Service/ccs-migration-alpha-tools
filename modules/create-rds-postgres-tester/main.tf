@@ -27,7 +27,7 @@ resource "aws_sfn_state_machine" "create-tester-user" {
               "Environment": [
                 {
                   "Name": "DB_CONNECTION_URL",
-                  "Value": "${var.target_db_connection_url_ssm_param_arn}"
+                  "Value": "${var.db_connection_url_ssm_param_arn}"
                 }
               ]
             }

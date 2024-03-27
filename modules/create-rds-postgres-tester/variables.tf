@@ -31,6 +31,11 @@ variable "db_clients_security_group_id" {
   description = "ID of the security group that allows access to the RDS instance"
 }
 
+variable "db_connection_url_ssm_param_arn" {
+  type        = string
+  description = "ARN of SSM param which contains the connection URL for the Postgres database"
+}
+
 variable "db_name" {
   type        = string
   description = "Database name"
@@ -71,11 +76,6 @@ variable "rds_host" {
 variable "subnet_id" {
   type        = string
   description = "ID of the subnet in which to run the extract/load ECS tasks and also in which to present the EFS mount point"
-}
-
-variable "target_db_connection_url_ssm_param_arn" {
-  type        = string
-  description = "ARN of SSM param which contains the connection URL for the target Postgres database"
 }
 
 variable "vpc_id" {

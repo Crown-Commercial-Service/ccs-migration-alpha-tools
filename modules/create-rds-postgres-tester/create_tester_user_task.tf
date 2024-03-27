@@ -19,7 +19,7 @@ module "create_tester_user_task" {
       ]
       port = null
       secret_environment_variables = [
-        { "name" : "DB_CONNECTION_URL", "valueFrom" : var.target_db_connection_url_ssm_param_arn }
+        { "name" : "DB_CONNECTION_URL", "valueFrom" : var.db_connection_url_ssm_param_arn }
       ]
     }
   }
