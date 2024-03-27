@@ -4,7 +4,6 @@ resource "aws_elasticache_replication_group" "rg" {
   description                 = "replication group"
   engine                      = "redis"
   engine_version              = var.engine_version
-  preferred_cache_cluster_azs = ["eu-west-2a", "eu-west-2b"]
   replication_group_id        = "${var.cluster_id}-rep-group"
   node_type                   = var.node_type
   num_cache_clusters          = var.num_cache_nodes
