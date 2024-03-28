@@ -54,11 +54,6 @@ variable "ecs_execution_role" {
   description = "Details of the role which is assumed by the ECS execution processes"
 }
 
-variable "migrator_name" {
-  description = "A name to distinguish this migrator"
-  type        = string
-}
-
 variable "postgres_docker_image" {
   type        = string
   description = "Canonical name of the Docker image from which to run psql"
