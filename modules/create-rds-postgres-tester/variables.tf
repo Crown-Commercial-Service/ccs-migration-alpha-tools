@@ -41,6 +41,11 @@ variable "db_name" {
   description = "Database name"
 }
 
+variable "ecs_cluster_arn" {
+  type        = string
+  description = "ARN of cluster into which tasks will be deployed"
+}
+
 variable "ecs_execution_role" {
   type = object({
     arn  = string
