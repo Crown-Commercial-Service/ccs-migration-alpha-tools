@@ -10,7 +10,7 @@ resource "aws_sfn_state_machine" "create-tester-user" {
       "Type": "Task",
       "Resource": "arn:aws:states:::ecs:runTask.sync",
       "Parameters": {
-        "Cluster": "${var.ecs_cluster.arn}",
+        "Cluster": "${var.ecs_cluster_arn}",
         "LaunchType": "FARGATE",
         "TaskDefinition": "${module.create_tester_user_task.task_definition_arn}",
         "NetworkConfiguration": {
