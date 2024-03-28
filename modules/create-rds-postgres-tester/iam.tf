@@ -42,7 +42,10 @@ data "aws_iam_policy_document" "step_function" {
       "states:DescribeExecution",
       "states:StopExecution",
       "states:GetExecutionHistory",
-      "ssm:GetParameter"
+      "ssm:GetParameter",
+      "ssm:GetParameter",
+      "events:PutRule",
+      "events:PutTargets"
     ]
 
     resources = [
