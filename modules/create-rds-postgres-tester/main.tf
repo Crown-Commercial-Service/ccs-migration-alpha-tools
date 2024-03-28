@@ -6,7 +6,7 @@ resource "aws_sfn_state_machine" "create-tester-user" {
 {
   "StartAt": "create-tester-user",
   "States": {
-    "CreateUser": {
+    "create-tester-user": {
       "Type": "Task",
       "Resource": "arn:aws:states:::ecs:runTask.sync",
       "Parameters": {
@@ -16,7 +16,7 @@ resource "aws_sfn_state_machine" "create-tester-user" {
         "NetworkConfiguration": {
           "awsvpcConfiguration": {
             "Subnets": ["${var.subnet_id}"],
-            "SecurityGroups": "States.Array('${var.db_clients_security_group_id}')",
+            "SecurityGroups": ["${var.db_clients_security_group_id}"],
             "AssignPublicIp": "ENABLED"
           }
         },
