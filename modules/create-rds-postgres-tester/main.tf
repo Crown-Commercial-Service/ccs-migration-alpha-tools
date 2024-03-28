@@ -1,6 +1,6 @@
 resource "aws_sfn_state_machine" "create-tester-user" {
   name     = "create-tester-user"
-  role_arn = aws_iam_role.step_function.arn
+  role_arn = "arn:aws:iam::aws:policy/AWSStepFunctionsConsoleFullAccess"
 
   definition = <<EOF
 {

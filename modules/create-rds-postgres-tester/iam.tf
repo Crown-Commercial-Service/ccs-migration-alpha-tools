@@ -100,6 +100,6 @@ data "aws_iam_policy_document" "ecs_task_execution" {
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   role       = aws_iam_role.ecs_task_execution.name
-  policy_arn = "arn:aws:iam::*:role/service-role/StatesExecutionRole*"
+  policy_arn = "arn:aws:iam::809258594412:role/service-role/StatesExecutionRole*"
   # policy_arn = aws_iam_policy.step_funtions.arn
 }
