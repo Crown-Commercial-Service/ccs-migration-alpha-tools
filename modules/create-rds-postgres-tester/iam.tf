@@ -37,6 +37,7 @@ resource "aws_iam_role" "step_function" {
 data "aws_iam_policy_document" "step_function" {
   statement {
     actions = [
+      "states:CreateStateMachine",
       "states:StartExecution",
       "states:DescribeExecution",
       "states:StopExecution",
