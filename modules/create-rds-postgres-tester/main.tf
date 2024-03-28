@@ -14,7 +14,7 @@ resource "aws_sfn_state_machine" "create-tester-user" {
         "LaunchType": "FARGATE",
         "TaskDefinition": "${module.create_tester_user_task.task_definition_arn}",
         "NetworkConfiguration": {
-          "awsvpcConfiguration": {
+          "AwsvpcConfiguration": {
             "Subnets": ["${var.subnet_id}"],
             "SecurityGroups": ["${var.db_clients_security_group_id}"],
             "AssignPublicIp": "ENABLED"
