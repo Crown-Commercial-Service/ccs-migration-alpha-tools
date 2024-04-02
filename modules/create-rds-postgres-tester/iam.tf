@@ -7,7 +7,8 @@ data "aws_iam_policy_document" "ssm_policy" {
       "ssm:GetParameter",
     ]
     resources = [
-      aws_ssm_parameter.postgres_create_tester_user_sql.arn
+      aws_ssm_parameter.postgres_create_tester_user_sql.arn,
+      var.db_connection_url_ssm_param_arn
     ]
   }
 }
