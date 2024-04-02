@@ -26,11 +26,6 @@ variable "create_tester_user_task_pgrestore_workers" {
   description = "Number of pgrestore workers, one per CPU core"
 }
 
-variable "db_clients_security_group_id" {
-  type        = string
-  description = "ID of the security group that allows access to the RDS instance"
-}
-
 variable "db_connection_url_ssm_param_arn" {
   type        = string
   description = "ARN of SSM param which contains the connection URL for the Postgres database"
@@ -71,6 +66,11 @@ variable "resource_name_prefixes" {
 variable "rds_host" {
   type        = string
   description = "RDS host"
+}
+
+variable "security_group_ids" {
+  type        = set(string)
+  description = "IDs of the security groups that will be assigned to the network interface"
 }
 
 variable "subnet_id" {

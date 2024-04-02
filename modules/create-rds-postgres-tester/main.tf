@@ -16,7 +16,7 @@ resource "aws_sfn_state_machine" "create-tester-user" {
         "NetworkConfiguration": {
           "AwsvpcConfiguration": {
             "Subnets": ["${var.subnet_id}"],
-            "SecurityGroups": ["${var.db_clients_security_group_id}"],
+            "SecurityGroups": ["${join("\",\"", var.security_group_ids)}"],
             "AssignPublicIp": "ENABLED"
           }
         },
