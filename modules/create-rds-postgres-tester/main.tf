@@ -74,6 +74,7 @@ data "aws_iam_policy_document" "sfn_create_tester_user" {
 
     resources = [
       var.ecs_execution_role.arn,
+      module.create_tester_user.task_role_arn
     ]
   }
 
