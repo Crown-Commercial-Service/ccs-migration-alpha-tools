@@ -20,12 +20,6 @@ variable "create_tester_user_task_memory" {
   description = "Memory resource to allocate to the load task, in MiB"
 }
 
-variable "create_tester_user_task_pgrestore_workers" {
-  type        = number
-  default     = 8
-  description = "Number of pgrestore workers, one per CPU core"
-}
-
 variable "db_connection_url_ssm_param_arn" {
   type        = string
   description = "ARN of SSM param which contains the connection URL for the Postgres database"
