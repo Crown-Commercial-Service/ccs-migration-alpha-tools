@@ -23,7 +23,7 @@ module "create_tester_user" {
       ]
     }
   }
-  ecs_execution_role_arn = var.ecs_execution_role.arn
+  ecs_execution_role_arn = var.execution_role.arn
   family_name            = "${var.db_name}-postgres-create-tester-user"
   task_cpu               = var.create_tester_user_task_cpu
   task_memory            = var.create_tester_user_task_memory
