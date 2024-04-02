@@ -66,7 +66,7 @@ resource "aws_iam_policy" "ssm_policy" {
 # }
 
 resource "aws_iam_role_policy_attachment" "ecs_task__ssm_policy" {
-  role       = module.create_tester_user_task.task_role_name
+  role       = module.create_tester_user.task_role_name
   policy_arn = aws_iam_policy.ssm_policy.arn
 }
 
@@ -100,6 +100,7 @@ data "aws_iam_policy_document" "ecs_task_execution" {
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   role       = aws_iam_role.ecs_task_execution.name
-  policy_arn = "arn:aws:iam::809258594412:role/service-role/StatesExecutionRole*"
+  policy_arn = aws_iam_policy.ssm_policy.arn
+  # "arn:aws:iam::809258594412:role/service-role/StatesExecutionRole*"
   # policy_arn = aws_iam_policy.step_funtions.arn
 }

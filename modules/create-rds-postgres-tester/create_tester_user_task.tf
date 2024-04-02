@@ -1,4 +1,4 @@
-module "create_tester_user_task" {
+module "create_tester_user" {
   source = "../../resource-groups/ecs-fargate-task-definition"
 
   aws_account_id = var.aws_account_id
