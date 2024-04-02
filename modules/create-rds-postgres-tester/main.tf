@@ -1,5 +1,5 @@
 resource "aws_sfn_state_machine" "create-tester-user" {
-  name     = "perform-create-tester-user"
+  name     = "create-tester-user"
   role_arn = aws_iam_role.sfn_create_tester_user.arn
 
   definition = <<EOF
@@ -42,7 +42,7 @@ EOF
 }
 
 resource "aws_iam_role" "sfn_create_tester_user" {
-  name = "perform-create-tester-user-sfn"
+  name = "create-tester-user-sfn"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -59,7 +59,7 @@ resource "aws_iam_role" "sfn_create_tester_user" {
   })
 }
 
-data "aws_iam_policy_document" "sfn_perform_create_tester_user" {
+data "aws_iam_policy_document" "sfn_create_tester_user" {
   version = "2012-10-17"
 
   statement {
