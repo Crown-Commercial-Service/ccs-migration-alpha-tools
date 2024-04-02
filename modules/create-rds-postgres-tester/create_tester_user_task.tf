@@ -4,7 +4,7 @@ module "create_tester_user" {
   aws_account_id = var.aws_account_id
   aws_region     = var.aws_region
   container_definitions = {
-    pg_restore = {
+    pg_create_user = {
       cpu                   = var.create_tester_user_task_cpu
       environment_variables = []
       essential             = true
