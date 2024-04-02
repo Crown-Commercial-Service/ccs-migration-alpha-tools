@@ -73,7 +73,7 @@ data "aws_iam_policy_document" "sfn_create_tester_user" {
     ]
 
     resources = [
-      var.execution_role.arn,
+      var.ecs_execution_role.arn,
     ]
   }
 
