@@ -6,7 +6,7 @@ resource "aws_ssm_parameter" "postgres_create_tester_user_sql" {
 DO
 $do$
 BEGIN
-  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolename = 'tester')
+  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'tester')
     then
     RAISE NOTICE 'Role "tester" already exists. Skipping.';
   else
