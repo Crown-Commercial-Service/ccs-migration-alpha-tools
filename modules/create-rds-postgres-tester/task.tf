@@ -15,7 +15,7 @@ module "create_tester_user" {
       # Requires use of an Alpine-based image, to install the AWS CLI to fetch the SQL from SSM
       override_command = [
         "sh", "-c",
-        "apk add --no-cache aws-cli && aws ssm get-parameter --name ${var.db_name}-postgres-create-tester-user-sql --query 'Parameter.Value' --output text > /tmp/create_tester_user.sql && psql -d $DB_CONNECTION_URL -f /tmp/create_tester_user.sql"
+        "apk add --no-cache aws-cli > /dev/null && aws ssm get-parameter --name ${var.db_name}-postgres-create-tester-user-sql --query 'Parameter.Value' --output text > /tmp/create_tester_user.sql && psql -d $DB_CONNECTION_URL -f /tmp/create_tester_user.sql"
       ]
       port = null
       secret_environment_variables = [
