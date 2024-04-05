@@ -7,7 +7,7 @@ data "aws_iam_policy_document" "ssm_get" {
       "ssm:GetParameter",
     ]
     resources = [
-      aws_ssm_parameter.postgres_create_tester_user_sql.arn,
+      aws_ssm_parameter.create_rds_postgres_tester_sql.arn,
       var.db_connection_url_ssm_param_arn
     ]
   }
@@ -20,7 +20,7 @@ resource "aws_iam_policy" "ssm_get" {
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task__ssm_get" {
-  role       = module.create_tester_user.task_role_name
+  role       = module.create_rds_postgres_tester.task_role_name
   policy_arn = aws_iam_policy.ssm_get.arn
 }
 
@@ -44,7 +44,7 @@ resource "aws_iam_role" "create_rds_postgres_tester_sfn" {
   })
 }
 
-data "aws_iam_policy_document" "sfn_create_tester_user" {
+data "aws_iam_policy_document" "create_rds_postgres_tester_sfn" {
   version = "2012-10-17"
 
   statement {
@@ -59,7 +59,7 @@ data "aws_iam_policy_document" "sfn_create_tester_user" {
 
     resources = [
       var.ecs_execution_role.arn,
-      module.create_tester_user.task_role_arn
+      module.create_rds_postgres_tester.task_role_arn
     ]
   }
 
@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "sfn_create_tester_user" {
     ]
 
     resources = [
-      "${module.create_tester_user.task_definition_arn_without_revision}:*"
+      "${module.create_rds_postgres_tester.task_definition_arn_without_revision}:*"
     ]
   }
 
@@ -110,7 +110,7 @@ data "aws_iam_policy_document" "sfn_create_tester_user" {
   }
 }
 
-resource "aws_iam_role_policy" "sfn_create_tester_user" {
-  role   = aws_iam_role.sfn_create_tester_user.name
-  policy = data.aws_iam_policy_document.sfn_create_tester_user.json
+resource "aws_iam_role_policy" "create_rds_postgres_tester_sfn" {
+  role   = aws_iam_role.create_rds_postgres_tester_sfn.name
+  policy = data.aws_iam_policy_document.create_rds_postgres_tester_sfn.json
 }

@@ -1,4 +1,4 @@
-resource "aws_ssm_parameter" "postgres_create_tester_user_sql" {
+resource "aws_ssm_parameter" "create_rds_postgres_tester_sql" {
   name        = "${var.db_name}-postgres-create-tester-user-sql"
   description = "SQL script to conditionally create the 'tester' user in the Postgres database"
   type        = "String"

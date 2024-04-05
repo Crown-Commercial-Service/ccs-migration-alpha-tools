@@ -8,13 +8,13 @@ variable "aws_region" {
   description = "Region for resource deployment"
 }
 
-variable "create_tester_user_task_cpu" {
+variable "create_rds_postgres_tester_task_cpu" {
   type        = number
   default     = 256 # 0.25 vCPU
   description = "CPU resource to allocate to the load task, in millicores"
 }
 
-variable "create_tester_user_task_memory" {
+variable "create_rds_postgres_tester_task_memory" {
   type        = number
   default     = 512 # 0.5GB
   description = "Memory resource to allocate to the load task, in MiB"
