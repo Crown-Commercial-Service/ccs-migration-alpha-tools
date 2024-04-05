@@ -9,7 +9,7 @@ BEGIN
   IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'tester')
     then
     RAISE NOTICE 'Role "tester" already exists. Skipping.';
-  else
+  ELSE
     RAISE NOTICE 'Creating role "tester"...';
     CREATE ROLE tester with LOGIN;
     GRANT rds_iam TO tester;
