@@ -1,4 +1,4 @@
-module "create_tester_user" {
+module "create_rds_postgres_tester" {
   source = "../../resource-groups/ecs-fargate-task-definition"
 
   aws_account_id = var.aws_account_id

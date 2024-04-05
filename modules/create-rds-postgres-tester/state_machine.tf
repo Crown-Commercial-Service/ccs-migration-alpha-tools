@@ -1,6 +1,6 @@
-resource "aws_sfn_state_machine" "create-tester-user" {
-  name     = "create-tester-user"
-  role_arn = aws_iam_role.sfn_create_tester_user.arn
+resource "aws_sfn_state_machine" "this" {
+  name     = "create-rds-postgres-tester"
+  role_arn = aws_iam_role.create_rds_postgres_tester_sfn.arn
 
   definition = <<EOF
 {
@@ -12,7 +12,7 @@ resource "aws_sfn_state_machine" "create-tester-user" {
       "Parameters": {
         "Cluster": "${var.ecs_cluster_arn}",
         "LaunchType": "FARGATE",
-        "TaskDefinition": "${module.create_tester_user.task_definition_arn}",
+        "TaskDefinition": "${module.create_rds_postgres_tester.task_definition_arn}",
         "NetworkConfiguration": {
           "AwsvpcConfiguration": {
             "Subnets": ["${var.subnet_id}"],
