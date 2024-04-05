@@ -4,9 +4,9 @@ resource "aws_sfn_state_machine" "this" {
 
   definition = <<EOF
 {
-  "StartAt": "create-tester-user",
+  "StartAt": "create-rds-postgres-tester",
   "States": {
-    "create-tester-user": {
+    "create-rds-postgres-tester": {
       "Type": "Task",
       "Resource": "arn:aws:states:::ecs:runTask.sync",
       "Parameters": {

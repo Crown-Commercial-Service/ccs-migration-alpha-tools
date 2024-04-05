@@ -24,7 +24,7 @@ module "create_rds_postgres_tester" {
     }
   }
   ecs_execution_role_arn = var.ecs_execution_role.arn
-  family_name            = "${var.db_name}-postgres-create-tester-user"
+  family_name            = "${var.db_name}-create-rds-postgres-tester"
   task_cpu               = var.create_rds_postgres_tester_task_cpu
   task_memory            = var.create_rds_postgres_tester_task_memory
   volumes                = []
