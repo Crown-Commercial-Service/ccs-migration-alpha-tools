@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "ssm_policy" {
+data "aws_iam_policy_document" "ssm_get" {
   version = "2012-10-17"
 
   statement {
@@ -13,15 +13,15 @@ data "aws_iam_policy_document" "ssm_policy" {
   }
 }
 
-resource "aws_iam_policy" "ssm_policy" {
-  name        = "SSMParameterReadPolicy"
-  description = "Allows reading the value from the SSM parameter"
-  policy      = data.aws_iam_policy_document.ssm_policy.json
+resource "aws_iam_policy" "ssm_get" {
+  name        = "CreateRDSPostgresTesterSSMParameterGet"
+  description = "Allows getting the value from the specified SSM parameters"
+  policy      = data.aws_iam_policy_document.ssm_get.json
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_task__ssm_policy" {
+resource "aws_iam_role_policy_attachment" "ecs_task__ssm_get" {
   role       = module.create_tester_user.task_role_name
-  policy_arn = aws_iam_policy.ssm_policy.arn
+  policy_arn = aws_iam_policy.ssm_get.arn
 }
 
 # IAM resources for the Step Function
@@ -64,7 +64,7 @@ data "aws_iam_policy_document" "sfn_create_tester_user" {
 
 
   statement {
-    sid = "AllowRunMigratorTasks"
+    sid = "AllowRunTasks"
 
     effect = "Allow"
 
@@ -78,7 +78,7 @@ data "aws_iam_policy_document" "sfn_create_tester_user" {
   }
 
   statement {
-    sid = "AllowStopMigratorTasks"
+    sid = "AllowStopTasks"
 
     effect = "Allow"
 
