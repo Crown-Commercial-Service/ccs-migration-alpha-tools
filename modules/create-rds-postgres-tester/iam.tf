@@ -26,7 +26,8 @@ resource "aws_iam_role_policy_attachment" "ecs_task__ssm_get" {
 
 # IAM resources for the Step Function
 resource "aws_iam_role" "create_rds_postgres_tester_sfn" {
-  name = "create-rds-postgres-tester-sfn"
+  name        = "create-rds-postgres-tester-sfn"
+  description = "Role assumed by the Step Function to run the create-rds-postgres-tester task"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
