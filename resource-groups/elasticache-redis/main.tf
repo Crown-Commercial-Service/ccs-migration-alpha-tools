@@ -1,6 +1,13 @@
+resource "random_password" "auth_token" {
+  length  = 64
+  special = false
+}
+
 resource "aws_elasticache_replication_group" "rg" {
   at_rest_encryption_enabled  = true
   automatic_failover_enabled  = false
+  auth_token                  = random_password.auth_token.result
+  auth_token_update_strategy  = "SET"
   description                 = "replication group"
   engine                      = "redis"
   engine_version              = var.engine_version

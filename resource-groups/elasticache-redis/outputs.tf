@@ -15,5 +15,5 @@ output "redis_port" {
 
 output "redis_uri" {
   description = "Connection URI for the Redis cluster"
-  value       = "${aws_elasticache_cluster.cluster.cache_nodes[0]["address"]}:${aws_elasticache_cluster.cluster.cache_nodes[0]["port"]}"
+  value       = "default:${random_password.auth_token.result}@${aws_elasticache_cluster.cluster.cache_nodes[0]["address"]}:${aws_elasticache_cluster.cluster.cache_nodes[0]["port"]}"
 }
