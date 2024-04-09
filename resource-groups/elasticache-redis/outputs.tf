@@ -15,5 +15,5 @@ output "redis_port" {
 
 output "redis_uri" {
   description = "Connection URI for the Redis cluster"
-  value       = ":${random_password.auth_token.result}@${aws_elasticache_replication_group.rg.primary_endpoint_address}"
+  value       = ":${random_password.auth_token.result}@${aws_elasticache_replication_group.rg.primary_endpoint_address}:${aws_elasticache_replication_group.rg.port}"
 }
