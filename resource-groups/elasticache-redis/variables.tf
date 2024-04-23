@@ -37,6 +37,12 @@ variable "num_cache_nodes" {
   default     = 1
 }
 
+variable "replication_group_enabled" {
+  type        = bool
+  description = "Boolean value to decide whether or not to enable Elasticache Replication Group"
+  default     = false
+}
+
 variable "resource_name_prefixes" {
   type = object({
     normal        = string,
