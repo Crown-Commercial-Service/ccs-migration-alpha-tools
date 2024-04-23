@@ -5,15 +5,15 @@ output "clients_security_group_id" {
 
 output "redis_host" {
   description = "Connection host for the Redis cluster"
-  value       = aws_elasticache_cluster.cluster.cache_nodes[0]["address"]
+  value       = var.replication_group_enabled != false ? aws_elasticache_replication_group.rg[0].primary_endpoint_address : aws_elasticache_cluster.cluster.cache_nodes[0]["address"]
 }
 
 output "redis_port" {
   description = "Connection port for the Redis cluster"
-  value       = aws_elasticache_cluster.cluster.cache_nodes[0]["port"]
+  value       = var.replication_group_enabled != false ? aws_elasticache_replication_group.rg[0].port : aws_elasticache_cluster.cluster.cache_nodes[0]["port"]
 }
 
 output "redis_uri" {
   description = "Connection URI for the Redis cluster"
-  value       = "${aws_elasticache_cluster.cluster.cache_nodes[0]["address"]}:${aws_elasticache_cluster.cluster.cache_nodes[0]["port"]}"
+  value       = var.replication_group_enabled != false ? ":${random_password.auth_token[0].result}@${aws_elasticache_replication_group.rg[0].primary_endpoint_address}:${aws_elasticache_replication_group.rg[0].port}" : "${aws_elasticache_cluster.cluster.cache_nodes[0]["address"]}:${aws_elasticache_cluster.cluster.cache_nodes[0]["port"]}"
 }
