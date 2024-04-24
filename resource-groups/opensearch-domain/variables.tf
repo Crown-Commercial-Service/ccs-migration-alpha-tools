@@ -44,3 +44,47 @@ variable "vpc_id" {
   type        = string
   description = "ID of the VPC containing the service"
 }
+
+variable "enable_search_slow_logs" {
+  type        = bool
+  description = "Whether search slow logs should be enabled"
+  default     = false
+}
+
+variable "enable_index_slow_logs" {
+  type        = bool
+  description = "Whether index slow logs should be enabled"
+  default     = false
+}
+
+variable "enable_error_logs" {
+  type        = bool
+  description = "Whether error logs should be enabled"
+  default     = false
+}
+
+variable "enable_audit_logs" {
+  type        = bool
+  description = "Whether audit logs should be enabled"
+  default     = false
+}
+
+variable "log_group_name_search_slow_logs" {
+  type        = string
+  description = "Name of search slow log group"
+}
+
+variable "log_group_name_index_slow_logs" {
+  type        = string
+  description = "Name of index slow log group"
+}
+
+variable "log_group_name_error_logs" {
+  type        = string
+  description = "Name of error log group"
+}
+
+variable "log_group_name_audit_logs" {
+  type        = string
+  description = "Name of audit log group"
+}
