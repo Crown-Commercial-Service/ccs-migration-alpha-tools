@@ -8,6 +8,30 @@ variable "ebs_volume_size_gib" {
   description = "Size (in GiB) of the EBS volumes to attach to each search instance"
 }
 
+#variable "enable_audit_logs" {
+#  type        = bool
+#  description = "Whether audit logs should be enabled"
+#  default     = true
+#}
+
+variable "enable_error_logs" {
+  type        = bool
+  description = "Whether error logs should be enabled"
+  default     = true
+}
+
+variable "enable_index_slow_logs" {
+  type        = bool
+  description = "Whether index slow logs should be enabled"
+  default     = true
+}
+
+variable "enable_search_slow_logs" {
+  type        = bool
+  description = "Whether search slow logs should be enabled"
+  default     = true
+}
+
 variable "engine_version" {
   type        = string
   description = "Version of OpenSearch engine to deploy"
@@ -24,6 +48,26 @@ variable "instance_type" {
   type        = string
   description = "Type of compute instance to provide for the OpenSearch domain"
   default     = "t3.small.search"
+}
+
+#variable "log_group_name_audit_logs" {
+#  type        = string
+#  description = "Name of audit log group"
+#}
+
+variable "log_group_name_error_logs" {
+  type        = string
+  description = "Name of error log group"
+}
+
+variable "log_group_name_index_slow_logs" {
+  type        = string
+  description = "Name of index slow log group"
+}
+
+variable "log_group_name_search_slow_logs" {
+  type        = string
+  description = "Name of search slow log group"
 }
 
 variable "resource_name_prefixes" {
@@ -44,47 +88,3 @@ variable "vpc_id" {
   type        = string
   description = "ID of the VPC containing the service"
 }
-
-variable "enable_search_slow_logs" {
-  type        = bool
-  description = "Whether search slow logs should be enabled"
-  default     = true
-}
-
-variable "enable_index_slow_logs" {
-  type        = bool
-  description = "Whether index slow logs should be enabled"
-  default     = true
-}
-
-variable "enable_error_logs" {
-  type        = bool
-  description = "Whether error logs should be enabled"
-  default     = true
-}
-
-#variable "enable_audit_logs" {
-#  type        = bool
-#  description = "Whether audit logs should be enabled"
-#  default     = true
-#}
-
-variable "log_group_name_search_slow_logs" {
-  type        = string
-  description = "Name of search slow log group"
-}
-
-variable "log_group_name_index_slow_logs" {
-  type        = string
-  description = "Name of index slow log group"
-}
-
-variable "log_group_name_error_logs" {
-  type        = string
-  description = "Name of error log group"
-}
-
-#variable "log_group_name_audit_logs" {
-#  type        = string
-#  description = "Name of audit log group"
-#}

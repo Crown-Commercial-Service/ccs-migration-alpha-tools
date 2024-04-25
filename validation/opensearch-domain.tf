@@ -4,8 +4,16 @@ module "opensearch_domain" {
   domain_name         = "domain"
 
   ebs_volume_size_gib = 10
+  #enable_audit_logs = true
+  enable_error_logs = true
+  enable_index_slow_logs = true
+  enable_search_slow_logs = true
   engine_version      = "OpenSearch_1.4"
   instance_type       = "m1.medium.search"
+  #log_group_name_audit_logs = "opensearch-audit"
+  log_group_name_error_logs = "opensearch-error"
+  log_group_name_index_slow_logs = "opensearch-index-slow"
+  log_group_name_search_slow_logs = "opensearch-search-slow"
   resource_name_prefixes = {
     normal        = "PREFIX:123"
     hyphens       = "PREFIX-123"
@@ -13,12 +21,6 @@ module "opensearch_domain" {
   }
   subnet_ids = ["subnet-123", "subnet-456"]
   vpc_id     = "vpc-12345"
-  enable_search_slow_logs = true
-  enable_index_slow_logs = true
-  enable_error_logs = true
-  #enable_audit_logs = true
-  log_group_name_search_slow_logs = "opensearch-search-slow"
-  log_group_name_index_slow_logs = "opensearch-index-slow"
-  log_group_name_error_logs = "opensearch-error"
-  #log_group_name_audit_logs = "opensearch-audit"
+  
+
 }
