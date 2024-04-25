@@ -63,11 +63,11 @@ variable "enable_error_logs" {
   default     = true
 }
 
-variable "enable_audit_logs" {
-  type        = bool
-  description = "Whether audit logs should be enabled"
-  default     = true
-}
+#variable "enable_audit_logs" {
+#  type        = bool
+#  description = "Whether audit logs should be enabled"
+#  default     = true
+#}
 
 variable "log_group_name_search_slow_logs" {
   type        = string
@@ -84,7 +84,7 @@ variable "log_group_name_error_logs" {
   description = "Name of error log group"
 }
 
-variable "log_group_name_audit_logs" {
-  type        = string
-  description = "Name of audit log group"
-}
+#variable "log_group_name_audit_logs" {
+#  type        = string
+#  description = "Name of audit log group"
+#}

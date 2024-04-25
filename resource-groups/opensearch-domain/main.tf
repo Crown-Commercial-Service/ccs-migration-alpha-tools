@@ -63,11 +63,11 @@ resource "aws_opensearch_domain" "domain" {
     cloudwatch_log_group_arn = module.error_log_group.log_group_arn
     log_type = "ES_APPLICATION_LOGS"
   }
-  log_publishing_options {
-    enabled = var.enable_audit_logs
-    cloudwatch_log_group_arn = module.audit_log_group.log_group_arn
-    log_type = "AUDIT_LOGS"
-  }
+  #log_publishing_options {
+  #  enabled = var.enable_audit_logs
+  #  cloudwatch_log_group_arn = module.audit_log_group.log_group_arn
+  #  log_type = "AUDIT_LOGS"
+  #}
 
   tags = {
     Domain = var.domain_name
