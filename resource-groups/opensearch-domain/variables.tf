@@ -48,25 +48,25 @@ variable "vpc_id" {
 variable "enable_search_slow_logs" {
   type        = bool
   description = "Whether search slow logs should be enabled"
-  default     = false
+  default     = true
 }
 
 variable "enable_index_slow_logs" {
   type        = bool
   description = "Whether index slow logs should be enabled"
-  default     = false
+  default     = true
 }
 
 variable "enable_error_logs" {
   type        = bool
   description = "Whether error logs should be enabled"
-  default     = false
+  default     = true
 }
 
 variable "enable_audit_logs" {
   type        = bool
   description = "Whether audit logs should be enabled"
-  default     = false
+  default     = true
 }
 
 variable "log_group_name_search_slow_logs" {

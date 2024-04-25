@@ -13,10 +13,10 @@ module "opensearch_domain" {
   }
   subnet_ids = ["subnet-123", "subnet-456"]
   vpc_id     = "vpc-12345"
-  enable_search_slow_logs = false
-  enable_index_slow_logs = false
-  enable_error_logs = false
-  enable_audit_logs = false
+  enable_search_slow_logs = true
+  enable_index_slow_logs = true
+  enable_error_logs = true
+  enable_audit_logs = true
   log_group_name_search_slow_logs = "opensearch-search-slow"
   log_group_name_index_slow_logs = "opensearch-index-slow"
   log_group_name_error_logs = "opensearch-error"
