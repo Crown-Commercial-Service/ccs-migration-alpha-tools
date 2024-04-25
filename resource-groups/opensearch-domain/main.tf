@@ -50,22 +50,22 @@ resource "aws_opensearch_domain" "domain" {
   # Options to enable CloudWatch logging
   log_publishing_options {
     enabled = var.enable_search_slow_logs
-    cloudwatch_log_group_arn = module.search_slow_log_group.arn
+    cloudwatch_log_group_arn = module.search_slow_log_group.log_group_arn
     log_type = "SEARCH_SLOW_LOGS"
   }
   log_publishing_options {
     enabled = var.enable_index_slow_logs
-    cloudwatch_log_group_arn = module.index_slow_log_group.arn
+    cloudwatch_log_group_arn = module.index_slow_log_group.log_group_arn
     log_type = "INDEX_SLOW_LOGS"
   }
   log_publishing_options {
     enabled = var.enable_error_logs
-    cloudwatch_log_group_arn = module.error_log_group.arn
+    cloudwatch_log_group_arn = module.error_log_group.log_group_arn
     log_type = "ES_APPLICATION_LOGS"
   }
   log_publishing_options {
     enabled = var.enable_audit_logs
-    cloudwatch_log_group_arn = module.audit_log_group.arn
+    cloudwatch_log_group_arn = module.audit_log_group.log_group_arn
     log_type = "AUDIT_LOGS"
   }
 
