@@ -127,6 +127,11 @@ resource "aws_opensearch_domain_policy" "main" {
   access_policies = data.aws_iam_policy_document.domain_resource_based.json
 }
 
+resource "aws_cloudwatch_log_resource_policy" "opensearch-log-publishing-policy" {
+  policy_name     = "opensearch-log-publishing-policy"
+  policy_document = data.aws_iam_policy_document.domain_resource_based.json
+}
+
 resource "aws_security_group" "opensearch" {
   name        = "${var.resource_name_prefixes.normal}:${var.domain_name}:OPENSEARCH"
   description = "${var.domain_name} OpenSearch"
