@@ -23,8 +23,7 @@ data "aws_iam_policy_document" "write_log_group" {
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
-      "logs:DescribeLogStreams",
-      "logs:PutLogEvents"
+      "logs:DescribeLogStreams"
     ]
     effect = "Allow"
     resources = [

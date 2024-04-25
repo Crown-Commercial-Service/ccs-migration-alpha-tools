@@ -100,6 +100,26 @@ data "aws_iam_policy_document" "domain_resource_based" {
     actions   = ["es:*"]
     resources = ["${aws_opensearch_domain.domain.arn}/*"]
   }
+
+  statement {
+    sid    = "AllowOpensearchLogging"
+    
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["es.amazonaws.com"]
+    }
+
+    actions = [
+      "logs:PutLogEvents",
+      "logs:PutLogEventsBatch",
+      "logs:CreateLogStream",
+    ]
+
+    resources = ["arn:aws:logs:*"]
+  }
+  
 }
 
 resource "aws_opensearch_domain_policy" "main" {
