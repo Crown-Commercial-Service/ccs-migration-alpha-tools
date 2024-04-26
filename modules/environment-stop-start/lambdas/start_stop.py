@@ -4,17 +4,15 @@ import json
 
 
 def lambda_handler(event, context):
-
-  # Check if the 'action' key in the event is to 'start' or 'stop'
-  if 'action' in event:
-    if event['action'] == 'start':
-      return start()
-    elif event['action'] == 'stop':
-      return stop()
-    else:
-      return f"Invalid action: {event['action']}"
+  # Check the 'action' is 'start' or 'stop'
+  action = os.getenv('ACTION')
+  if action == 'start':
+    return start()
+  elif action == 'stop':
+    return stop()
   else:
-    return "No action specified in the event"
+    return f"Invalid action: {action}"
+
 
 def start():
   ecs = boto3.client('ecs', region_name='eu-west-2')
