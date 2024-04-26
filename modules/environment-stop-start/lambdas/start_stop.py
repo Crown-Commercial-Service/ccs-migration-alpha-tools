@@ -43,7 +43,7 @@ def start():
         )
         service = response['services'][0]
         current_count = int(service['desiredCount'])
-        desired_count = int(resource['desiredCount'])
+        desired_count = int(resource['desired_count'])
 
         if current_count == desired_count:
           print(f"ECS service {resource['service_name']} is already at the desired count of {current_count}.")
