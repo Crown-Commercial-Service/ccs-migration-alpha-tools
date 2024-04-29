@@ -5,7 +5,7 @@ variable "resources" {
 }
 
 variable "start_schedule_enabled" {
-  default = "ENABLED"
+  default = true
   description = "value to enable or disable the start schedule"
-  type = string
+  type = bool
 }
