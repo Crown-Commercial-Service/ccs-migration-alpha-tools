@@ -7,7 +7,7 @@ resource "aws_scheduler_schedule" "mon_fri_start" {
 
   schedule_expression = "cron(0 8 ? * MON-FRI *)"
 
-  state = "DISABLED"
+  state = "ENABLED"
 
   target {
     arn      = aws_lambda_function.start.arn
