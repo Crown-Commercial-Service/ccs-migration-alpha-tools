@@ -3,3 +3,9 @@ variable "resources" {
   description = "HCL representation of the JSON"
   type        = set(map(any))
 }
+
+variable "start_schedule_enabled" {
+  default = "ENABLED"
+  description = "value to enable or disable the start schedule"
+  type = string
+}
