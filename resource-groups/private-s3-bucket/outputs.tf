@@ -8,6 +8,11 @@ output "bucket_id" {
   value       = aws_s3_bucket.bucket.id
 }
 
+output "bucket_regional_domain_name" {
+  description = "Region-specific domain name of created bucket"
+  value       = aws_s3_bucket.bucket.bucket_regional_domain_name 
+}
+
 output "delete_objects_policy_document_json" {
   description = "JSON describing an IAM policy which allows objects in this bucket to be deleted"
   value       = data.aws_iam_policy_document.delete_objects.json
