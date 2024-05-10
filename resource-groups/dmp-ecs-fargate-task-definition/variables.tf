@@ -46,7 +46,7 @@ variable "ecs_execution_role_arn" {
 
 variable "family_name" {
   type        = string
-  description = "The name to give to the task definition, across all revisions"
+  description = "The family name to give to the task definition, across all revisions"
 }
 
 variable "override_entrypoints" {
