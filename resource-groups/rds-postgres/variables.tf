@@ -4,6 +4,12 @@ variable "allocated_storage_gb" {
   default     = 10
 }
 
+variable "allow_major_version_upgrade" {
+  type        = bool
+  description = "Opt to allow major version upgrade (defaults to false"
+  default     = false
+}
+
 variable "apply_immediately" {
   type        = bool
   description = "Whether to apply changes immediately or in the next maintenance window"
@@ -38,6 +44,12 @@ variable "final_snapshot_identifier" {
   default     = "final-snapshot"
 }
 
+variable "iam_database_authentication_enabled" {
+  description = "Whether to enable IAM database authentication"
+  type        = bool
+  default     = false
+}
+
 variable "monitoring_interval" {
   type        = number
   default     = 0
@@ -51,8 +63,8 @@ variable "monitoring_role_arn" {
 }
 
 variable "parameter_group_name" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = "Name of Parameter Group to use"
 }
 

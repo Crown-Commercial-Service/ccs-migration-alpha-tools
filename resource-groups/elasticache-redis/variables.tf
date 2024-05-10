@@ -13,6 +13,12 @@ variable "elasticache_cluster_apply_immediately" {
   default     = false
 }
 
+variable "elasticache_cluster_parameter_group_name" {
+  type        = string
+  description = "The Parameter Group Name for the Elasticache cluster (defaults to default.redis6.x)"
+  default     = "default.redis6.x"
+}
+
 variable "engine_version" {
   type        = string
   description = "Version of Redis engine"
@@ -29,6 +35,12 @@ variable "num_cache_nodes" {
   type        = number
   description = "Number of cache nodes to instantiate"
   default     = 1
+}
+
+variable "replication_group_enabled" {
+  type        = bool
+  description = "Boolean value to decide whether or not to enable Elasticache Replication Group"
+  default     = false
 }
 
 variable "resource_name_prefixes" {

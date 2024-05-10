@@ -82,10 +82,7 @@ data "aws_iam_policy_document" "allow_push_from_jenkins_accounts" {
 
     principals {
       type = "AWS"
-      identifiers = [
-        "473251818902", # Jenkins dev
-        "974531504241"  # Jenkins prod
-      ]
+      identifiers = var.grant_jenkins_sandbox_access != false ? ["473251818902", "974531504241", "665505400356"] : ["473251818902", "974531504241"]
     }
 
     actions = [

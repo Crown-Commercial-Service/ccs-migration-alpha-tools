@@ -4,17 +4,15 @@ import json
 
 
 def lambda_handler(event, context):
-
-  # Check if the 'action' key in the event is to 'start' or 'stop'
-  if 'action' in event:
-    if event['action'] == 'start':
-      return start()
-    elif event['action'] == 'stop':
-      return stop()
-    else:
-      return f"Invalid action: {event['action']}"
+  # Check the 'action' is 'start' or 'stop'
+  action = os.getenv('ACTION')
+  if action == 'start':
+    return start()
+  elif action == 'stop':
+    return stop()
   else:
-    return "No action specified in the event"
+    return f"Invalid action: {action}"
+
 
 def start():
   ecs = boto3.client('ecs', region_name='eu-west-2')
@@ -40,20 +38,20 @@ def start():
     elif resource['type'] == 'ecs_service':
       try:
         response = ecs.describe_services(
-          cluster = resource['cluster_name'],
-          services = [resource['service_name']]
+          cluster = resource['clusterName'],
+          services = [resource['serviceName']]
         )
         service = response['services'][0]
-        current_count = int(service['desiredCount'])
-        desired_count = int(resource['desiredCount'])
+        currentCount = int(service['desiredCount'])
+        desiredCount = int(resource['desiredCount'])
 
-        if current_count == desired_count:
-          print(f"ECS service {resource['service_name']} is already at the desired count of {current_count}.")
+        if currentCount == desiredCount:
+          print(f"ECS service {resource['serviceName']} is already at the desired count of {currentCount}.")
         else:
           update_response = ecs.update_service(
-            cluster = resource['cluster_name'],
-            service = resource['service_name'],
-            desiredCount = desired_count
+            cluster = resource['clusterName'],
+            service = resource['serviceName'],
+            desiredCount = desiredCount
           )
           print(update_response)
       except Exception as e:
@@ -86,18 +84,18 @@ def stop():
     elif resource['type'] == 'ecs_service':
       try:
         response = ecs.describe_services(
-          cluster = resource['cluster_name'],
-          services = [resource['service_name']]
+          cluster = resource['clusterName'],
+          services = [resource['serviceName']]
         )
         service = response['services'][0]
-        current_count = service['desiredCount']
+        currentCount = service['desiredCount']
 
-        if current_count == 0:
-          print(f"ECS service {resource['service_name']} is already scaled to zero.")
+        if currentCount == 0:
+          print(f"ECS service {resource['serviceName']} is already scaled to zero.")
         else:
           update_response = ecs.update_service(
-            cluster = resource['cluster_name'],
-            service = resource['service_name'],
+            cluster = resource['clusterName'],
+            service = resource['serviceName'],
             desiredCount = 0
           )
           print(update_response)

@@ -9,6 +9,7 @@ resource "aws_lambda_function" "stop" {
 
   environment {
     variables = {
+      ACTION    = "stop"
       RESOURCES = jsonencode(var.resources)
     }
   }
