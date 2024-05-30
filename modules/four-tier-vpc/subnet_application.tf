@@ -186,7 +186,7 @@ resource "aws_network_acl_rule" "application__allow_http_everywhere_out" {
   network_acl_id  = aws_network_acl.application_subnet.id
   protocol        = "tcp"
   rule_action     = "allow"
-  rule_number     = 5300
+  rule_number     = 5301
   to_port         = 80
 }
 
