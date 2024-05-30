@@ -108,7 +108,6 @@ resource "aws_network_acl_rule" "application__deny_25565_everywhere_out" {
   cidr_block      = "0.0.0.0/0"
   egress          = true
   from_port       = 25565
-  ipv6_cidr_block = "::/0"
   network_acl_id  = aws_network_acl.application_subnet.id
   protocol        = "tcp"
   rule_action     = "deny"
@@ -120,11 +119,21 @@ resource "aws_network_acl_rule" "application__allow_ephemeral_everywhere_out" {
   cidr_block      = "0.0.0.0/0"
   egress          = true
   from_port       = 1024
-  ipv6_cidr_block = "::/0"
   network_acl_id  = aws_network_acl.application_subnet.id
   protocol        = "tcp"
   rule_action     = "allow"
   rule_number     = 5100
+  to_port         = 65535
+}
+
+resource "aws_network_acl_rule" "application__allow_ipv6_ephemeral_everywhere_out" {
+  egress          = true
+  from_port       = 1024
+  ipv6_cidr_block = "::/0"
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5800
   to_port         = 65535
 }
 
@@ -134,7 +143,6 @@ resource "aws_network_acl_rule" "application__allow_http_everywhere_out" {
   cidr_block      = "0.0.0.0/0"
   egress          = true
   from_port       = 80
-  ipv6_cidr_block = "::/0"
   network_acl_id  = aws_network_acl.application_subnet.id
   protocol        = "tcp"
   rule_action     = "allow"
@@ -142,11 +150,21 @@ resource "aws_network_acl_rule" "application__allow_http_everywhere_out" {
   to_port         = 80
 }
 
+resource "aws_network_acl_rule" "application__allow_ipv6_8080_everywhere_out" {
+  egress          = true
+  from_port       = 8080
+  ipv6_cidr_block = "::/0"
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5700
+  to_port         = 8080
+}
+
 resource "aws_network_acl_rule" "application__allow_https_everywhere_out" {
   cidr_block     = "0.0.0.0/0"
   egress         = true
   from_port      = 443
-  ipv6_cidr_block = "::/0"
   network_acl_id = aws_network_acl.application_subnet.id
   protocol       = "tcp"
   rule_action    = "allow"
@@ -154,15 +172,36 @@ resource "aws_network_acl_rule" "application__allow_https_everywhere_out" {
   to_port        = 443
 }
 
+resource "aws_network_acl_rule" "application__allow_ipv6_8888_everywhere_in" {
+  egress          = true
+  from_port       = 8888
+  ipv6_cidr_block = "::/0"
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5300
+  to_port         = 8888
+}
+
 resource "aws_network_acl_rule" "application__allow_ephemeral_everywhere_in" {
   cidr_block      = "0.0.0.0/0"
+  egress          = false
+  from_port       = 1024
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5200
+  to_port         = 65535
+}
+
+resource "aws_network_acl_rule" "application__allow_ipv6_ephemeral_everywhere_in" {
   egress          = false
   from_port       = 1024
   ipv6_cidr_block = "::/0"
   network_acl_id  = aws_network_acl.application_subnet.id
   protocol        = "tcp"
   rule_action     = "allow"
-  rule_number     = 5200
+  rule_number     = 5400
   to_port         = 65535
 }
 
