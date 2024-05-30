@@ -58,11 +58,21 @@ resource "aws_network_acl_rule" "application__allow_http_web_a_in" {
   cidr_block      = local.subnet_cidr_blocks.web.a
   egress          = false
   from_port       = 80
-  ipv6_cidr_block = local.ipv6_subnet_cidr_blocks.web.a
   network_acl_id  = aws_network_acl.application_subnet.id
   protocol        = "tcp"
   rule_action     = "allow"
   rule_number     = 5000
+  to_port         = 80
+}
+
+resource "aws_network_acl_rule" "application__allow_ipv6_http_web_a_in" {
+  egress          = false
+  from_port       = 80
+  ipv6_cidr_block = local.ipv6_subnet_cidr_blocks.web.a
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5501
   to_port         = 80
 }
 
@@ -75,6 +85,17 @@ resource "aws_network_acl_rule" "application__allow_http_web_b_in" {
   protocol        = "tcp"
   rule_action     = "allow"
   rule_number     = 5001
+  to_port         = 80
+}
+
+resource "aws_network_acl_rule" "application__allow_ipv6_http_web_b_in" {
+  egress          = false
+  from_port       = 80
+  ipv6_cidr_block = local.ipv6_subnet_cidr_blocks.web.b
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5502
   to_port         = 80
 }
 
@@ -92,15 +113,36 @@ resource "aws_network_acl_rule" "application__allow_http_application_a_in" {
   to_port         = 80
 }
 
+resource "aws_network_acl_rule" "application__allow_ipv6_http_application_a_in" {
+  egress          = false
+  from_port       = 80
+  ipv6_cidr_block = local.ipv6_subnet_cidr_blocks.application.a
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5503
+  to_port         = 80
+}
+
 resource "aws_network_acl_rule" "application__allow_http_application_b_in" {
   cidr_block      = local.subnet_cidr_blocks.application.b
+  egress          = false
+  from_port       = 80
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5003
+  to_port         = 80
+}
+
+resource "aws_network_acl_rule" "application__allow_ipv6_http_application_b_in" {
   egress          = false
   from_port       = 80
   ipv6_cidr_block = local.ipv6_subnet_cidr_blocks.application.b
   network_acl_id  = aws_network_acl.application_subnet.id
   protocol        = "tcp"
   rule_action     = "allow"
-  rule_number     = 5003
+  rule_number     = 5505
   to_port         = 80
 }
 
