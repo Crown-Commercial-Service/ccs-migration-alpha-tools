@@ -105,7 +105,7 @@ resource "aws_network_acl_rule" "web__allow_ipv6_ephemeral_everywhere_out" {
   network_acl_id  = aws_network_acl.web_subnet.id
   protocol        = "tcp"
   rule_action     = "allow"
-  rule_number     = 5400
+  rule_number     = 5401
   to_port         = 65535
 }
 
@@ -173,7 +173,7 @@ resource "aws_network_acl_rule" "web__allow_ipv6_ephemeral_everywhere_in" {
   network_acl_id  = aws_network_acl.web_subnet.id
   protocol        = "tcp"
   rule_action     = "allow"
-  rule_number     = 5400
+  rule_number     = 5402
   to_port         = 65535
 }
 
