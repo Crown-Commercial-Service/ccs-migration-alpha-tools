@@ -25,54 +25,18 @@ resource "aws_egress_only_internet_gateway" "eigw" {
   }
 }
 
-resource "aws_route_table" "rt" {
-  vpc_id = aws_vpc.vpc.id
+resource "aws_route" "ipv6_egress_web" {
+  for_each = aws_route_table.web
 
-  tags = {
-    Name = "${var.resource_name_prefixes.hyphens}-RT"
-  }
-}
-
-resource "aws_route" "ipv6_egress" {
-  route_table_id            = aws_route_table.rt.id
+  route_table_id              = each.value.id
   destination_ipv6_cidr_block = "::/0"
-  egress_only_gateway_id    = aws_egress_only_internet_gateway.eigw.id
+  egress_only_gateway_id      = aws_egress_only_internet_gateway.eigw.id
 }
 
-resource "aws_security_group" "ipv6_egress" {
-  name        = "${var.resource_name_prefixes.normal}:SG:IPV6_EGRESS"
-  description = "Allow all outbound IPv6 traffic"
-  vpc_id      = aws_vpc.vpc.id
+resource "aws_route" "ipv6_egress_application" {
+  for_each = aws_route_table.application
 
-  tags = {
-    Name = "${var.resource_name_prefixes.normal}:SG:IPV6_EGRESS"
-  }
-}
-
-resource "aws_security_group_rule" "ipv6_egress" {
-  security_group_id = aws_security_group.ipv6_egress.id
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  ipv6_cidr_blocks  = ["::/0"]
-  type              = "egress"
-}
-
-resource "aws_network_acl" "ipv6_egress" {
-  vpc_id = aws_vpc.vpc.id
-
-  tags = {
-    Name = "${var.resource_name_prefixes.normal}:NA:IPV6_EGRESS"
-  }
-}
-
-resource "aws_network_acl_rule" "ipv6_egress" {
-  network_acl_id = aws_network_acl.ipv6_egress.id
-  rule_number    = 6000
-  egress         = true
-  protocol       = "tcp"
-  rule_action    = "allow"
-  ipv6_cidr_block = "::/0"
-  from_port      = 443
-  to_port        = 443
+  route_table_id              = each.value.id
+  destination_ipv6_cidr_block = "::/0"
+  egress_only_gateway_id      = aws_egress_only_internet_gateway.eigw.id
 }
