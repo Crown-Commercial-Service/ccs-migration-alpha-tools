@@ -51,10 +51,9 @@ resource "aws_security_group" "ipv6_egress" {
 
 resource "aws_security_group_rule" "ipv6_egress" {
   security_group_id = aws_security_group.ipv6_egress.id
-  from_port         = 0
-  to_port           = 0
-  protocol          = "HTTPS"
-  cidr_blocks       = ["::/0"]
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
   ipv6_cidr_blocks  = ["::/0"]
   type              = "egress"
 }
@@ -71,9 +70,8 @@ resource "aws_network_acl_rule" "ipv6_egress" {
   network_acl_id = aws_network_acl.ipv6_egress.id
   rule_number    = 6000
   egress         = true
-  protocol       = "HTTPS"
+  protocol       = "tcp"
   rule_action    = "allow"
-  cidr_block     = "::/0"
   ipv6_cidr_block = "::/0"
   from_port      = 443
   to_port        = 443
