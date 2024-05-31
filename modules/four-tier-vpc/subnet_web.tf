@@ -177,6 +177,17 @@ resource "aws_network_acl_rule" "web__allow_ipv6_ephemeral_everywhere_in" {
   to_port         = 65535
 }
 
+resource "aws_network_acl_rule" "web__allow_ipv6_outbound" {
+  network_acl_id  = aws_network_acl.web_subnet.id
+  rule_number     = 6001
+  egress          = true
+  protocol        = "tcp"
+  rule_action     = "allow"
+  ipv6_cidr_block = "::/0"
+  from_port       = 443
+  to_port         = 443
+}
+
 # Rules for instances to communicate with downstream LBs
 #
 # web__allow_http_application_a_out already provided by web__allow_http_everywhere_out
