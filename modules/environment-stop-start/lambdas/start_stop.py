@@ -36,7 +36,8 @@ def start():
         else:
           print(f"RDS instance {resource['identifier']} is currently {status}")
       except Exception as e:
-        return f"Error starting RDS instance: {str(e)}"
+        print(f"Error starting RDS instance: {str(e)}")
+        raise e
     elif resource['type'] == 'ecs_service':
       try:
         response = ecs.describe_services(
@@ -57,7 +58,8 @@ def start():
           )
           print(update_response)
       except Exception as e:
-        return f"Error setting ECS service desired count: {str(e)}"
+        print(f"Error setting ECS service desired count: {str(e)}")
+        raise e
 
   return "Successfully started all resources"
 
@@ -83,7 +85,8 @@ def stop():
         else:
           print(f"RDS instance {resource['identifier']} is currently {status}")
       except Exception as e:
-        return f"Error stopping RDS instance: {str(e)}"
+        print(f"Error stopping RDS instance: {str(e)}")
+        raise e
 
     elif resource['type'] == 'ecs_service':
       try:
@@ -104,6 +107,7 @@ def stop():
           )
           print(update_response)
       except Exception as e:
-        return f"Error scaling ECS service to zero: {str(e)}"
+        print(f"Error scaling ECS service to zero: {str(e)}")
+        raise e
 
   return "Successfully stopped all resources"
