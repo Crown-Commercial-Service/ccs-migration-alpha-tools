@@ -11,6 +11,7 @@ resource "aws_lambda_function" "start" {
     variables = {
       ACTION    = "start"
       RESOURCES = jsonencode(var.resources)
+      AWS_REGION = var.aws_region
     }
   }
 }

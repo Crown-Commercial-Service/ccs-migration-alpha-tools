@@ -11,6 +11,7 @@ resource "aws_lambda_function" "stop" {
     variables = {
       ACTION    = "stop"
       RESOURCES = jsonencode(var.resources)
+      AWS_REGION = var.aws_region
     }
   }
 }

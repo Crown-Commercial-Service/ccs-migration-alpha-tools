@@ -15,8 +15,8 @@ def lambda_handler(event, context):
 
 
 def start():
-  ecs = boto3.client('ecs', region_name='eu-west-2')
-  rds = boto3.client('rds', region_name='eu-west-2')
+  ecs = boto3.client('ecs', region_name=os.getenv('AWS_REGION'))
+  rds = boto3.client('rds', region_name=os.getenv('AWS_REGION'))
 
   resources = json.loads(os.getenv('RESOURCES'))
 
@@ -60,8 +60,8 @@ def start():
   return "Successfully started all resources"
 
 def stop():
-  ecs = boto3.client('ecs', region_name='eu-west-2')
-  rds = boto3.client('rds', region_name='eu-west-2')
+  ecs = boto3.client('ecs', region_name=os.getenv('AWS_REGION'))
+  rds = boto3.client('rds', region_name=os.getenv('AWS_REGION'))
 
   resources = json.loads(os.getenv('RESOURCES'))
 
