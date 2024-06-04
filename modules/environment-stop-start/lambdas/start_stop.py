@@ -31,8 +31,12 @@ def start():
           print(f"RDS instance {resource['identifier']} is starting")
           response = rds.start_db_instance(DBInstanceIdentifier=resource['identifier'])
           print(response)
-        else:
-          print(f"RDS instance {resource['identifier']} is currently {status}")
+        elif status == 'stopping':
+          print(f"RDS instance {resource['identifier']} is currently stopping")
+          # Need to throw exception here
+          raise Exception(f"RDS instance {resource['identifier']} is currently {status}")
+        # else:
+        #   print(f"RDS instance {resource['identifier']} is currently {status}")
       except Exception as e:
         return f"Error starting RDS instance: {str(e)}"
     elif resource['type'] == 'ecs_service':
