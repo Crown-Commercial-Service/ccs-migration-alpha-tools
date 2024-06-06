@@ -22,6 +22,12 @@ variable "backup_retention_period_days" {
   default     = 14
 }
 
+variable "ca_cert_identifier" {
+  type        = string
+  description = "The identifier of the CA certificate for the DB instance."
+  default     = "rds-ca-2019"
+}
+
 variable "db_instance_class" {
   type        = string
   description = "Type of DB instance"

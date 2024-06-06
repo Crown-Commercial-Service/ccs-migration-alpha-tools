@@ -15,8 +15,8 @@ def lambda_handler(event, context):
 
 
 def start():
-  ecs = boto3.client('ecs', region_name='eu-west-2')
-  rds = boto3.client('rds', region_name='eu-west-2')
+  ecs = boto3.client('ecs', region_name=os.getenv('AWS_REGION'))
+  rds = boto3.client('rds', region_name=os.getenv('AWS_REGION'))
 
   resources = json.loads(os.getenv('RESOURCES'))
 
@@ -31,10 +31,13 @@ def start():
           print(f"RDS instance {resource['identifier']} is starting")
           response = rds.start_db_instance(DBInstanceIdentifier=resource['identifier'])
           print(response)
+        elif status == 'stopping':
+          raise Exception(f"RDS instance {resource['identifier']} is currently stopping")
         else:
           print(f"RDS instance {resource['identifier']} is currently {status}")
       except Exception as e:
-        return f"Error starting RDS instance: {str(e)}"
+        print(f"Error starting RDS instance: {str(e)}")
+        raise e
     elif resource['type'] == 'ecs_service':
       try:
         response = ecs.describe_services(
@@ -55,13 +58,14 @@ def start():
           )
           print(update_response)
       except Exception as e:
-        return f"Error setting ECS service desired count: {str(e)}"
+        print(f"Error setting ECS service desired count: {str(e)}")
+        raise e
 
   return "Successfully started all resources"
 
 def stop():
-  ecs = boto3.client('ecs', region_name='eu-west-2')
-  rds = boto3.client('rds', region_name='eu-west-2')
+  ecs = boto3.client('ecs', region_name=os.getenv('AWS_REGION'))
+  rds = boto3.client('rds', region_name=os.getenv('AWS_REGION'))
 
   resources = json.loads(os.getenv('RESOURCES'))
 
@@ -76,10 +80,13 @@ def stop():
           print(f"RDS instance {resource['identifier']} is stopping.")
           stop_response = rds.stop_db_instance(DBInstanceIdentifier=resource['identifier'])
           print(stop_response)
+        elif status == 'stopping':
+          print(f"RDS instance {resource['identifier']} is already stopping.")
         else:
           print(f"RDS instance {resource['identifier']} is currently {status}")
       except Exception as e:
-        return f"Error stopping RDS instance: {str(e)}"
+        print(f"Error stopping RDS instance: {str(e)}")
+        raise e
 
     elif resource['type'] == 'ecs_service':
       try:
@@ -100,6 +107,7 @@ def stop():
           )
           print(update_response)
       except Exception as e:
-        return f"Error scaling ECS service to zero: {str(e)}"
+        print(f"Error scaling ECS service to zero: {str(e)}")
+        raise e
 
   return "Successfully stopped all resources"
