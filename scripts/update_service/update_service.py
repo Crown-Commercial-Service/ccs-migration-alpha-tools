@@ -91,7 +91,7 @@ def update_service(tf_outputs_json, service_name, scale_to, redeploy, skip_wait)
     waiter.wait(
         cluster=ecs_cluster_arn,
         services=[service_name],
-        WaiterConfig={"Delay": 10, "MaxAttempts": 60},
+        WaiterConfig={"Delay": 10, "MaxAttempts": 90},
     )
     click.echo("Done")
 
