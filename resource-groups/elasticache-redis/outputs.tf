@@ -3,6 +3,12 @@ output "clients_security_group_id" {
   value       = aws_security_group.cluster_clients.id
 }
 
+output "redis_auth_token" {
+  description = "Auth token for the Redis cluster"
+  sensitive   = true
+  value       = var.replication_group_enabled != false ? random_password.auth_token[0].result : ""
+}
+
 output "redis_host" {
   description = "Connection host for the Redis cluster"
   value       = var.replication_group_enabled != false ? aws_elasticache_replication_group.rg[0].primary_endpoint_address : aws_elasticache_cluster.cluster.cache_nodes[0]["address"]
