@@ -12,6 +12,7 @@ resource "aws_db_instance" "db" {
   ca_cert_identifier                  = var.ca_cert_identifier
   db_name                             = var.db_name # NB Postgres db names use underscores, not hyphens
   db_subnet_group_name                = aws_db_subnet_group.subnet_group.name
+  deletion_protection                 = var.deletion_protection
   enabled_cloudwatch_logs_exports     = ["postgresql"]
   engine                              = "postgres"
   engine_version                      = var.postgres_engine_version

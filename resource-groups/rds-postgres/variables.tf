@@ -44,6 +44,12 @@ variable "db_username" {
   description = "Username for master user"
 }
 
+variable "deletion_protection" {
+  type        = bool
+  description = "Boolean to opt in/out of enabling deletion protection. The DB cannot be deleted when set to true"
+  default     = false
+}
+
 variable "final_snapshot_identifier" {
   type        = string
   description = "Identifier to give the final snapshot of the db upon deletion (if any)"
