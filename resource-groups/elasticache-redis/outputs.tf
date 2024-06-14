@@ -6,7 +6,7 @@ output "clients_security_group_id" {
 output "redis_auth_token" {
   description = "Auth token for the Redis cluster"
   sensitive   = true
-  value       = var.replication_group_enabled != false ? aws_elasticache_replication_group.rg[0].auth_token : ""
+  value       = var.replication_group_enabled != false ? random_password.auth_token[0].result : ""
 }
 
 output "redis_host" {
