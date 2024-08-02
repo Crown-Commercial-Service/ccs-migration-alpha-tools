@@ -16,6 +16,12 @@ variable "apply_immediately" {
   default     = false
 }
 
+variable "auto_minor_version_upgrade" {
+  type        = bool
+  description = "Opt to enable automatic minor version upgrades"
+  default     = false
+}
+
 variable "backup_retention_period_days" {
   type        = number
   description = "Number of days for which to keep backups"

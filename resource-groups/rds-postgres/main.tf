@@ -5,7 +5,7 @@ resource "aws_db_subnet_group" "subnet_group" {
 
 resource "aws_db_instance" "db" {
   allocated_storage                   = var.allocated_storage_gb
-  auto_minor_version_upgrade          = false
+  auto_minor_version_upgrade          = var.auto_minor_version_upgrade
   allow_major_version_upgrade         = var.allow_major_version_upgrade
   apply_immediately                   = var.apply_immediately
   backup_retention_period             = var.backup_retention_period_days
