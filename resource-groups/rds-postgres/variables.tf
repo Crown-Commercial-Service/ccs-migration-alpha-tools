@@ -104,6 +104,36 @@ variable "postgres_port" {
   default     = 5432
 }
 
+variable "rds_event_subscription_categories" {
+  type        = list(string)
+  description = "The list of event categories for a SourceType that you want to subscribe to"
+  default     = ["maintenance"]
+}
+
+variable "rds_event_subscription_email_endpoint" {
+  type        = string
+  description = "The email address to send RDS Event Subscription notifications to"
+  default     = "internal-it@crowncommercial.gov.uk"
+}
+
+variable "rds_event_subscription_enabled" {
+  type        = bool
+  description = "Boolean to determine whether or not to enable RDS Event Subscription (defaults to false)"
+  default     = false
+}
+
+variable "rds_backup_window" {
+  type        = string
+  description = "The daily time range in which automated backups are created (if they are enabled)"
+  default     = "00:20-00:50"
+}
+
+variable "rds_maintenance_window" {
+  type        = string
+  description = "The window in which RDS Maintenance should be performed (if enabled)"
+  default     = "Thu:01:00-Thu:04:00"
+}
+
 variable "resource_name_prefixes" {
   type = object({
     normal        = string,

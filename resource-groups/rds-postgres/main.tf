@@ -9,6 +9,7 @@ resource "aws_db_instance" "db" {
   allow_major_version_upgrade         = var.allow_major_version_upgrade
   apply_immediately                   = var.apply_immediately
   backup_retention_period             = var.backup_retention_period_days
+  backup_window                       = var.rds_backup_window
   ca_cert_identifier                  = var.ca_cert_identifier
   db_name                             = var.db_name # NB Postgres db names use underscores, not hyphens
   db_subnet_group_name                = aws_db_subnet_group.subnet_group.name
@@ -21,6 +22,7 @@ resource "aws_db_instance" "db" {
   identifier                          = var.db_name # NB RDS identifiers use hyphens, not underscores
   instance_class                      = var.db_instance_class
   iops                                = var.storage_iops
+  maintenance_window                  = var.rds_maintenance_window
   monitoring_interval                 = var.monitoring_interval
   monitoring_role_arn                 = var.monitoring_role_arn
   multi_az                            = true
