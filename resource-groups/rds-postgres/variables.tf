@@ -62,6 +62,12 @@ variable "iam_database_authentication_enabled" {
   default     = false
 }
 
+variable "maintenance_window" {
+  type        = string
+  description = "The window during which maintenance can occur"
+  default     = "Tue:10:00-Tue:16:00"
+}
+
 variable "monitoring_interval" {
   type        = number
   default     = 0
