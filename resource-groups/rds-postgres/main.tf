@@ -21,6 +21,7 @@ resource "aws_db_instance" "db" {
   identifier                          = var.db_name # NB RDS identifiers use hyphens, not underscores
   instance_class                      = var.db_instance_class
   iops                                = var.storage_iops
+  maintenance_window                  = var.rds_maintenance_window
   monitoring_interval                 = var.monitoring_interval
   monitoring_role_arn                 = var.monitoring_role_arn
   multi_az                            = true

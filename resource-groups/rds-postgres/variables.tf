@@ -104,6 +104,29 @@ variable "postgres_port" {
   default     = 5432
 }
 
+variable "rds_event_subscription_categories" {
+  type        = list(string)
+  description = "The list of event categories for a SourceType that you want to subscribe to"
+  default     = ["maintenance"]
+}
+
+variable "rds_event_subscription_email_endpoint" {
+  type        = string
+  description = "The email address to send RDS Event Subscription notifications to"
+}
+
+variable "rds_event_subscription_enabled" {
+  type        = bool
+  description = "Boolean to determine whether or not to enable RDS Event Subscription (defaults to false)"
+  default     = false
+}
+
+variable "rds_maintenance_window" {
+  type        = string
+  description = "The window in which RDS Maintenance should be performed (if enabled)"
+  default     = "Wed:00:00-Wed:03:00"
+}
+
 variable "resource_name_prefixes" {
   type = object({
     normal        = string,
