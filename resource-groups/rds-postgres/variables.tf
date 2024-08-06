@@ -131,7 +131,7 @@ variable "rds_backup_window" {
 variable "rds_maintenance_window" {
   type        = string
   description = "The window in which RDS Maintenance should be performed (if enabled)"
-  default     = "Wed:01:00-Wed:04:00"
+  default     = "Thu:01:00-Thu:04:00"
 }
 
 variable "resource_name_prefixes" {
