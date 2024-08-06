@@ -113,6 +113,7 @@ variable "rds_event_subscription_categories" {
 variable "rds_event_subscription_email_endpoint" {
   type        = string
   description = "The email address to send RDS Event Subscription notifications to"
+  default     = "internal-it@crowncommercial.gov.uk"
 }
 
 variable "rds_event_subscription_enabled" {
