@@ -122,10 +122,16 @@ variable "rds_event_subscription_enabled" {
   default     = false
 }
 
+variable "rds_backup_window" {
+  type        = string
+  description = "The daily time range in which automated backups are created (if they are enabled)"
+  default     = "00:20-00:50"
+}
+
 variable "rds_maintenance_window" {
   type        = string
   description = "The window in which RDS Maintenance should be performed (if enabled)"
-  default     = "Wed:00:00-Wed:03:00"
+  default     = "Wed:01:00-Wed:04:00"
 }
 
 variable "resource_name_prefixes" {
