@@ -1,5 +1,5 @@
 module "extract_task" {
-  source = "ccs-migration-alpha-tools/resource-groups/ecs-fargate-task-definition"
+  source = "../../resource-groups/ecs-fargate-task-definition"
 
   aws_account_id = var.aws_account_id
   aws_region     = var.aws_region
@@ -26,7 +26,7 @@ module "extract_task" {
       port = null
       # ECS Execution role will need access to these - see aws_iam_role_policy.ecs_execution_role__read_cf_creds_ssm
       secret_environment_variables = [
-        { "name" : "DB_CONNECTION_URL", "valueFrom" : var.target_db_connection_url_ssm_param_arn }
+        { "name" : "DB_CONNECTION_URL", "valueFrom" : var.source_db_connection_url_ssm_param_arn }
       ]
     }
   }
