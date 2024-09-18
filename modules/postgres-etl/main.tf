@@ -15,9 +15,9 @@ resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
           "TaskDefinition": "${module.postgres_etl.extract_task.task_definition_arn}",
           "NetworkConfiguration": {
             "AwsvpcConfiguration": {
-              "AssignPublicIp": "DISABLED",
-              "SecurityGroups": "States.Array('${aws_security_group.migrate_extract_task.id}')",
-              "Subnets": ["${var.subnet_id}"]
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups.$": "States.Array('${aws_security_group.restore_download_task.id}', '${aws_security_group.db_restore_fs_clients.id}')",
+            "Subnets": ["${var.subnet_id}"]
             }
           }
         },
@@ -52,7 +52,6 @@ resource "aws_iam_role" "rds_to_s3_sfn" {
     ]
   })
 }
-
 
 resource "aws_iam_role_policy" "rds_to_s3_sfn" {
   name   = "invoke-compile-objects-to-migrate-lambda"

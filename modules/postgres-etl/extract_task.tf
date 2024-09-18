@@ -42,7 +42,7 @@ module "extract_task" {
     }
   ]
 
-  depends_on = [
-    aws_efs_mount_target.db_dump
-  ]
+  # depends_on = [
+  #   aws_efs_mount_target.db_dump
+  # ]
 }
