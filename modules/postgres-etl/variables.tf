@@ -55,6 +55,15 @@ variable "postgres_docker_image" {
   description = "Canonical name of the Docker image from which to run psql"
 }
 
+variable "resource_name_prefixes" {
+  type = object({
+    normal        = string,
+    hyphens       = string,
+    hyphens_lower = string
+  })
+  description = "Prefix to apply to resources in AWS; options provided to satisfy divergent naming requirements across AWS"
+}
+
 variable "s3_bucket_name" {
   description = "Name of the S3 bucket to use for the Terraform state file"
   type        = string
