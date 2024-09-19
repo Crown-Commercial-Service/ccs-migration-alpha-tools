@@ -8,9 +8,28 @@ variable "aws_region" {
   description = "Region for resource deployment"
 }
 
+variable "db_clients_security_group_id" {
+  type        = string
+  description = "ID of VPC security group, membership of which allows access to the Postgres db"
+}
+
 variable "ecs_cluster_arn" {
   type        = string
   description = "ARN of cluster into which tasks will be deployed"
+}
+
+variable "ecs_execution_role" {
+  type = object({
+    arn  = string
+    name = string
+  })
+  description = "Details of the role which is assumed by the ECS execution processes"
+}
+
+variable "efs_subnet_ids" {
+  type        = set(string)
+  default     = []
+  description = "IDs of the subnest in which to create the EFS mount points"
 }
 
 variable "extract_task_cpu" {
@@ -49,4 +68,9 @@ variable "source_db_connection_url_ssm_param_arn" {
 variable "subnet_id" {
   type        = string
   description = "ID of the subnet in which to run the download/restore ECS tasks and also in which to present the EFS mount point"
+}
+
+variable "vpc_id" {
+  type        = string
+  description = "ID of the VPC in which to run the download/restore ECS tasks"
 }

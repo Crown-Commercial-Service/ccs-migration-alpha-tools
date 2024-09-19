@@ -16,7 +16,7 @@ resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
           "NetworkConfiguration": {
             "AwsvpcConfiguration": {
             "AssignPublicIp": "DISABLED",
-            "SecurityGroups.$": "States.Array('${aws_security_group.migrate_extract_task.id}')",
+            "SecurityGroups.$": "States.Array('${aws_security_group.etl_extract_task.id}', '${aws_security_group.db_etl_fs_clients.id}', '${var.db_clients_security_group_id}')",
             "Subnets": ["${var.subnet_id}"]
             }
           }
