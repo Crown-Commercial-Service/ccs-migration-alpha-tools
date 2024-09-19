@@ -36,6 +36,11 @@ variable "postgres_docker_image" {
   description = "Canonical name of the Docker image from which to run psql"
 }
 
+variable "s3_bucket_name" {
+  description = "Name of the S3 bucket to use for the Terraform state file"
+  type        = string
+}
+
 variable "source_db_connection_url_ssm_param_arn" {
   type        = string
   description = "ARN of SSM param which contains the connection URL for the source Postgres database"
