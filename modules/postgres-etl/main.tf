@@ -12,7 +12,7 @@ resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
         "Parameters": {
           "Cluster": var.ecs_cluster_arn,
           "LaunchType": "FARGATE",
-          "TaskDefinition": "${module.postgres_etl.extract_task.task_definition_arn}",
+          "TaskDefinition": "${module.extract_task.task_definition_arn}",
           "NetworkConfiguration": {
             "AwsvpcConfiguration": {
             "AssignPublicIp": "DISABLED",
