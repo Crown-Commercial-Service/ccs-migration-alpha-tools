@@ -11,13 +11,11 @@ variable "aws_region" {
 variable "db_clients_security_group_id" {
   type        = string
   description = "ID of VPC security group, membership of which allows access to the Postgres db"
-  default = "sg-1234567890"
 }
 
 variable "ecs_cluster_arn" {
   type        = string
   description = "ARN of cluster into which tasks will be deployed"
-  default = "arn:aws:ecs:eu-west-2:123456789012:cluster/MAINAPP"
 }
 
 variable "ecs_execution_role" {
@@ -53,7 +51,6 @@ variable "extract_task_memory" {
 variable "migrator_name" {
   description = "A name to distinguish this migrator"
   type        = string
-  default = "migratoo000r"
 }
 
 variable "postgres_docker_image" {
@@ -74,13 +71,11 @@ variable "resource_name_prefixes" {
 variable "s3_bucket_name" {
   description = "Name of the S3 bucket to use for the Terraform state file"
   type        = string
-  default = "etl-bucket"
 }
 
 variable "source_db_connection_url_ssm_param_arn" {
   type        = string
   description = "ARN of SSM param which contains the connection URL for the source Postgres database"
-  default = "arn:aws:ssm:eu-west-2:123456789012:parameter/connection_url"
 }
 
 variable "subnet_id" {
@@ -91,5 +86,4 @@ variable "subnet_id" {
 variable "vpc_id" {
   type        = string
   description = "ID of the VPC in which to run the download/restore ECS tasks"
-  default = "vpc-1234"
 }
