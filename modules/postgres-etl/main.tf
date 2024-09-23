@@ -2,7 +2,8 @@ resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
   name     = "compile-${var.migrator_name}-s3-objects-to-migrate"
   role_arn = aws_iam_role.rds_to_s3_sfn.arn
 
-  definition = jsonencode({
+  definition = <<EOF
+  {
     "Comment": "State machine to run ECS task for pg_dump",
     "StartAt": "RunEcsTask",
     "States": {
@@ -10,7 +11,7 @@ resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
         "Type": "Task",
         "Resource": "arn:aws:states:::ecs:runTask.sync",
         "Parameters": {
-          "Cluster": var.ecs_cluster_arn,
+          "Cluster": "${var.ecs_cluster_arn}",
           "LaunchType": "FARGATE",
           "TaskDefinition": "${module.extract_task.task_definition_arn}",
           "NetworkConfiguration": {
@@ -25,6 +26,8 @@ resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
       }
     }
   })
+}
+EOF
 
   tags = {
     GPaasS3MigratorName = var.migrator_name
