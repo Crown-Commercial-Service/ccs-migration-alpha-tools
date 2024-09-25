@@ -32,7 +32,7 @@ def create_rds_snapshot(rds_instance_name, region_name, desired_rds_instance_sna
                 click.echo(f"Snapshot {rds_instance_snapshot_name} status is currently {current_rds_snapshot_instance_status}, desired status is {desired_rds_instance_snapshot_status}")
                 os.system("sleep 20")
             else:
-                click.echo(f"Snapshot {rds_instance_snapshot_name} status is {rds_snapshot_instance_status}")
+                click.echo(f"Snapshot {rds_instance_snapshot_name} status is {current_rds_snapshot_instance_status}")
                 break
         click.echo(f"Snapshot {rds_instance_snapshot_name} in desired status")
     except Exception as e:
