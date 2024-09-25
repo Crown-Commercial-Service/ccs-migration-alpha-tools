@@ -19,11 +19,7 @@ from datetime import datetime
 )
 
 def create_rds_snapshot(rds_instance_name, region_name, desired_rds_instance_snapshot_status):
-    boto3_rds_client = boto3.client("rds", region_name=region_name)
-    now = datetime.now()
-    dt_string = now.strftime("date-%d-%m-%Y-time-%H-%M-%S")
-
-    rds_instance_snapshot_name = rds_instance_name + "-" + dt_string
+    boto3_rds_client, dt_string, rds_instance_snapshot_name = configure_prerequisites(rds_instance_name=rds_instance_name, region_name=region_name)
     click.echo(f"Creating RDS Snapshot for {rds_instance_name}")
     try:
         click.echo(f"Creating RDS Snapshot for {rds_instance_name}, snapshot name is: {rds_instance_snapshot_name}")
@@ -42,6 +38,13 @@ def create_rds_snapshot(rds_instance_name, region_name, desired_rds_instance_sna
     except Exception as e:
         click.echo(f"Failed to create snapshot for RDS Instance {rds_instance_name}, reason: {e}")
 
+def configure_prerequisites(rds_instance_name, region_name):
+    boto3_rds_client = boto3.client("rds", region_name=region_name)
+    now = datetime.now()
+    dt_string = now.strftime("date-%d-%m-%Y-time-%H-%M-%S")
+
+    rds_instance_snapshot_name = rds_instance_name + "-" + dt_string
+    return boto3_rds_client, dt_string, rds_instance_snapshot_name
 
 def get_rds_snapshot_status(boto3_rds_client, rds_instance_snapshot_name):
     rds_instance_snapshot_status = boto3_rds_client.describe_db_snapshots(
@@ -51,6 +54,7 @@ def get_rds_snapshot_status(boto3_rds_client, rds_instance_snapshot_name):
         rds_instance_snapshot_status = rds_instance_snapshot['Status']
 
     return rds_instance_snapshot_status
+
 
 if __name__ == "__main__":
     create_rds_snapshot()
