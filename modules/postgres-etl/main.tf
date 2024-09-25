@@ -57,7 +57,7 @@ resource "aws_iam_role" "rds_to_s3_sfn" {
 }
 
 resource "aws_iam_role_policy" "rds_to_s3_sfn" {
-  name   = "invoke-compile-objects-to-migrate-lambda"
+  name   = "invoke-compile-objects-to-migrate"
   role   = aws_iam_role.rds_to_s3_sfn.id
   policy = jsonencode({
     Version = "2012-10-17",

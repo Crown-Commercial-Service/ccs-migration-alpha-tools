@@ -2,7 +2,7 @@ resource "aws_efs_file_system" "db_etl" {
   encrypted = true
 
   tags = {
-    "Name" = "${var.resource_name_prefixes.normal}:PGMIGRATOR:${upper(var.migrator_name)}"
+    "Name" = "${var.resource_name_prefixes.normal}:PG_ETL:${upper(var.migrator_name)}"
     "TYPE" = "EFS"
   }
 
@@ -23,11 +23,11 @@ resource "aws_efs_access_point" "db_etl" {
       owner_uid   = 0
       permissions = "700"
     }
-    path = "/pgmigrate"
+    path = "/pg-etl"
   }
 
   tags = {
-    "Name" = "${var.resource_name_prefixes.normal}:PGMIGRATOR:${upper(var.migrator_name)}"
+    "Name" = "${var.resource_name_prefixes.normal}:PG_ETL:${upper(var.migrator_name)}"
   }
 }
 
@@ -69,22 +69,22 @@ resource "aws_efs_mount_target" "db_etl" {
 }
 
 resource "aws_security_group" "db_etl_fs" {
-  name        = "${var.resource_name_prefixes.normal}:PGMIGRATOR:${upper(var.migrator_name)}:EFS"
-  description = "FS for db dump during Postgres migration process"
+  name        = "${var.resource_name_prefixes.normal}:PG_ETL:${upper(var.migrator_name)}:EFS"
+  description = "FS for db dump during Postgres ETL process"
   vpc_id      = var.vpc_id
 
   tags = {
-    "Name" = "${var.resource_name_prefixes.normal}:PGMIGRATOR:${upper(var.migrator_name)}:EFS"
+    "Name" = "${var.resource_name_prefixes.normal}:PG_ETL:${upper(var.migrator_name)}:EFS"
   }
 }
 
 resource "aws_security_group" "db_etl_fs_clients" {
-  name        = "${var.resource_name_prefixes.normal}:PGMIGRATOR:${upper(var.migrator_name)}:EFS:CLIENTS"
+  name        = "${var.resource_name_prefixes.normal}:PG_ETL:${upper(var.migrator_name)}:EFS:CLIENTS"
   description = "Entities permitted to access the EFS filesystem"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${var.resource_name_prefixes.normal}:PGMIGRATOR:${upper(var.migrator_name)}:EFS:CLIENTS"
+    Name = "${var.resource_name_prefixes.normal}:PG_ETL:${upper(var.migrator_name)}:EFS:CLIENTS"
   }
 }
 
