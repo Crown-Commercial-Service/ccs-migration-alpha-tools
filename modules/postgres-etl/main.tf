@@ -1,5 +1,5 @@
 resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
-  name     = "compile-${var.migrator_name}-s3-objects-to-migrate"
+  name     = "compile-pg-etl-s3-objects-to-migrate"
   role_arn = aws_iam_role.rds_to_s3_sfn.arn
 
   definition = <<EOF
@@ -35,7 +35,7 @@ EOF
 }
 
 resource "aws_iam_role" "rds_to_s3_sfn" {
-  name = "${var.migrator_name}-rds_to_s3_sfn"
+  name = "${var.migrator_name}_rds_to_s3_sfn"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

@@ -38,6 +38,11 @@ variable "extract_task_cpu" {
   description = "CPU resource to allocate to the extract task, in millicores"
 }
 
+variable "environment_name" {
+  type        = string
+  description = "Name of the environment in which the migrator is running"
+}
+
 variable "extract_task_memory" {
   type        = number
   default     = 16384
