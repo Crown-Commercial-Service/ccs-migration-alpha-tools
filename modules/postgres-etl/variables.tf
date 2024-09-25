@@ -78,9 +78,9 @@ variable "source_db_connection_url_ssm_param_arn" {
   description = "ARN of SSM param which contains the connection URL for the source Postgres database"
 }
 
-variable "subnet_id" {
-  type        = string
-  description = "ID of the subnet in which to run the download/restore ECS tasks and also in which to present the EFS mount point"
+variable "subnet_ids" {
+  type        = set(string)
+  description = "IDs of the subnets in which to run the download/restore ECS tasks"
 }
 
 variable "vpc_id" {
