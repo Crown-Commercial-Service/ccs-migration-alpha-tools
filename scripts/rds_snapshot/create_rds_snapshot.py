@@ -1,7 +1,7 @@
 import boto3
 import click
 import os
-from datetime import date
+from datetime import datetime
 
 @click.command()
 @click.argument("rds_instance_name")
@@ -20,7 +20,10 @@ from datetime import date
 
 def create_rds_snapshot(rds_instance_name, region_name, desired_rds_instance_snapshot_status):
     boto3_rds_client = boto3.client("rds", region_name=region_name)
-    rds_instance_snapshot_name = rds_instance_name + "-" + str(date.today())
+    now = datetime.now()
+    dt_string = now.strftime("date-%d-%m-%Y-time-%H-%M-%S")
+
+    rds_instance_snapshot_name = rds_instance_name + "-" + dt_string
     click.echo(f"Creating RDS Snapshot for {rds_instance_name}")
     try:
         click.echo(f"Creating RDS Snapshot for {rds_instance_name}, snapshot name is: {rds_instance_snapshot_name}")
