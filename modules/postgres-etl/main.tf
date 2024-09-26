@@ -28,6 +28,11 @@ resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
 }
 EOF
 
+  depends_on = [
+    # Some of the permissions are needed _at Terraform apply time_ hence the explicit dependency
+    aws_iam_role_policy.rds_to_s3_sfn,
+  ]
+
   tags = {
     GPaasS3MigratorName = var.migrator_name
   }
@@ -55,19 +60,88 @@ resource "aws_iam_role" "rds_to_s3_sfn" {
   })
 }
 
-resource "aws_iam_role_policy" "rds_to_s3_sfn" {
-  name   = "invoke-compile-objects-to-migrate"
-  role   = aws_iam_role.rds_to_s3_sfn.id
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = [
-          "ecs:RunTask",
-          ]
-        Effect = "Allow",
-        Resource = "*"
-      }
+# resource "aws_iam_role_policy" "rds_to_s3_sfn" {
+#   name   = "invoke-compile-objects-to-migrate"
+#   role   = aws_iam_role.rds_to_s3_sfn.id
+#   policy = jsonencode({
+#     Version = "2012-10-17",
+#     Statement = [
+#       {
+#         Action = [
+#           "ecs:RunTask",
+#           ]
+#         Effect = "Allow",
+#         Resource = "*"
+#       }
+#     ]
+#   })
+# }
+
+data "aws_iam_policy_document" "rds_to_s3_sfn" {
+  version = "2012-10-17"
+
+  statement {
+    sid = "AllowPassEcsExecRole"
+
+    effect = "Allow"
+
+    actions = [
+      "iam:GetRole",
+      "iam:PassRole"
     ]
-  })
+
+    resources = [
+      var.ecs_execution_role.arn,
+    ]
+  }
+
+  statement {
+    sid = "AllowRunPGETLTasks"
+
+    effect = "Allow"
+
+    actions = [
+      "ecs:RunTask"
+    ]
+
+    resources = [
+      "${module.extract_task.task_definition_arn_without_revision}:*",
+    ]
+  }
+
+  statement {
+    sid = "AllowStopPGETLTasks"
+
+    effect = "Allow"
+
+    actions = [
+      "ecs:DescribeTasks",
+      "ecs:StopTask"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+
+  # statement {
+  #   sid = "AllowDotSyncExecutionOfEcsTasks"
+
+  #   effect = "Allow"
+
+  #   actions = [
+  #     "events:DescribeRule",
+  #     "events:PutRule",
+  #     "events:PutTargets"
+  #   ]
+
+  #   resources = [
+  #     "arn:aws:events:${var.aws_region}:${var.aws_account_id}:rule/StepFunctionsGetEventsForECSTaskRule"
+  #   ]
+  # }
+}
+
+resource "aws_iam_role_policy" "rds_to_s3_sfn" {
+  role   = aws_iam_role.rds_to_s3_sfn.name
+  policy = data.aws_iam_policy_document.rds_to_s3_sfn.json
 }
