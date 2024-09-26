@@ -4,7 +4,7 @@ resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
 
   definition = <<EOF
 {
-  "Comment": "State machine to run ECS task for pg_dump",
+  "Comment": "State machine to run ECS task for pg_dump: ${var.migrator_name}",
   "StartAt": "RunEcsTask",
   "States": {
     "RunEcsTask": {
