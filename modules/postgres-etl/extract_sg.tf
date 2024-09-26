@@ -19,5 +19,5 @@ resource "aws_security_group_rule" "etl_extract_task_https_out_anywhere" {
 }
 
 data "aws_security_group" "etl_extract_task" {
-  name = aws_security_group.etl_extract_task.id
+  id = aws_security_group.etl_extract_task.id
 }
