@@ -18,6 +18,6 @@ resource "aws_security_group_rule" "etl_extract_task_https_out_anywhere" {
   type              = "egress"
 }
 
-# data "aws_security_group" "etl_extract_task" {
-#   id = aws_security_group.etl_extract_task.id
-# }
+data "aws_security_group" "etl_extract_task" {
+  id = aws_security_group.etl_extract_task.id
+}

@@ -105,7 +105,7 @@ data "aws_iam_policy_document" "rds_to_s3_sfn" {
     ]
 
     resources = [
-      "${module.extract_task.task_definition_arn_without_revision}:*",
+      "${module.extract_task.task_definition_arn_without_revision}:*"
     ]
   }
 
@@ -124,21 +124,21 @@ data "aws_iam_policy_document" "rds_to_s3_sfn" {
     ]
   }
 
-  # statement {
-  #   sid = "AllowDotSyncExecutionOfEcsTasks"
+  statement {
+    sid = "AllowDotSyncExecutionOfEcsTasks"
 
-  #   effect = "Allow"
+    effect = "Allow"
 
-  #   actions = [
-  #     "events:DescribeRule",
-  #     "events:PutRule",
-  #     "events:PutTargets"
-  #   ]
+    actions = [
+      "events:DescribeRule",
+      "events:PutRule",
+      "events:PutTargets"
+    ]
 
-  #   resources = [
-  #     "arn:aws:events:${var.aws_region}:${var.aws_account_id}:rule/StepFunctionsGetEventsForECSTaskRule"
-  #   ]
-  # }
+    resources = [
+      "arn:aws:events:${var.aws_region}:${var.aws_account_id}:rule/StepFunctionsGetEventsForECSTaskRule"
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "rds_to_s3_sfn" {
