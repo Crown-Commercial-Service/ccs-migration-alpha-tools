@@ -13,6 +13,11 @@ variable "db_clients_security_group_id" {
   description = "ID of VPC security group, membership of which allows access to the Postgres db"
 }
 
+variable "db_etl_fs_clients" {
+  type        = string
+  description = "Entities permitted to access the EFS filesystem"
+}
+
 variable "ecs_cluster_arn" {
   type        = string
   description = "ARN of cluster into which tasks will be deployed"
