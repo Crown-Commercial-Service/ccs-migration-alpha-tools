@@ -32,6 +32,16 @@ variable "efs_subnet_ids" {
   description = "IDs of the subnest in which to create the EFS mount points"
 }
 
+variable "efs_access_point_id" {
+  type        = string
+  description = "ID of the EFS access point"
+}
+
+variable "efs_file_system_id" {
+  type        = string
+  description = "ID of the EFS file system"
+}
+
 variable "extract_task_cpu" {
   type        = number
   default     = 8192

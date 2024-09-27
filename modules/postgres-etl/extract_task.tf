@@ -43,8 +43,8 @@ module "extract_task" {
   task_memory            = var.extract_task_memory
   volumes = [
     {
-      access_point_id = efs_access_point.db_etl.id
-      file_system_id  = efs_file_system.db_etl.id
+      access_point_id = var.efs_access_point_id
+      file_system_id  = var.efs_file_system_id
       volume_name     = "efs0"
     }
   ]
