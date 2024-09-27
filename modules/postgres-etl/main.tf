@@ -139,6 +139,20 @@ data "aws_iam_policy_document" "rds_to_s3_sfn" {
       "arn:aws:events:${var.aws_region}:${var.aws_account_id}:rule/StepFunctionsGetEventsForECSTaskRule"
     ]
   }
+
+  statement {
+    sid = "AllowReadAllSSM"
+
+    effect = "Allow"
+
+    actions = [
+      "ssm:GetParameters",
+    ]
+
+    resources = [
+      "arn:aws:ssm:${var.aws_region}:${var.aws_account_id}:parameter/*"
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "rds_to_s3_sfn" {
