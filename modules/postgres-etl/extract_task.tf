@@ -26,7 +26,7 @@ module "extract_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "apk update && apk add --no-cache postgresql-client && pg_dump -j $DB_CONNECTION_URL -Fd --file $DUMP_FILENAME --no-acl --no-owner > /mnt/efs0/$DUMP_FILENAME && aws s3 cp /mnt/efs0/$DUMP_FILENAME s3://${var.s3_bucket_name}-${var.environment_name}/$DUMP_FILENAME"
+        "apk update && apk add --no-cache postgresql-client && pg_dump -d $DB_CONNECTION_URL -Fd --file $DUMP_FILENAME --no-acl --no-owner && aws s3 cp /mnt/efs0/$DUMP_FILENAME s3://${var.s3_bucket_name}-${var.environment_name}/$DUMP_FILENAME"
       ]
       port = null
       # ECS Execution role will need access to these
