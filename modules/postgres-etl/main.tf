@@ -96,6 +96,36 @@ data "aws_iam_policy_document" "rds_to_s3_sfn" {
   }
 
   statement {
+    sid = "AllowGetAuthorizationToken"
+
+    effect = "Allow"
+
+    actions = [
+      "ecr:GetAuthorizationToken"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
+    sid = "AllowLayerAndImageAccess"
+
+    effect = "Allow"
+
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+    ]
+
+    resources = [
+      "arn:aws:ecr:${var.aws_region}:${var.aws_account_id}:repository/*"
+    ]
+  }
+
+  statement {
     sid = "AllowRunPGETLTasks"
 
     effect = "Allow"
