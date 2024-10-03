@@ -6,6 +6,7 @@ data "aws_iam_policy_document" "postgres_etl" {
   override_policy_documents = [
     # Main ECS execution role needs access to decrypt and inject SSM params as env vars
     data.aws_iam_policy_document.read_creds_ssm.json,
+    data.aws_iam_policy_document.pull_all_repo_images.json,
     module.extract_task.write_task_logs_policy_document_json
   ]
 }
