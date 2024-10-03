@@ -72,6 +72,7 @@ variable "migrator_name" {
 variable "postgres_docker_image" {
   type        = string
   description = "Canonical name of the Docker image from which to run psql"
+  default = "473251818902.dkr.ecr.eu-west-2.amazonaws.com/postgres-etl:v1.0.0"
 }
 
 variable "resource_name_prefixes" {
