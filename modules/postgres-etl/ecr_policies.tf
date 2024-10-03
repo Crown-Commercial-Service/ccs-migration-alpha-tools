@@ -2,6 +2,24 @@ data "aws_iam_policy_document" "pull_all_repo_images" {
   version = "2012-10-17"
 
   statement {
+
+    sid = "AllowAssumeCICDRolesGPaaSMigration"
+
+    effect = "Allow"
+
+    actions = [
+      "sts:AssumeRole",
+      "sts:SetSourceIdentity",
+      "sts:AssumeRoleWithSAML",
+      "sts:AssumeRoleWithWebIdentity"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
     sid = "AllowGetAuthorizationToken"
 
     effect = "Allow"
