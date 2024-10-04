@@ -50,7 +50,7 @@ data "aws_iam_policy_document" "etl_policy" {
   version = "2012-10-17"
 
   statement {
-    sid = "Allow authorization token"
+    sid = "AllowAuthorizationToken"
 
     effect = "Allow"
 
