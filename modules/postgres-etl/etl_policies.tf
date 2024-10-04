@@ -81,21 +81,3 @@ data "aws_iam_policy_document" "etl_policy" {
     ]
   }
 }
-
-resource "aws_iam_policy" "bucket_access" {
-  name = "bucket_access"
-  description = "Allows access to the bucket"
-  policy = data.aws_iam_policy_document.bucket_access.json
-}
-
-resource "aws_iam_policy" "ecs_exec_policy" {
-  name        = "allow-ecs-exec-policy"
-  description = "Enables ECS Execute Command"
-  policy      = data.aws_iam_policy_document.ecs_exec_policy.json
-}
-
-resource "aws_iam_policy" "etl_policy" {
-  name        = "etl_policy"
-  description = "Allows access to ECR and S3"
-  policy      = data.aws_iam_policy_document.etl_policy.json
-}

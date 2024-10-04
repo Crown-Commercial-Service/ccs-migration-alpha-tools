@@ -16,3 +16,15 @@ resource "aws_iam_role_policy" "ecs_execution_role__postgres_etl" {
   role   = var.ecs_execution_role.name
   policy = data.aws_iam_policy_document.postgres_etl.json
 }
+
+resource "aws_iam_role_policy" "bucket_access__postgres_etl" {
+  name   = "bucket_access"
+  role   = var.ecs_execution_role.name
+  policy = data.aws_iam_policy_document.bucket_access.json
+}
+
+resource "aws_iam_role_policy" "ecs_exec_policy__postgres_etl" {
+  name   = "ecs_exec_policy"
+  role   = var.ecs_execution_role.name
+  policy = data.aws_iam_policy_document.ecs_exec_policy.json
+}
