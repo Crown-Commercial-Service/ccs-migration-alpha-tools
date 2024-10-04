@@ -20,6 +20,19 @@ resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
           "SecurityGroups.$": "States.Array('${aws_security_group.etl_extract_task.id}', '${var.db_etl_fs_clients}', '${var.db_clients_security_group_id}')",
           "Subnets": ${jsonencode(var.subnet_ids)}
           }
+        },
+        "Overrides": {
+          "ContainerOverrides": [
+            {
+              "Name": "pg_dump",
+              "Environment": [
+                {
+                  "Name": "DUMP_FILENAME",
+                  "Value": "/mnt/efs0/etl-dump.dir"
+                }
+              ]
+            }
+          ]
         }
       },
       "End": true
