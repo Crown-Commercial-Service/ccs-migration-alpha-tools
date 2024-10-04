@@ -3,6 +3,6 @@ resource "aws_s3_bucket" "postgres_etl" {
 
   tags = {
     Name        = var.s3_bucket_name
-    Environment = "pre-prod"
+    Environment = var.environment_name
   }
 }
