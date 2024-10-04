@@ -7,16 +7,19 @@ data "aws_iam_policy_document" "bucket_access" {
     effect = "Allow"
 
     actions = [
-      "s3:PutObjectVersionAcl",
-      "s3:PutObjectTagging",
-      "s3:PutObjectAcl",
       "s3:PutObject",
-      "s3:GetObjectVersionAttributes",
-      "s3:GetObjectVersion",
-      "s3:GetObjectTagging",
+      "s3:PutObjectAcl",
+      "s3:PutObjectTagging",
+      "s3:PutObjectVersionAcl",
+      "s3:PutObjectVersionTagging",
       "s3:GetObject",
-      "s3:DeleteObjectVersion",
-      "s3:DeleteObject"
+      "s3:GetObjectAcl",
+      "s3:GetObjectTagging",
+      "s3:GetObjectVersion",
+      "s3:GetObjectVersionAcl",
+      "s3:GetObjectVersionTagging",
+      "s3:DeleteObject",
+      "s3:DeleteObjectVersion"
     ]
 
     resources = [
