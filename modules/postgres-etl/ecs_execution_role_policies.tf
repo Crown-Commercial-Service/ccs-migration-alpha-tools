@@ -5,6 +5,7 @@ data "aws_iam_policy_document" "postgres_etl" {
   # We are expecting repeated Sids of "DescribeAllLogGroups", hence `overwrite` rather than `source`
   override_policy_documents = [
     # Main ECS execution role needs access to decrypt and inject SSM params as env vars
+    data.aws_iam_policy_document.bucket_access.json,
     data.aws_iam_policy_document.etl_policy.json,
     data.aws_iam_policy_document.read_creds_ssm.json,
     module.extract_task.write_task_logs_policy_document_json
