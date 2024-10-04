@@ -50,6 +50,20 @@ data "aws_iam_policy_document" "etl_policy" {
   version = "2012-10-17"
 
   statement {
+    sid = "Allow authorization token"
+
+    effect = "Allow"
+
+    actions = [
+      "ecr:GetAuthorizationToken"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
     sid = "AllowLayerAndImageAccess"
 
     effect = "Allow"
@@ -58,7 +72,6 @@ data "aws_iam_policy_document" "etl_policy" {
       "ecr:BatchCheckLayerAvailability",
       "ecr:BatchGetImage",
       "ecr:DescribeImages",
-      "ecr:GetAuthorizationToken",
       "ecr:GetDownloadUrlForLayer",
       "ecr:ListImages",
     ]
