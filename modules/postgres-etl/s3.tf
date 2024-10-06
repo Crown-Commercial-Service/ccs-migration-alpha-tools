@@ -14,21 +14,15 @@ resource "aws_s3_bucket_policy" "extract" {
     Version = "2012-10-17"
     Statement = [
       {
-        "Version" : "2012-10-17",
-        "Statement" : [
-          {
-            "Sid" : "AllowJenkinsToReadBucket",
-            "Effect" : "Allow",
-            "Principal" : {
-              "AWS" : "arn:aws:iam::665505400356:role/eks-paas-mountpoint-s3-csi-driver"
-            },
-            "Action" : "s3:*", # Adjust later
-            "Resource" : [
-              "${aws_s3_bucket.extract.arn}",
-              "${aws_s3_bucket.extract.arn}/*"
-
-            ]
-          }
+        "Sid" : "AllowJenkinsToReadBucket",
+        "Effect" : "Allow",
+        "Principal" : {
+          "AWS" : "arn:aws:iam::665505400356:role/eks-paas-mountpoint-s3-csi-driver"
+        },
+        "Action" : "s3:*", # Adjust later
+        "Resource" : [
+          "${aws_s3_bucket.extract.arn}",
+          "${aws_s3_bucket.extract.arn}/*"
         ]
       }
     ]
@@ -55,21 +49,15 @@ resource "aws_s3_bucket_policy" "load" {
     Version = "2012-10-17"
     Statement = [
       {
-        "Version" : "2012-10-17",
-        "Statement" : [
-          {
-            "Sid" : "AllowJenkinsToReadBucket",
-            "Effect" : "Allow",
-            "Principal" : {
-              "AWS" : "arn:aws:iam::665505400356:role/eks-paas-mountpoint-s3-csi-driver"
-            },
-            "Action" : "s3:*", # Adjust later
-            "Resource" : [
-              "${aws_s3_bucket.load[0].arn}",
-              "${aws_s3_bucket.load[0].arn}/*"
-
-            ]
-          }
+        "Sid" : "AllowJenkinsToReadBucket",
+        "Effect" : "Allow",
+        "Principal" : {
+          "AWS" : "arn:aws:iam::665505400356:role/eks-paas-mountpoint-s3-csi-driver"
+        },
+        "Action" : "s3:*", # Adjust later
+        "Resource" : [
+          "${aws_s3_bucket.load[0].arn}",
+          "${aws_s3_bucket.load[0].arn}/*"
         ]
       }
     ]
