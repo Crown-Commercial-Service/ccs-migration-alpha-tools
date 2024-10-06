@@ -14,7 +14,7 @@ resource "aws_s3_bucket_policy" "extract" {
     Version = "2012-10-17"
     Statement = [
       {
-        "Sid" : "AllowJenkinsToReadBucket",
+        "Sid" : "AllowJenkinsAccounts",
         "Effect" : "Allow",
         "Principal" : {
           "AWS" : "arn:aws:iam::665505400356:role/eks-paas-mountpoint-s3-csi-driver"
@@ -49,7 +49,7 @@ resource "aws_s3_bucket_policy" "load" {
     Version = "2012-10-17"
     Statement = [
       {
-        "Sid" : "AllowJenkinsToReadBucket",
+        "Sid" : "AllowJenkinsAccounts",
         "Effect" : "Allow",
         "Principal" : {
           "AWS" : "arn:aws:iam::665505400356:role/eks-paas-mountpoint-s3-csi-driver"
