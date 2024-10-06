@@ -83,9 +83,15 @@ variable "resource_name_prefixes" {
   description = "Prefix to apply to resources in AWS; options provided to satisfy divergent naming requirements across AWS"
 }
 
-variable "s3_bucket_name" {
-  description = "Name of the S3 bucket to use for the Terraform state file"
+variable "s3_extract_bucket_name" {
+  description = "Name of the S3 bucket to use for dumping the Postgres DB for ETL purposes"
   type        = string
+}
+
+variable "s3_load_bucket_name" {
+  description = "Name of the S3 bucket to use for loading the Postgres DB for ETL purposes"
+  type        = string
+  default     = ""
 }
 
 variable "source_db_connection_url_ssm_param_arn" {
