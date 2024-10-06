@@ -28,7 +28,7 @@ resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
               "Environment": [
                 {
                   "Name": "DUMP_FILENAME",
-                  "Value": "/mnt/efs0/etl-dump.dir"
+                  "Value": "/mnt/efs0/etl-dump.sql"
                 }
               ]
             }
