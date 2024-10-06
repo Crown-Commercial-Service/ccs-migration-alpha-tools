@@ -15,7 +15,6 @@ resource "aws_s3_bucket_policy" "extract" {
     Statement = [
       {
         "Version" : "2012-10-17",
-        "Id" : "Policy1728208346456",
         "Statement" : [
           {
             "Sid" : "AllowJenkinsToReadBucket",
@@ -57,7 +56,6 @@ resource "aws_s3_bucket_policy" "load" {
     Statement = [
       {
         "Version" : "2012-10-17",
-        "Id" : "Policy1728208346456",
         "Statement" : [
           {
             "Sid" : "AllowJenkinsToReadBucket",
