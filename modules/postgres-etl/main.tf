@@ -1,5 +1,5 @@
-resource "aws_sfn_state_machine" "compile_objects_to_migrate" {
-  name     = "compile-pg-etl-s3-objects-to-migrate"
+resource "aws_sfn_state_machine" "postgres_etl_extract_to_s3" {
+  name     = "postgres-etl-extract-to-s3"
   role_arn = aws_iam_role.rds_to_s3_sfn.arn
 
   definition = <<EOF
