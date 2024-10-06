@@ -50,7 +50,7 @@ resource "aws_s3_bucket" "load" {
 
 resource "aws_s3_bucket_policy" "load" {
   count  = var.s3_load_bucket_name != "" ? 1 : 0 # Only create the bucket if a name is provided
-  bucket = aws_s3_bucket.load.bucket
+  bucket = aws_s3_bucket.load[0].bucket
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -67,8 +67,8 @@ resource "aws_s3_bucket_policy" "load" {
             },
             "Action" : "s3:*", # Adjust later
             "Resource" : [
-              "${aws_s3_bucket.load.arn}",
-              "${aws_s3_bucket.load.arn}/*"
+              "${aws_s3_bucket.load[0].arn}",
+              "${aws_s3_bucket.load[0].arn}/*"
 
             ]
           }
