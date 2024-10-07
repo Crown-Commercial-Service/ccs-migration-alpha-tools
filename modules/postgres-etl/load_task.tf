@@ -21,7 +21,7 @@ module "load_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "aws s3 cp s3://${var.s3_load_bucket_name}-${var.environment_name}/$LOAD_FILENAME.gz /mnt/efs0/etl-load.sql.gz"
+        "aws s3 cp s3://${var.s3_load_bucket_name}-${var.environment_name}/$LOAD_FILENAME /mnt/efs0/etl-load.sql.gz"
         # && gunzip /mnt/efs0/etl-load.sql.gz && pg_restore --clean --if-exists -d $DB_CONNECTION_URL -j ${var.load_task_pgrestore_workers} --no-acl --no-owner /mnt/efs0/etl-load.sql
       ]
       port = null
