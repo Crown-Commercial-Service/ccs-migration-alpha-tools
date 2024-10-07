@@ -1,6 +1,6 @@
 resource "aws_security_group" "etl_load_task" {
   name        = "${var.resource_name_prefixes.normal}:${upper(var.migrator_name)}:ECSTASK:LOAD"
-  description = "Migrator Load task"
+  description = "PG ETL Load task"
   vpc_id      = var.vpc_id
 
   tags = {
