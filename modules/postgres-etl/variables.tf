@@ -64,6 +64,24 @@ variable "extract_task_memory" {
   description = "Memory resource to allocate to the extract task, in MiB"
 }
 
+variable "load_task_cpu" {
+  type        = number
+  default     = 8192
+  description = "CPU resource to allocate to the load task, in millicores"
+}
+
+variable "load_task_memory" {
+  type        = number
+  default     = 16384
+  description = "Memory resource to allocate to the load task, in MiB"
+}
+
+variable "load_task_pgrestore_workers" {
+  type        = number
+  default     = 8
+  description = "Number of pgrestore workers, one per CPU core"
+}
+
 variable "migrator_name" {
   description = "A name to distinguish this migrator"
   type        = string
@@ -102,6 +120,11 @@ variable "source_db_connection_url_ssm_param_arn" {
 variable "subnet_ids" {
   type        = set(string)
   description = "IDs of the subnets in which to run the download/restore ECS tasks"
+}
+
+variable "target_db_connection_url_ssm_param_arn" {
+  type        = string
+  description = "ARN of SSM param which contains the connection URL for the target Postgres database"
 }
 
 variable "vpc_id" {

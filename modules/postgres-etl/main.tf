@@ -35,6 +35,36 @@ resource "aws_sfn_state_machine" "rds_to_s3" {
           ]
         }
       },
+      "ResultPath": null,
+      "Next": "Load cleaned PG dump into target database"
+    },
+    "Load cleaned PG dump into target database": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::ecs:runTask.sync",
+      "Parameters": {
+        "Cluster": "${var.ecs_cluster_arn}",
+        "TaskDefinition": "${module.load_task.task_definition_arn}",
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups.$": "States.Array('${aws_security_group.etl_load_task.id}', '${aws_security_group.db_etl_fs_clients.id}', '${var.db_clients_security_group_id}')",
+            "Subnets": ${jsonencode(var.subnet_ids)}
+          }
+        },
+        "Overrides": {
+          "ContainerOverrides": [
+            {
+              "Name": "pg_restore",
+              "Environment": [
+                {
+                  "Name": "DUMP_FILENAME",
+                  "Value": "/mnt/efs0/etl-dump.sql"
+                }
+              ]
+            }
+          ]
+        }
+      },
       "End": true
     }
   }
@@ -72,23 +102,6 @@ resource "aws_iam_role" "rds_to_s3_sfn" {
     ]
   })
 }
-
-# resource "aws_iam_role_policy" "rds_to_s3_sfn" {
-#   name   = "invoke-compile-objects-to-migrate"
-#   role   = aws_iam_role.rds_to_s3_sfn.id
-#   policy = jsonencode({
-#     Version = "2012-10-17",
-#     Statement = [
-#       {
-#         Action = [
-#           "ecs:RunTask",
-#           ]
-#         Effect = "Allow",
-#         Resource = "*"
-#       }
-#     ]
-#   })
-# }
 
 data "aws_iam_policy_document" "rds_to_s3_sfn" {
   version = "2012-10-17"
