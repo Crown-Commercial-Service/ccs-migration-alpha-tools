@@ -35,8 +35,8 @@ module "load_task" {
   task_memory            = var.load_task_memory
   volumes = [
     {
-      access_point_id = aws_efs_access_point.db_dump.id
-      file_system_id  = aws_efs_file_system.db_dump.id
+      access_point_id = var.efs_access_point_id
+      file_system_id  = var.efs_file_system_id
       volume_name     = "efs0"
     }
   ]
