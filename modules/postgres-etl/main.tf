@@ -57,8 +57,8 @@ resource "aws_sfn_state_machine" "rds_to_s3" {
               "Name": "pg_restore",
               "Environment": [
                 {
-                  "Name": "DUMP_FILENAME",
-                  "Value": "/mnt/efs0/etl-dump.sql"
+                  "Name": "LOAD_FILENAME",
+                  "Value.$": "$.Payload"
                 }
               ]
             }
