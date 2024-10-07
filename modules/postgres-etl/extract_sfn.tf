@@ -35,36 +35,6 @@ resource "aws_sfn_state_machine" "rds_to_s3" {
           ]
         }
       },
-      "ResultPath": null,
-      "Next": "Load cleaned PG dump into target database"
-    },
-    "Load cleaned PG dump into target database": {
-      "Type": "Task",
-      "Resource": "arn:aws:states:::ecs:runTask.sync",
-      "Parameters": {
-        "Cluster": "${var.ecs_cluster_arn}",
-        "TaskDefinition": "${module.load_task.task_definition_arn}",
-        "NetworkConfiguration": {
-          "AwsvpcConfiguration": {
-            "AssignPublicIp": "DISABLED",
-            "SecurityGroups.$": "States.Array('${aws_security_group.etl_load_task.id}', '${var.db_etl_fs_clients}', '${var.db_clients_security_group_id}')",
-            "Subnets": ${jsonencode(var.subnet_ids)}
-          }
-        },
-        "Overrides": {
-          "ContainerOverrides": [
-            {
-              "Name": "pg_restore",
-              "Environment": [
-                {
-                  "Name": "LOAD_FILENAME",
-                  "Value.$": "$.LOAD_FILENAME"
-                }
-              ]
-            }
-          ]
-        }
-      },
       "End": true
     }
   }
@@ -131,8 +101,7 @@ data "aws_iam_policy_document" "rds_to_s3_sfn" {
     ]
 
     resources = [
-      "${module.extract_task.task_definition_arn_without_revision}:*",
-      "${module.load_task.task_definition_arn_without_revision}:*"
+      "${module.extract_task.task_definition_arn_without_revision}:*"
     ]
   }
 
