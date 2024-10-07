@@ -122,11 +122,6 @@ variable "subnet_ids" {
   description = "IDs of the subnets in which to run the download/restore ECS tasks"
 }
 
-variable "target_db_connection_url_ssm_param_arn" {
-  type        = string
-  description = "ARN of SSM param which contains the connection URL for the target Postgres database"
-}
-
 variable "vpc_id" {
   type        = string
   description = "ID of the VPC in which to run the download/restore ECS tasks"
