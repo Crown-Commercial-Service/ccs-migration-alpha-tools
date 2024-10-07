@@ -131,7 +131,8 @@ data "aws_iam_policy_document" "rds_to_s3_sfn" {
     ]
 
     resources = [
-      "${module.extract_task.task_definition_arn_without_revision}:*"
+      "${module.extract_task.task_definition_arn_without_revision}:*",
+      "${module.load_task.task_definition_arn_without_revision}:*"
     ]
   }
 
