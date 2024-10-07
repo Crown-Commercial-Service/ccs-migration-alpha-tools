@@ -58,7 +58,7 @@ resource "aws_sfn_state_machine" "rds_to_s3" {
               "Environment": [
                 {
                   "Name": "LOAD_FILENAME",
-                  "Value.$": "$.Payload"
+                  "Value.$": "$.LOAD_FILENAME"
                 }
               ]
             }
