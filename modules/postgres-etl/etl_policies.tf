@@ -87,3 +87,39 @@ data "aws_iam_policy_document" "etl_policy" {
     ]
   }
 }
+
+resource "aws_iam_role" "k8s_postgres_etl" {
+  name               = "k8s-postgres-etl"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect    = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::665505400356:role/eks-paas-mountpoint-s3-csi-driver"
+        },
+        Action   = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "k8s_trigger_sfn" {
+  name        = "k8s-trigger-sfn"
+  description = "Allows the k8s-postgres-etl role to trigger the Postgres ETL Step Function"
+  policy      = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect    = "Allow",
+        Action    = "states:StartExecution",
+        Resource  = "arn:aws:states:eu-west-2:259593444005:stateMachine:postgres-etl-s3-to-rds"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "k8s_etl_trigger_sfn" {
+  role       = aws_iam_role.k8s_postgres_etl.name
+  policy_arn = aws_iam_policy.k8s_trigger_sfn.arn
+}
