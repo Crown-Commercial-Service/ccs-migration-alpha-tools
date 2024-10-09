@@ -6,7 +6,12 @@ module "load_task" {
   container_definitions = {
     pg_restore = {
       cpu                   = var.load_task_cpu
-      environment_variables = []
+      environment_variables = [
+        {
+          name = "ENVIRONMENT_NAME"
+          value = var.environment_name
+        }
+      ]
       essential             = true
       healthcheck_command   = null
       image                 = var.postgres_docker_image
