@@ -11,7 +11,7 @@ resource "aws_s3_bucket_notification" "extract" {
   bucket = aws_s3_bucket.extract.bucket
 
   queue {
-    queue_arn     = aws_sqs_queue.rds_to_s3.arn
+    queue_arn     = aws_sqs_queue.extract.arn
     events        = ["s3:ObjectCreated:*"]
     filter_prefix = ".sql.gz"
   }
