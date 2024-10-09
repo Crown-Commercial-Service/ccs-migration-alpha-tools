@@ -25,6 +25,26 @@ data "aws_iam_policy_document" "extract_sqs" {
       ]
     }
   }
+
+  # Allow the SQS queue to be used by the Jenkins account
+  statement {
+    effect = "Allow"
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::665505400356:role/eks-paas-mountpoint-s3-csi-driver"
+      ]
+    }
+
+    actions = [
+      "sqs:*"
+    ]
+
+    resources = [
+      "arn:aws:sqs:*:*:postgres-etl-s3.fifo"
+    ]
+  }
 }
 
 resource "aws_sqs_queue" "extract" {
