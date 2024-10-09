@@ -23,8 +23,8 @@ data "aws_iam_policy_document" "bucket_access" {
     ]
 
     resources = [
-      "arn:aws:s3:::ccs-digitalmarketplace-postgres-etl-extract-pre-prod/*",
-      "arn:aws:s3:::ccs-digitalmarketplace-postgres-etl-extract-pre-prod"
+      "arn:aws:s3:::ccs-digitalmarketplace-postgres-etl-extract-${var.environment_name}",
+      "arn:aws:s3:::ccs-digitalmarketplace-postgres-etl-extract-${var.environment_name}/*"
     ]
   }
 }
