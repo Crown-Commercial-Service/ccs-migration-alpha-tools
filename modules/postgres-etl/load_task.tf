@@ -30,7 +30,7 @@ module "load_task" {
       ]
     }
   }
-  ecs_execution_role_arn = var.ecs_execution_role.arn
+  ecs_execution_role_arn = var.ecs_load_execution_role.arn
   family_name            = "${var.migrator_name}_load"
   task_cpu               = var.load_task_cpu
   task_memory            = var.load_task_memory
