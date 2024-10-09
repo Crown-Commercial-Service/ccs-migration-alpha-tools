@@ -52,6 +52,8 @@ resource "aws_sqs_queue" "extract" {
 
   policy = data.aws_iam_policy_document.extract_sqs.json
 
+  receive_wait_time_seconds = 20
+
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.extract_dlq.arn
     maxReceiveCount     = 5
