@@ -48,8 +48,7 @@ data "aws_iam_policy_document" "extract_sqs" {
 }
 
 resource "aws_sqs_queue" "extract" {
-  name                        = "postgres-etl-s3"
-  content_based_deduplication = true
+  name = "postgres-etl-s3"
 
   policy = data.aws_iam_policy_document.extract_sqs.json
 
@@ -60,5 +59,5 @@ resource "aws_sqs_queue" "extract" {
 }
 
 resource "aws_sqs_queue" "extract_dlq" {
-  name       = "postgres-etl-s3-dlq"
+  name = "postgres-etl-s3-dlq"
 }
