@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "extract_sqs" {
     ]
 
     resources = [
-      "arn:aws:sqs:*:*:postgres-etl-s3.fifo"
+      "arn:aws:sqs:*:*:postgres-etl-s3"
     ]
 
     condition {
@@ -42,14 +42,13 @@ data "aws_iam_policy_document" "extract_sqs" {
     ]
 
     resources = [
-      "arn:aws:sqs:*:*:postgres-etl-s3.fifo"
+      "arn:aws:sqs:*:*:postgres-etl-s3"
     ]
   }
 }
 
 resource "aws_sqs_queue" "extract" {
-  name                        = "postgres-etl-s3.fifo"
-  fifo_queue                  = true
+  name                        = "postgres-etl-s3"
   content_based_deduplication = true
 
   policy = data.aws_iam_policy_document.extract_sqs.json
@@ -61,6 +60,5 @@ resource "aws_sqs_queue" "extract" {
 }
 
 resource "aws_sqs_queue" "extract_dlq" {
-  name       = "postgres-etl-s3-dlq.fifo"
-  fifo_queue = true
+  name       = "postgres-etl-s3-dlq"
 }
