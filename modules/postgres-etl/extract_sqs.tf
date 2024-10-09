@@ -3,17 +3,24 @@ data "aws_iam_policy_document" "extract_sqs" {
     effect = "Allow"
 
     principals {
-      type        = "*"
-      identifiers = ["*"]
+      type = "*"
+      identifiers = [
+        "*"
+      ]
     }
 
-    actions   = ["sqs:SendMessage"]
-    resources = ["arn:aws:sqs:*:*:postgres-etl-s3.fifo"]
+    actions = [
+      "sqs:SendMessage"
+    ]
+
+    resources = [
+      "arn:aws:sqs:*:*:postgres-etl-s3.fifo"
+    ]
 
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = [
+      values = [
         aws_s3_bucket.extract.arn,
       ]
     }
