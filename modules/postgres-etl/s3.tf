@@ -13,7 +13,7 @@ resource "aws_s3_bucket_notification" "extract" {
   queue {
     queue_arn     = aws_sqs_queue.extract.arn
     events        = ["s3:ObjectCreated:*"]
-    filter_prefix = ".sql.gz"
+    filter_suffix = ".sql.gz"
   }
 }
 
