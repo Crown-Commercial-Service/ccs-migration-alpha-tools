@@ -10,6 +10,10 @@ module "extract_task" {
         {
           name = "ENVIRONMENT_NAME"
           value = var.environment_name
+        },
+        {
+          name = "MOUNT_POINT"
+          value = "/mnt/efs0"
         }
       ]
       essential             = true
@@ -26,7 +30,7 @@ module "extract_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "apk upgrade && rm -rf $DUMP_FILENAME && pg_dump -d $DB_CONNECTION_URL --no-acl --no-owner | gzip > $DUMP_FILENAME.gz && aws s3 cp $DUMP_FILENAME.gz s3://${var.s3_extract_bucket_name}-${var.environment_name}/etl-dump-$(date +%Y-%m-%d-%H-%M-%S).gz"
+        "apk upgrade && pg_dump -d $DB_CONNECTION_URL --no-acl --no-owner | gzip > $MOUNT_POINT/$DUMP_FILENAME.sql.gz && aws s3 cp $MOUNT_POINT/$DUMP_FILENAME.sql.gz s3://${var.s3_extract_bucket_name}-${var.environment_name}/$DUMP_FILENAME-$(date +%Y-%m-%d-%H-%M-%S).sql.gz"
       ]
       port = null
       # ECS Execution role will need access to these
