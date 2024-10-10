@@ -1,5 +1,5 @@
 module "extract_task" {
-  source = "../../resource-groups/ecs-fargate-task-definition"
+  source = "../../../resource-groups/ecs-fargate-task-definition"
 
   aws_account_id = var.aws_account_id
   aws_region     = var.aws_region
@@ -36,7 +36,7 @@ module "extract_task" {
       # ECS Execution role will need access to these
       secret_environment_variables = [
         {
-          "name" : "DB_CONNECTION_URL", "valueFrom" : var.source_db_connection_url_ssm_param_arn
+          "name" : "DB_CONNECTION_URL", "valueFrom" : var.db_connection_url_ssm_param_arn
         }
       ]
     }

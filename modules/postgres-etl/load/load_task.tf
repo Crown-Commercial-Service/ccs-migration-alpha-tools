@@ -1,5 +1,5 @@
 module "load_task" {
-  source = "../../resource-groups/ecs-fargate-task-definition"
+  source = "../../../resource-groups/ecs-fargate-task-definition"
 
   count = var.environment_name == "production" ? 0 : 1 # Don't create the load task in production
 
@@ -33,7 +33,7 @@ module "load_task" {
       ]
       port = null
       secret_environment_variables = [
-        { "name" : "DB_CONNECTION_URL", "valueFrom" : var.source_db_connection_url_ssm_param_arn }
+        { "name" : "DB_CONNECTION_URL", "valueFrom" : var.db_connection_url_ssm_param_arn }
       ]
     }
   }
