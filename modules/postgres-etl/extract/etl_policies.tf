@@ -75,9 +75,9 @@ data "aws_iam_policy_document" "etl_policy" {
     actions = [
       "ecr:BatchCheckLayerAvailability",
       "ecr:BatchGetImage",
-      "ecr:DescribeImages",
+      "ecr:DescribeImages", # Possibly not needed
       "ecr:GetDownloadUrlForLayer",
-      "ecr:ListImages",
+      "ecr:ListImages", # Possibly not needed
     ]
 
     resources = [
