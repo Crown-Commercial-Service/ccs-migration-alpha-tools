@@ -38,7 +38,7 @@ module "load" {
   environment_name                = var.environment_name
   migrator_name                   = var.migrator_name
   resource_name_prefixes          = var.resource_name_prefixes
-  db_connection_url_ssm_param_arn = var.destination_db_connection_url_ssm_param_arn
+  db_connection_url_ssm_param_arn = var.db_connection_url_ssm_param_arn
   s3_load_bucket_name             = var.s3_load_bucket_name
   subnet_ids                      = var.subnet_ids
   vpc_id                          = var.vpc_id

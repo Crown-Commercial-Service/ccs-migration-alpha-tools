@@ -131,12 +131,7 @@ variable "s3_load_bucket_name" {
   default     = ""
 }
 
-variable "source_db_connection_url_ssm_param_arn" {
-  type        = string
-  description = "ARN of SSM param which contains the connection URL for the source Postgres database"
-}
-
-variable "destination_db_connection_url_ssm_param_arn" {
+variable "db_connection_url_ssm_param_arn" {
   type        = string
   description = "ARN of SSM param which contains the connection URL for the source Postgres database"
 }
