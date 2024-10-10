@@ -1,4 +1,6 @@
 resource "aws_sfn_state_machine" "s3_to_rds" {
+  count = var.environment_name == "production" ? 0 : 1 # This state machine is skipped in production
+
   name     = "postgres-etl-s3-to-rds"
   role_arn = aws_iam_role.s3_to_rds_sfn.arn
 
@@ -51,6 +53,8 @@ EOF
 }
 
 resource "aws_iam_role" "s3_to_rds_sfn" {
+  count = var.environment_name == "production" ? 0 : 1 # This role is skipped in production
+
   name = "${var.migrator_name}_s3_to_rds_sfn"
 
   assume_role_policy = jsonencode({
@@ -73,6 +77,8 @@ resource "aws_iam_role" "s3_to_rds_sfn" {
 }
 
 data "aws_iam_policy_document" "s3_to_rds_sfn" {
+  count = var.environment_name == "production" ? 0 : 1 # This policy is skipped in production
+
   version = "2012-10-17"
 
   statement {
@@ -137,6 +143,8 @@ data "aws_iam_policy_document" "s3_to_rds_sfn" {
 }
 
 resource "aws_iam_role_policy" "s3_to_rds_sfn" {
+  count = var.environment_name == "production" ? 0 : 1 # This policy is skipped in production
+
   role   = aws_iam_role.s3_to_rds_sfn.name
   policy = data.aws_iam_policy_document.s3_to_rds_sfn.json
 }
