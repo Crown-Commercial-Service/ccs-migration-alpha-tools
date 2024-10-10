@@ -11,7 +11,7 @@ data "aws_iam_policy_document" "read_creds_ssm" {
     ]
 
     resources = [
-      var.source_db_connection_url_ssm_param_arn
+      var.db_connection_url_ssm_param_arn
     ]
   }
 }
