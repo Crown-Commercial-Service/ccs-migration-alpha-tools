@@ -39,14 +39,6 @@ variable "ecs_load_execution_role" {
   description = "Details of the role which is assumed by the ECS execution processes"
 }
 
-variable "ecs_load_execution_role" {
-  type = object({
-    arn  = string
-    name = string
-  })
-  description = "Details of the role which is assumed by the ECS execution processes"
-}
-
 variable "efs_subnet_ids" {
   type        = set(string)
   default     = []
