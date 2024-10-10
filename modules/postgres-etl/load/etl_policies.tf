@@ -81,8 +81,11 @@ data "aws_iam_policy_document" "etl_policy" {
     ]
 
     resources = [
+      "arn:aws:ecr:${var.aws_region}:473251818902:repository/postgres-etl", # Dev
       "arn:aws:ecr:${var.aws_region}:473251818902:repository/postgres-etl:*", # Dev
+      "arn:aws:ecr:${var.aws_region}:665505400356:repository/postgres-etl", # SBX
       "arn:aws:ecr:${var.aws_region}:665505400356:repository/postgres-etl:*", # SBX
+      "arn:aws:ecr:${var.aws_region}:974531504241:repository/postgres-etl",  # Prod
       "arn:aws:ecr:${var.aws_region}:974531504241:repository/postgres-etl:*"  # Prod
     ]
   }
