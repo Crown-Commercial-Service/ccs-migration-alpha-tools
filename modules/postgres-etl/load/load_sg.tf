@@ -1,6 +1,4 @@
 resource "aws_security_group" "etl_load_task" {
-  count = var.environment_name == "production" ? 0 : 1 # Don't create for production
-
   name        = "${var.resource_name_prefixes.normal}:${upper(var.migrator_name)}:ECSTASK:LOAD"
   description = "PG ETL Load task"
   vpc_id      = var.vpc_id
@@ -11,8 +9,6 @@ resource "aws_security_group" "etl_load_task" {
 }
 
 resource "aws_security_group_rule" "etl_load_task_https_out_anywhere" {
-  count = var.environment_name == "production" ? 0 : 1 # Don't create for production
-
   cidr_blocks       = ["0.0.0.0/0"]
   description       = "Allow https out from load task to anywhere"
   from_port         = 443

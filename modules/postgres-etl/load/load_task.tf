@@ -1,8 +1,6 @@
 module "load_task" {
   source = "../../../resource-groups/ecs-fargate-task-definition"
 
-  count = var.environment_name == "production" ? 0 : 1 # Don't create the load task in production
-
   aws_account_id = var.aws_account_id
   aws_region     = var.aws_region
   container_definitions = {
