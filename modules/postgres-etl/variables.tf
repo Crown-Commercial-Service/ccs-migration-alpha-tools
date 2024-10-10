@@ -69,7 +69,7 @@ variable "enable_extract" {
 variable "enable_load" {
   type        = bool
   description = "Whether to enable the load task"
-  default = false
+  default     = false
 }
 
 variable "environment_name" {
