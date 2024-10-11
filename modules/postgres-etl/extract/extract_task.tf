@@ -30,7 +30,7 @@ module "extract_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "apk upgrade && pg_dump -d $DB_CONNECTION_URL --no-acl --no-owner | gzip > $MOUNT_POINT/$DUMP_FILENAME.sql.gz && aws s3 cp --quiet $MOUNT_POINT/$DUMP_FILENAME.sql.gz s3://${var.s3_extract_bucket_name}-${var.environment_name}/$DUMP_FILENAME-$(date +%Y-%m-%d-%H-%M-%S).sql.gz && echo \"$DUMP_FILENAME successfully uploaded to S3\""
+        "apk upgrade && pg_dump -d $DB_CONNECTION_URL -Fc -j ${var.extract_task_pgrestore_workers} --no-acl --no-owner -f $MOUNT_POINT/$DUMP_FILENAME.dump && aws s3 cp --quiet $MOUNT_POINT/$DUMP_FILENAME.dump s3://${var.s3_extract_bucket_name}-${var.environment_name}/$DUMP_FILENAME-$(date +%Y-%m-%d-%H-%M-%S).dump && echo \"$DUMP_FILENAME successfully uploaded to S3\""
       ]
       port = null
       # ECS Execution role will need access to these

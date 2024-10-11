@@ -53,6 +53,12 @@ variable "extract_task_cpu" {
   description = "CPU resource to allocate to the extract task, in millicores"
 }
 
+variable "extract_task_pgrestore_workers" {
+  type        = number
+  default     = 8
+  description = "Number of pgrestore workers, one per CPU core"
+}
+
 variable "environment_name" {
   type        = string
   description = "Name of the environment in which the migrator is running"
