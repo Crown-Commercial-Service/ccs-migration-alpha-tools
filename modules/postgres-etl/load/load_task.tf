@@ -26,7 +26,7 @@ module "load_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "aws s3 cp --quiet s3://${var.s3_load_bucket_name}-${var.environment_name}/$LOAD_FILENAME /mnt/efs0/etl-load.dump && echo \"$LOAD_FILENAME successfully downloaded from S3\" && pg_restore --clean --if-exists -d $DB_CONNECTION_URL -j ${var.load_task_pgrestore_workers} --no-acl --no-owner /mnt/efs0/etl-load.dump"
+        "aws s3 cp --quiet s3://${var.s3_load_bucket_name}-${var.environment_name}/$LOAD_FILENAME /mnt/efs0/etl-load.tar && echo \"$LOAD_FILENAME successfully downloaded from S3\" && rm -rf /mnt/efs0/etl-load && tar -xf /mnt/efs0/etl-load.tar -C /mnt/efs0 && pg_restore --clean --if-exists -d $DB_CONNECTION_URL -j ${var.load_task_pgrestore_workers} --no-acl --no-owner /mnt/efs0/etl-load"
       ]
       port = null
       secret_environment_variables = [
