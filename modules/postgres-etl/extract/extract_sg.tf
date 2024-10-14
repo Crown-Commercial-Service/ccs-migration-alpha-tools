@@ -1,10 +1,10 @@
 resource "aws_security_group" "etl_extract_task" {
-  name        = "${var.resource_name_prefixes.normal}:PG:${upper(var.migrator_name)}:ECSTASK:EXTRACT"
+  name        = "${var.resource_name_prefixes.normal}:${upper(var.migrator_name)}:ECSTASK:EXTRACT"
   description = "PG ETL Extract task"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${var.resource_name_prefixes.normal}:PG:${upper(var.migrator_name)}:ECSTASK:EXTRACT"
+    Name = "${var.resource_name_prefixes.normal}:${upper(var.migrator_name)}:ECSTASK:EXTRACT"
   }
 }
 

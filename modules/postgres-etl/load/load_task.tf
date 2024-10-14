@@ -35,7 +35,7 @@ module "load_task" {
     }
   }
   ecs_execution_role_arn = var.ecs_load_execution_role.arn
-  family_name            = "pg_${var.migrator_name}_load"
+  family_name            = "${var.migrator_name}_load"
   task_cpu               = var.load_task_cpu
   task_memory            = var.load_task_memory
   volumes = [
@@ -46,7 +46,7 @@ module "load_task" {
     }
   ]
 
-  depends_on = [
-    aws_iam_role_policy.ecs_execution_role__postgres_etl_load
-  ]
+  # depends_on = [
+  #   aws_iam_role_policy.ecs_execution_role__postgres_etl_load
+  # ]
 }

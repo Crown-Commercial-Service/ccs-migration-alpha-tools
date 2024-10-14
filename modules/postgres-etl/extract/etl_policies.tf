@@ -92,7 +92,7 @@ data "aws_iam_policy_document" "etl_policy" {
 }
 
 resource "aws_iam_role" "rds_to_s3_sfn" {
-  name = "pg_${var.migrator_name}_rds_to_s3_sfn"
+  name = "${var.migrator_name}_rds_to_s3_sfn"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
