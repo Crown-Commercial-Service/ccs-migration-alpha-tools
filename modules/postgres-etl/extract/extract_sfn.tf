@@ -4,7 +4,7 @@ resource "aws_sfn_state_machine" "rds_to_s3" {
 
   definition = <<EOF
 {
-  "Comment": "State machine to run ECS task for pg_dump: ${var.migrator_name}",
+  "Comment": "State machine to run ECS task for pg_dump: pg_${var.migrator_name}",
   "StartAt": "RunEcsTask",
   "States": {
     "RunEcsTask": {

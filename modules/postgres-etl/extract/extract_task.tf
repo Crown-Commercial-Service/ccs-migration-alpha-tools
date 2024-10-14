@@ -42,7 +42,7 @@ module "extract_task" {
     }
   }
   ecs_execution_role_arn = var.ecs_extract_execution_role.arn
-  family_name            = "${var.migrator_name}_extract"
+  family_name            = "pg_${var.migrator_name}_extract"
   task_cpu               = var.extract_task_cpu
   task_memory            = var.extract_task_memory
   volumes = [
@@ -53,7 +53,7 @@ module "extract_task" {
     }
   ]
 
-  # depends_on = [
-  #   aws_efs_mount_target.db_etl
-  # ]
+  depends_on = [
+    aws_iam_role_policy.ecs_execution_role__postgres_etl_extract
+  ]
 }
