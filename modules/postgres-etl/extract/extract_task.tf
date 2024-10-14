@@ -53,7 +53,7 @@ module "extract_task" {
     }
   ]
 
-  depends_on = [
-    aws_iam_role_policy.ecs_execution_role__postgres_etl_extract
-  ]
+  # depends_on = [
+  #   aws_iam_role_policy.ecs_execution_role__postgres_etl_extract
+  # ]
 }
