@@ -25,7 +25,12 @@ variable "ecs_cluster_arn" {
 
 variable "ecs_extract_execution_role_arn" {
   type        = string
-  description = "Details of the role which is assumed by the ECS execution processes"
+  description = "ARN of the role which is assumed by the ECS execution processes"
+}
+
+variable "ecs_extract_execution_role_name" {
+  type = string
+  description = "Name of the role which is assumed by the ECS execution processes"
 }
 
 variable "efs_subnet_ids" {
