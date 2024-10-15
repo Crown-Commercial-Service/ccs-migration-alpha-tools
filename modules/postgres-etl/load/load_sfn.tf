@@ -61,13 +61,24 @@ resource "aws_iam_role" "s3_to_rds_sfn" {
     Statement = [
       {
         Action = "sts:AssumeRole"
-
-        Effect = "Allow"
-
+       Effect = "Allow"
         Sid = "AllowStatesAssumeRole"
 
         Principal = {
           Service = "states.amazonaws.com"
+        }
+      },
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid = "AllowJenkinsAssumeRole"
+
+        Principal = {
+          AWS = [
+            "arn:aws:iam::665505400356:role/eks-paas-mountpoint-s3-csi-driver", # Sandbox
+            # "arn:aws:iam::473251818902:role/eks-paas-mountpoint-s3-csi-driver", # Dev
+            # "arn:aws:iam::974531504241:role/eks-paas-mountpoint-s3-csi-driver", # Prod
+          ]
         }
       }
     ]
