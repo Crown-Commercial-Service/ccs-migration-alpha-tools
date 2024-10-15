@@ -126,3 +126,17 @@ resource "aws_iam_role_policy_attachment" "k8s_etl_trigger_sfn" {
   role       = aws_iam_role.k8s_postgres_etl.name
   policy_arn = aws_iam_policy.k8s_trigger_sfn.arn
 }
+
+data "aws_iam_policy_document" "logging_policy" {
+  version = "2012-10-17"
+  # We are expecting repeated Sids of "DescribeAllLogGroups", hence `overwrite` rather than `source`
+  override_policy_documents = [
+    # Main ECS execution role needs access to decrypt and inject SSM params as env vars
+    module.load_task.write_task_logs_policy_document_json
+  ]
+}
+
+resource "aws_iam_role_policy" "logging" {
+  role   = var.ecs_load_execution_role.name
+  policy = data.aws_iam_policy_document.logging_policy.json
+}

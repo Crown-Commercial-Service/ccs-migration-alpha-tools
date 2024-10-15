@@ -25,6 +25,6 @@ resource "aws_iam_role_policy" "bucket_access__postgres_etl_load" {
 
 resource "aws_iam_role_policy" "ecs_exec_policy__postgres_etl_load" {
   name   = "ecs_exec_policy_load"
-  role   = var.ecs_load_execution_role.name
+  role   = module.load_task.task_role_name
   policy = data.aws_iam_policy_document.ecs_exec_policy.json
 }

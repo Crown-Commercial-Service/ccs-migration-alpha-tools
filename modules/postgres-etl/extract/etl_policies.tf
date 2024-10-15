@@ -187,3 +187,17 @@ resource "aws_iam_role_policy" "etl_policy" {
   role   = aws_iam_role.rds_to_s3_sfn.name
   policy = data.aws_iam_policy_document.etl_policy.json
 }
+
+data "aws_iam_policy_document" "logging_policy" {
+  version = "2012-10-17"
+  # We are expecting repeated Sids of "DescribeAllLogGroups", hence `overwrite` rather than `source`
+  override_policy_documents = [
+    # Main ECS execution role needs access to decrypt and inject SSM params as env vars
+    module.extract_task.write_task_logs_policy_document_json
+  ]
+}
+
+resource "aws_iam_role_policy" "logging" {
+  role   = var.ecs_extract_execution_role.name
+  policy = data.aws_iam_policy_document.logging_policy.json
+}
