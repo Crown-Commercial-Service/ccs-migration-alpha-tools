@@ -23,24 +23,20 @@ variable "ecs_cluster_arn" {
   description = "ARN of cluster into which tasks will be deployed"
 }
 
-variable "ecs_extract_execution_role_arn" {
-  type        = string
-  description = "ARN of the role which is assumed by the ECS execution processes"
+variable "ecs_extract_execution_role" {
+  type = object({
+    arn  = string
+    name = string
+  })
+  description = "Details of the role which is assumed by the ECS execution processes"
 }
 
-variable "ecs_load_execution_role_arn" {
-  type        = string
-  description = "ARN of the role which is assumed by the ECS execution processes"
-}
-
-variable "ecs_extract_execution_role_name" {
-  type = string
-  description = "Name of the role which is assumed by the ECS execution processes"
-}
-
-variable "ecs_load_execution_role_name" {
-  type = string
-  description = "Name of the role which is assumed by the ECS execution processes"
+variable "ecs_load_execution_role" {
+  type = object({
+    arn  = string
+    name = string
+  })
+  description = "Details of the role which is assumed by the ECS execution processes"
 }
 
 variable "efs_subnet_ids" {
