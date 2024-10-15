@@ -11,19 +11,19 @@ data "aws_iam_policy_document" "postgres_etl" {
 }
 
 resource "aws_iam_role_policy" "ecs_execution_role__postgres_etl_load" {
-  name   = "pg-etl-policy-load"
+  name   = "${var.migrator_name}-policy-load"
   role   = module.load_task.task_role_name
   policy = data.aws_iam_policy_document.postgres_etl.json
 }
 
 resource "aws_iam_role_policy" "bucket_access__postgres_etl_load" {
-  name   = "bucket_access_load"
+  name   = "${var.migrator_name}-bucket-access-load"
   role   = module.load_task.task_role_name
   policy = data.aws_iam_policy_document.bucket_access.json
 }
 
 resource "aws_iam_role_policy" "ecs_exec_policy__postgres_etl_load" {
-  name   = "ecs_exec_policy_load"
+  name   = "${var.migrator_name}-ecs-exec-policy-load"
   role   = module.load_task.task_role_name
   policy = data.aws_iam_policy_document.ecs_exec_policy.json
 }

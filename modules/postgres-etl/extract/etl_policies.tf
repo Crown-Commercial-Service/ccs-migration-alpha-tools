@@ -81,11 +81,11 @@ data "aws_iam_policy_document" "ecr_policy" {
     ]
 
     resources = [
-      "arn:aws:ecr:${var.aws_region}:473251818902:repository/postgres-etl", # Dev
+      "arn:aws:ecr:${var.aws_region}:473251818902:repository/postgres-etl",   # Dev
       "arn:aws:ecr:${var.aws_region}:473251818902:repository/postgres-etl:*", # Dev
-      "arn:aws:ecr:${var.aws_region}:665505400356:repository/postgres-etl", # SBX
+      "arn:aws:ecr:${var.aws_region}:665505400356:repository/postgres-etl",   # SBX
       "arn:aws:ecr:${var.aws_region}:665505400356:repository/postgres-etl:*", # SBX
-      "arn:aws:ecr:${var.aws_region}:974531504241:repository/postgres-etl",  # Prod
+      "arn:aws:ecr:${var.aws_region}:974531504241:repository/postgres-etl",   # Prod
       "arn:aws:ecr:${var.aws_region}:974531504241:repository/postgres-etl:*"  # Prod
     ]
   }
@@ -179,6 +179,7 @@ data "aws_iam_policy_document" "rds_to_s3_sfn" {
 }
 
 resource "aws_iam_role_policy" "rds_to_s3_sfn" {
+  name   = "${var.migrator_name}-rds-to-s3-sfn"
   role   = aws_iam_role.rds_to_s3_sfn.name
   policy = data.aws_iam_policy_document.rds_to_s3_sfn.json
 }
@@ -193,11 +194,13 @@ data "aws_iam_policy_document" "logging_policy" {
 }
 
 resource "aws_iam_role_policy" "logging" {
+  name   = "${var.migrator_name}-extract-logging"
   role   = var.ecs_extract_execution_role.name
   policy = data.aws_iam_policy_document.logging_policy.json
 }
 
 resource "aws_iam_role_policy" "ecr" {
-  role = var.ecs_extract_execution_role.name
+  name   = "${var.migrator_name}-extract-ecr"
+  role   = var.ecs_extract_execution_role.name
   policy = data.aws_iam_policy_document.ecr_policy.json
 }

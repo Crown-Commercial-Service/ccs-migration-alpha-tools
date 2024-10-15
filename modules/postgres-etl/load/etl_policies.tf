@@ -137,11 +137,13 @@ data "aws_iam_policy_document" "logging_policy" {
 }
 
 resource "aws_iam_role_policy" "logging" {
+  name   = "${var.migrator_name}-load-logging"
   role   = var.ecs_load_execution_role.name
   policy = data.aws_iam_policy_document.logging_policy.json
 }
 
 resource "aws_iam_role_policy" "ecr" {
+  name   = "${var.migrator_name}-load-ecr"
   role = var.ecs_load_execution_role.name
   policy = data.aws_iam_policy_document.ecr_policy.json
 }
