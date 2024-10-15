@@ -45,8 +45,4 @@ module "load_task" {
       volume_name     = "efs0"
     }
   ]
-
-  depends_on = [
-    aws_iam_role_policy.ecs_execution_role__postgres_etl_load
-  ]
 }
