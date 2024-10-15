@@ -89,7 +89,7 @@ data "aws_iam_policy_document" "s3_to_rds_sfn" {
     ]
 
     resources = [
-      var.ecs_load_execution_role_arn,
+      var.ecs_load_execution_role.arn,
     ]
   }
 

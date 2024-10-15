@@ -13,18 +13,18 @@ data "aws_iam_policy_document" "postgres_etl" {
 
 resource "aws_iam_role_policy" "ecs_execution_role__postgres_etl_extract" {
   name   = "pg-etl-policy-extract"
-  role   = var.ecs_extract_execution_role_name
+  role   = var.ecs_extract_execution_role.name
   policy = data.aws_iam_policy_document.postgres_etl.json
 }
 
 resource "aws_iam_role_policy" "bucket_access__postgres_etl_extract" {
   name   = "bucket_access_extract"
-  role   = var.ecs_extract_execution_role_name
+  role   = var.ecs_extract_execution_role.name
   policy = data.aws_iam_policy_document.bucket_access.json
 }
 
 resource "aws_iam_role_policy" "ecs_exec_policy__postgres_etl_extract" {
   name   = "ecs_exec_policy_extract"
-  role   = var.ecs_extract_execution_role_name
+  role   = var.ecs_extract_execution_role.name
   policy = data.aws_iam_policy_document.ecs_exec_policy.json
 }
