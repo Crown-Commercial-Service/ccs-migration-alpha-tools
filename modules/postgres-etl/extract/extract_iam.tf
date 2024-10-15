@@ -25,6 +25,6 @@ resource "aws_iam_role_policy" "bucket_access__postgres_etl_extract" {
 
 resource "aws_iam_role_policy" "ecs_exec_policy__postgres_etl_extract" {
   name   = "ecs_exec_policy_extract"
-  role   = module.extract_task.task_role_name
+  role   = var.ecs_extract_execution_role.name
   policy = data.aws_iam_policy_document.ecs_exec_policy.json
 }
