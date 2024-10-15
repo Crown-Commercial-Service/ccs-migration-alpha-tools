@@ -23,11 +23,8 @@ variable "ecs_cluster_arn" {
   description = "ARN of cluster into which tasks will be deployed"
 }
 
-variable "ecs_extract_execution_role" {
-  type = object({
-    arn  = string
-    name = string
-  })
+variable "ecs_extract_execution_role_arn" {
+  type        = string
   description = "Details of the role which is assumed by the ECS execution processes"
 }
 
