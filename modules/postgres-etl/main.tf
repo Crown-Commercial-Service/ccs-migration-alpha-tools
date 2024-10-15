@@ -9,8 +9,7 @@ module "extract" {
   db_etl_fs_clients               = var.db_etl_fs_clients
   efs_access_point_id             = var.efs_access_point_id
   efs_file_system_id              = var.efs_file_system_id
-  ecs_extract_execution_role_arn  = var.ecs_extract_execution_role_arn
-  ecs_extract_execution_role_name = var.ecs_extract_execution_role_name
+  ecs_extract_execution_role      = var.ecs_extract_execution_role
   ecs_cluster_arn                 = var.ecs_cluster_arn
   postgres_docker_image           = var.postgres_docker_image
   environment_name                = var.environment_name
@@ -33,8 +32,7 @@ module "load" {
   db_etl_fs_clients               = var.db_etl_fs_clients
   efs_access_point_id             = var.efs_access_point_id
   efs_file_system_id              = var.efs_file_system_id
-  ecs_load_execution_role_arn     = var.ecs_load_execution_role_arn
-  ecs_load_execution_role_name    = var.ecs_load_execution_role_name
+  ecs_load_execution_role         = var.ecs_load_execution_role
   ecs_cluster_arn                 = var.ecs_cluster_arn
   postgres_docker_image           = var.postgres_docker_image
   environment_name                = var.environment_name
