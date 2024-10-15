@@ -50,7 +50,7 @@ data "aws_iam_policy_document" "ecs_exec_policy" {
   }
 }
 
-data "aws_iam_policy_document" "etl_policy" {
+data "aws_iam_policy_document" "ecr_policy" {
   version = "2012-10-17"
 
   statement {
@@ -200,4 +200,9 @@ data "aws_iam_policy_document" "logging_policy" {
 resource "aws_iam_role_policy" "logging" {
   role   = var.ecs_extract_execution_role.name
   policy = data.aws_iam_policy_document.logging_policy.json
+}
+
+resource "aws_iam_role_policy" "ecr" {
+  role = var.ecs_extract_execution_role.name
+  policy = data.aws_iam_policy_document.ecr_policy.json
 }
