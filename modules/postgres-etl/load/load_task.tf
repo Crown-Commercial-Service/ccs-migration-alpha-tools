@@ -46,7 +46,7 @@ module "load_task" {
     }
   ]
 
-  # depends_on = [
-  #   aws_iam_role_policy.ecs_execution_role__postgres_etl_load
-  # ]
+  depends_on = [
+    aws_iam_role_policy.ecs_execution_role__postgres_etl_load
+  ]
 }
