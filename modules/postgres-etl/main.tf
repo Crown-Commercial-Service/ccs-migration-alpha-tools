@@ -10,6 +10,7 @@ module "extract" {
   efs_access_point_id             = var.efs_access_point_id
   efs_file_system_id              = var.efs_file_system_id
   ecs_extract_execution_role_arn  = var.ecs_extract_execution_role_arn
+  ecs_extract_execution_role_name = var.ecs_extract_execution_role_name
   ecs_cluster_arn                 = var.ecs_cluster_arn
   postgres_docker_image           = var.postgres_docker_image
   environment_name                = var.environment_name
@@ -33,6 +34,7 @@ module "load" {
   efs_access_point_id             = var.efs_access_point_id
   efs_file_system_id              = var.efs_file_system_id
   ecs_load_execution_role_arn     = var.ecs_load_execution_role_arn
+  ecs_load_execution_role_name    = var.ecs_load_execution_role_name
   ecs_cluster_arn                 = var.ecs_cluster_arn
   postgres_docker_image           = var.postgres_docker_image
   environment_name                = var.environment_name
