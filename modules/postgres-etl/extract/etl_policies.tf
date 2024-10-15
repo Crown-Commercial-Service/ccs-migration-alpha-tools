@@ -183,11 +183,6 @@ resource "aws_iam_role_policy" "rds_to_s3_sfn" {
   policy = data.aws_iam_policy_document.rds_to_s3_sfn.json
 }
 
-resource "aws_iam_role_policy" "etl_policy" {
-  role   = aws_iam_role.rds_to_s3_sfn.name
-  policy = data.aws_iam_policy_document.etl_policy.json
-}
-
 data "aws_iam_policy_document" "logging_policy" {
   version = "2012-10-17"
   # We are expecting repeated Sids of "DescribeAllLogGroups", hence `overwrite` rather than `source`
