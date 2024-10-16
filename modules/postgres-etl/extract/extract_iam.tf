@@ -217,10 +217,10 @@ resource "aws_iam_role" "rds_to_s3_sfn" {
   })
 }
 
-resource "aws_iam_role_policy" "bucket_access__postgres_etl_extract" {
-  name   = "${var.migrator_name}-extract-bucket-access"
+resource "aws_iam_role_policy" "s3__postgres_etl_extract" {
+  name   = "${var.migrator_name}-extract-s3"
   role   = module.extract_task.task_role_name
-  policy = data.aws_iam_policy_document.bucket_access.json
+  policy = data.aws_iam_policy_document.s3.json
 }
 
 resource "aws_iam_role_policy" "ecr" {

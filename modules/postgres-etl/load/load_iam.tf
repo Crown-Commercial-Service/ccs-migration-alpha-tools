@@ -91,7 +91,7 @@ data "aws_iam_policy_document" "ecs_exec" {
   }
 }
 
-data "aws_iam_policy_document" "logging_policy" {
+data "aws_iam_policy_document" "logging" {
   version = "2012-10-17"
   # We are expecting repeated Sids of "DescribeAllLogGroups", hence `overwrite` rather than `source`
   override_policy_documents = [
@@ -161,10 +161,10 @@ resource "aws_iam_role" "k8s_postgres_etl" {
   })
 }
 
-resource "aws_iam_role_policy" "bucket_access__postgres_etl_load" {
-  name   = "${var.migrator_name}-bucket-access-load"
+resource "aws_iam_role_policy" "s3__postgres_etl_load" {
+  name   = "${var.migrator_name}-s3-load"
   role   = module.load_task.task_role_name
-  policy = data.aws_iam_policy_document.bucket_access.json
+  policy = data.aws_iam_policy_document.s3.json
 }
 
 resource "aws_iam_role_policy" "ecr" {
