@@ -28,7 +28,3 @@ resource "aws_security_group_rule" "migrate_extract_task_ssh_ish_out_anywhere" {
   to_port           = 2222
   type              = "egress"
 }
-
-data "aws_security_group" "migrate_extract_task" {
-  name = aws_security_group.migrate_extract_task.id
-}

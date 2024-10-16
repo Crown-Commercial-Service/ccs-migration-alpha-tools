@@ -53,7 +53,7 @@ EOF
 
 resource "aws_iam_role" "s3_to_rds_sfn" {
 
-  name = "${var.migrator_name}_s3_to_rds_sfn"
+  name = "${var.migrator_name}-s3-to-rds-sfn"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

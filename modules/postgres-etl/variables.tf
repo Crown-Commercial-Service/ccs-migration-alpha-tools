@@ -104,6 +104,7 @@ variable "load_task_pgrestore_workers" {
 variable "migrator_name" {
   description = "A name to distinguish this migrator"
   type        = string
+  default     = "postgres-etl"
 }
 
 variable "postgres_docker_image" {

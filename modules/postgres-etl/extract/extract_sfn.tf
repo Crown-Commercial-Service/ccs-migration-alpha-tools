@@ -1,5 +1,5 @@
 resource "aws_sfn_state_machine" "rds_to_s3" {
-  name     = "postgres-etl-rds-to-s3"
+  name     = "${var.migrator_name}-rds-to-s3"
   role_arn = aws_iam_role.rds_to_s3_sfn.arn
 
   definition = <<EOF
