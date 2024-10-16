@@ -123,7 +123,7 @@ data "aws_iam_policy_document" "rds_to_s3_sfn" {
     ]
 
     resources = [
-      # var.ecs_extract_execution_role.arn, # Do we need to pass the execution role?
+      var.ecs_extract_execution_role.arn,
       module.extract_task.task_role_arn
     ]
   }
