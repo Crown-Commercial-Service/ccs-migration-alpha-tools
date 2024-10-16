@@ -28,9 +28,9 @@ resource "aws_s3_bucket_policy" "extract" {
         "Effect" : "Allow",
         "Principal" : {
           "AWS" : [
-            "arn:aws:iam::473251818902:role/eks-paas-${var.migrator_name}", # Dev
-            "arn:aws:iam::665505400356:role/eks-paas-${var.migrator_name}", # SBX
-            "arn:aws:iam::974531504241:role/eks-paas-${var.migrator_name}"  # PROD
+            "arn:aws:iam::473251818902:role/eks-paas-postgres-etl", # Dev
+            "arn:aws:iam::665505400356:role/eks-paas-postgres-etl", # SBX
+            "arn:aws:iam::974531504241:role/eks-paas-postgres-etl"  # PROD
           ]
         },
         "Action" : [

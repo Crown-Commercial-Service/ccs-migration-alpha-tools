@@ -219,7 +219,7 @@ resource "aws_iam_role" "k8s_postgres_etl" {
       {
         Effect = "Allow",
         Principal = {
-          AWS = "arn:aws:iam::665505400356:role/eks-paas-${var.migrator_name}"
+          AWS = "arn:aws:iam::665505400356:role/eks-paas-postgres-etl"
         },
         Action = "sts:AssumeRole"
       }
