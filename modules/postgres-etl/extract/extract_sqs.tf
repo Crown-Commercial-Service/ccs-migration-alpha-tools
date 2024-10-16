@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "extract_sqs" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::665505400356:role/eks-paas-${var.migrator_name}"
+        "arn:aws:iam::665505400356:role/eks-paas-postgres-etl"
       ]
     }
 
@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "extract_sqs" {
     ]
 
     resources = [
-      "arn:aws:sqs:*:*:${var.migrator_name}-s3"
+      "arn:aws:sqs:*:*:postgres-etl-s3"
     ]
   }
 }
