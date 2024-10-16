@@ -1,6 +1,6 @@
 resource "aws_sfn_state_machine" "s3_to_rds" {
 
-  name     = "postgres-etl-s3-to-rds"
+  name     = "${var.migrator_name}-s3-to-rds"
   role_arn = aws_iam_role.s3_to_rds_sfn.arn
 
   definition = <<EOF
@@ -49,98 +49,4 @@ EOF
   tags = {
     GPaasS3MigratorName = var.migrator_name
   }
-}
-
-resource "aws_iam_role" "s3_to_rds_sfn" {
-
-  name = "${var.migrator_name}-s3-to-rds-sfn"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-
-        Effect = "Allow"
-
-        Sid = "AllowStatesAssumeRole"
-
-        Principal = {
-          Service = "states.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
-data "aws_iam_policy_document" "s3_to_rds_sfn" {
-
-  version = "2012-10-17"
-
-  statement {
-    sid = "AllowPassEcsExecRole"
-
-    effect = "Allow"
-
-    actions = [
-      "iam:GetRole",
-      "iam:PassRole"
-    ]
-
-    resources = [
-      var.ecs_load_execution_role.arn,
-      module.load_task.task_role_arn
-    ]
-  }
-
-  statement {
-    sid = "AllowRunPGETLTasks"
-
-    effect = "Allow"
-
-    actions = [
-      "ecs:RunTask"
-    ]
-
-    resources = [
-      "${module.load_task.task_definition_arn_without_revision}:*"
-    ]
-  }
-
-  statement {
-    sid = "AllowStopPGETLTasks"
-
-    effect = "Allow"
-
-    actions = [
-      "ecs:DescribeTasks",
-      "ecs:StopTask"
-    ]
-
-    resources = [
-      "*"
-    ]
-  }
-
-  statement {
-    sid = "AllowDotSyncExecutionOfEcsTasks"
-
-    effect = "Allow"
-
-    actions = [
-      "events:DescribeRule",
-      "events:PutRule",
-      "events:PutTargets"
-    ]
-
-    resources = [
-      "arn:aws:events:${var.aws_region}:${var.aws_account_id}:rule/StepFunctionsGetEventsForECSTaskRule"
-    ]
-  }
-}
-
-resource "aws_iam_role_policy" "s3_to_rds_sfn" {
-  role   = aws_iam_role.s3_to_rds_sfn.name
-  policy = data.aws_iam_policy_document.s3_to_rds_sfn.json
 }

@@ -23,8 +23,8 @@ data "aws_iam_policy_document" "s3" {
     ]
 
     resources = [
-      "arn:aws:s3:::ccs-digitalmarketplace-postgres-etl-extract-${var.environment_name}",
-      "arn:aws:s3:::ccs-digitalmarketplace-postgres-etl-extract-${var.environment_name}/*"
+      "arn:aws:s3:::ccs-digitalmarketplace-${var.migrator_name}-extract-${var.environment_name}",
+      "arn:aws:s3:::ccs-digitalmarketplace-${var.migrator_name}-extract-${var.environment_name}/*"
     ]
   }
 }
@@ -54,18 +54,18 @@ data "aws_iam_policy_document" "ecr" {
     actions = [
       "ecr:BatchCheckLayerAvailability",
       "ecr:BatchGetImage",
-      "ecr:DescribeImages", # Possibly not needed
+      # "ecr:DescribeImages", # Possibly not needed
       "ecr:GetDownloadUrlForLayer",
-      "ecr:ListImages", # Possibly not needed
+      # "ecr:ListImages", # Possibly not needed
     ]
 
     resources = [
-      "arn:aws:ecr:${var.aws_region}:473251818902:repository/postgres-etl",   # Dev
-      "arn:aws:ecr:${var.aws_region}:473251818902:repository/postgres-etl:*", # Dev
-      "arn:aws:ecr:${var.aws_region}:665505400356:repository/postgres-etl",   # SBX
-      "arn:aws:ecr:${var.aws_region}:665505400356:repository/postgres-etl:*", # SBX
-      "arn:aws:ecr:${var.aws_region}:974531504241:repository/postgres-etl",   # Prod
-      "arn:aws:ecr:${var.aws_region}:974531504241:repository/postgres-etl:*"  # Prod
+      "arn:aws:ecr:${var.aws_region}:473251818902:repository/${var.migrator_name}",   # Dev
+      "arn:aws:ecr:${var.aws_region}:473251818902:repository/${var.migrator_name}:*", # Dev
+      "arn:aws:ecr:${var.aws_region}:665505400356:repository/${var.migrator_name}",   # SBX
+      "arn:aws:ecr:${var.aws_region}:665505400356:repository/${var.migrator_name}:*", # SBX
+      "arn:aws:ecr:${var.aws_region}:974531504241:repository/${var.migrator_name}",   # Prod
+      "arn:aws:ecr:${var.aws_region}:974531504241:repository/${var.migrator_name}:*"  # Prod
     ]
   }
 }
@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "ecs_exec" {
   version = "2012-10-17"
 
   statement {
-    sid = "AllowECSExecPolicy"
+    sid = "AllowECSExec"
 
     effect = "Allow"
 
@@ -123,7 +123,7 @@ data "aws_iam_policy_document" "rds_to_s3_sfn" {
     ]
 
     resources = [
-      var.ecs_extract_execution_role.arn, # Do we need to pass the execution role?
+      # var.ecs_extract_execution_role.arn, # Do we need to pass the execution role?
       module.extract_task.task_role_arn
     ]
   }

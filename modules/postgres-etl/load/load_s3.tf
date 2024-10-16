@@ -18,12 +18,17 @@ resource "aws_s3_bucket_policy" "load" {
         "Effect" : "Allow",
         "Principal" : {
           "AWS" : [
-            "arn:aws:iam::473251818902:role/eks-paas-postgres-etl", # Dev
-            "arn:aws:iam::665505400356:role/eks-paas-postgres-etl", # SBX
-            "arn:aws:iam::974531504241:role/eks-paas-postgres-etl"  # PROD
+            "arn:aws:iam::473251818902:role/eks-paas-${var.migrator_name}", # Dev
+            "arn:aws:iam::665505400356:role/eks-paas-${var.migrator_name}", # SBX
+            "arn:aws:iam::974531504241:role/eks-paas-${var.migrator_name}"  # PROD
           ]
         },
-        "Action" : "s3:*", # Adjust later
+        "Action" : [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucket"
+        ],
         "Resource" : [
           "${aws_s3_bucket.load.arn}",
           "${aws_s3_bucket.load.arn}/*"

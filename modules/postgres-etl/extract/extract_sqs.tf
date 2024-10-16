@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "extract_sqs" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::665505400356:role/eks-paas-mountpoint-s3-csi-driver"
+        "arn:aws:iam::665505400356:role/eks-paas-${var.migrator_name}"
       ]
     }
 
@@ -42,13 +42,13 @@ data "aws_iam_policy_document" "extract_sqs" {
     ]
 
     resources = [
-      "arn:aws:sqs:*:*:postgres-etl-s3"
+      "arn:aws:sqs:*:*:${var.migrator_name}-s3"
     ]
   }
 }
 
 resource "aws_sqs_queue" "extract" {
-  name = "postgres-etl-s3"
+  name = "${var.migrator_name}-s3"
 
   policy = data.aws_iam_policy_document.extract_sqs.json
 
@@ -61,5 +61,5 @@ resource "aws_sqs_queue" "extract" {
 }
 
 resource "aws_sqs_queue" "extract_dlq" {
-  name = "postgres-etl-s3-dlq"
+  name = "${var.migrator_name}-s3-dlq"
 }
