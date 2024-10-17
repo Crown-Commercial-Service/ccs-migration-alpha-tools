@@ -217,12 +217,6 @@ resource "aws_iam_role" "rds_to_s3_sfn" {
   })
 }
 
-resource "aws_iam_role_policy" "s3__postgres_etl_extract" {
-  name   = "${var.migrator_name}-extract-s3"
-  role   = module.extract_task.task_role_name
-  policy = data.aws_iam_policy_document.s3.json
-}
-
 resource "aws_iam_role_policy" "ecr" {
   name   = "${var.migrator_name}-extract-ecr"
   role   = var.ecs_extract_execution_role.name
@@ -251,4 +245,10 @@ resource "aws_iam_role_policy" "rds_to_s3_sfn" {
   name   = "${var.migrator_name}-rds-to-s3-sfn"
   role   = aws_iam_role.rds_to_s3_sfn.name
   policy = data.aws_iam_policy_document.rds_to_s3_sfn.json
+}
+
+resource "aws_iam_role_policy" "s3__postgres_etl_extract" {
+  name   = "${var.migrator_name}-extract-s3"
+  role   = module.extract_task.task_role_name
+  policy = data.aws_iam_policy_document.s3.json
 }
