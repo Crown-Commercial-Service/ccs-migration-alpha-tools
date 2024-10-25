@@ -54,9 +54,7 @@ data "aws_iam_policy_document" "ecr" {
     actions = [
       "ecr:BatchCheckLayerAvailability",
       "ecr:BatchGetImage",
-      # "ecr:DescribeImages", # Possibly not needed
       "ecr:GetDownloadUrlForLayer",
-      # "ecr:ListImages", # Possibly not needed
     ]
 
     resources = [
@@ -192,6 +190,23 @@ data "aws_iam_policy_document" "s3_to_rds_sfn" {
 
     resources = [
       "arn:aws:events:${var.aws_region}:${var.aws_account_id}:rule/StepFunctionsGetEventsForECSTaskRule"
+    ]
+  }
+
+  statement {
+    sid = "AllowAuthorizationToken"
+
+    effect = "Allow"
+
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:BatchGetImage",
+      "ecr:GetAuthorizationToken",
+      "ecr:GetDownloadUrlForLayer",
+    ]
+
+    resources = [
+      "*"
     ]
   }
 }
