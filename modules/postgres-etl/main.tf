@@ -45,8 +45,8 @@ module "load" {
 }
 
 # Shared resources
-resource "aws_iam_role" "k8s_postgres_etl" {
-  name = "k8s-${var.migrator_name}"
+resource "aws_iam_role" "eks_paas_jenkins" {
+  name = "${var.migrator_name}-eks-paas-jenkins"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
