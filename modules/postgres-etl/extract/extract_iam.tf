@@ -198,10 +198,16 @@ resource "aws_iam_policy" "eks_paas_jenkins_trigger_sfn" {
       {
         Effect   = "Allow",
         Action   = [
-          "states:DescribeExecution",
           "states:StartExecution",
         ],
         Resource = aws_sfn_state_machine.rds_to_s3.arn
+      },
+      {
+        Effect   = "Allow",
+        Action   = [
+          "states:DescribeExecution",
+        ],
+        Resource = "arn:aws:states:${var.aws_region}:${var.aws_account_id}:execution:postgres-etl-rds-to-s3:*"
       }
     ]
   })
