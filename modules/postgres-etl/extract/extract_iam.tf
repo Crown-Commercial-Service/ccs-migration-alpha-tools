@@ -197,7 +197,10 @@ resource "aws_iam_policy" "eks_paas_jenkins_trigger_sfn" {
     Statement = [
       {
         Effect   = "Allow",
-        Action   = "states:StartExecution",
+        Action   = [
+          "states:DescribeExecution",
+          "states:StartExecution",
+        ],
         Resource = aws_sfn_state_machine.rds_to_s3.arn
       }
     ]
