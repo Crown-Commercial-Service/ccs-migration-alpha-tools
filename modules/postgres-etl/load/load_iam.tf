@@ -211,16 +211,16 @@ data "aws_iam_policy_document" "s3_to_rds_sfn" {
   }
 }
 
-resource "aws_iam_policy" "eks_paas_jenkins_trigger_sfn" {
-  name        = "${var.migrator_name}-eks-paas-jenkins-trigger-sfn"
-  description = "Allows the k8s-postgres-etl role to trigger the Postgres ETL Step Function"
+resource "aws_iam_policy" "eks_paas_jenkins_monitor_sfn" {
+  name        = "${var.migrator_name}-eks-paas-jenkins-monitor-sfn"
+  description = "Allows EKS PaaS Jenkins to monitor the Postgres ETL Step Function"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
         Effect   = "Allow",
-        Action   = "states:StartExecution",
-        Resource = "arn:aws:states:eu-west-2:259593444005:stateMachine:postgres-etl-s3-to-rds"
+        Action   = "states:DescribeExecution",
+        Resource = aws_sfn_state_machine.s3_to_rds.arn
       }
     ]
   })
@@ -283,7 +283,7 @@ resource "aws_iam_role_policy" "s3__postgres_etl_load" {
   policy = data.aws_iam_policy_document.s3.json
 }
 
-resource "aws_iam_role_policy_attachment" "eks_paas_jenkins_trigger_sfn" {
+resource "aws_iam_role_policy_attachment" "eks_paas_jenkins_monitor_sfn" {
   role       = "${var.migrator_name}-eks-paas-jenkins"
-  policy_arn = aws_iam_policy.eks_paas_jenkins_trigger_sfn.arn
+  policy_arn = aws_iam_policy.eks_paas_jenkins_monitor_sfn.arn
 }
