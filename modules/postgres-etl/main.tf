@@ -43,3 +43,25 @@ module "load" {
   subnet_ids                      = var.subnet_ids
   vpc_id                          = var.vpc_id
 }
+
+# Shared resources
+resource "aws_iam_role" "k8s_postgres_etl" {
+  name = "k8s-${var.migrator_name}"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          AWS = [
+            "arn:aws:iam::665505400356:role/eks-paas-postgres-etl",
+            "arn:aws:iam::665505400356:role/eks-paas-jenkins",
+            "arn:aws:iam::473251818902:role/eks-paas-jenkins",
+            "arn:aws:iam::974531504241:role/eks-paas-jenkins"
+          ]
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}

@@ -226,24 +226,7 @@ resource "aws_iam_policy" "k8s_trigger_sfn" {
   })
 }
 
-resource "aws_iam_role" "k8s_postgres_etl" {
-  name = "k8s-${var.migrator_name}"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Principal = {
-          AWS = "arn:aws:iam::665505400356:role/eks-paas-postgres-etl"
-        },
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-}
-
 resource "aws_iam_role" "s3_to_rds_sfn" {
-
   name = "${var.migrator_name}-s3-to-rds-sfn"
 
   assume_role_policy = jsonencode({
@@ -301,6 +284,6 @@ resource "aws_iam_role_policy" "s3__postgres_etl_load" {
 }
 
 resource "aws_iam_role_policy_attachment" "k8s_etl_trigger_sfn" {
-  role       = aws_iam_role.k8s_postgres_etl.name
+  role       = "k8s-${var.migrator_name}"
   policy_arn = aws_iam_policy.k8s_trigger_sfn.arn
 }

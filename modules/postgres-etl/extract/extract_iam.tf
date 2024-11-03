@@ -189,6 +189,21 @@ data "aws_iam_policy_document" "rds_to_s3_sfn" {
   }
 }
 
+resource "aws_iam_policy" "k8s_monitor_sfn" {
+  name        = "k8s-monitor-sfn"
+  description = "Allows the k8s-postgres-etl role to monitor the Postgres ETL Step Function"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "states:DescribeExecution",
+        Resource = aws_sfn_state_machine.rds_to_s3.arn
+      }
+    ]
+  })
+}
+
 data "aws_iam_policy_document" "logging" {
   version = "2012-10-17"
   # We are expecting repeated Sids of "DescribeAllLogGroups", hence `overwrite` rather than `source`
@@ -266,4 +281,9 @@ resource "aws_iam_role_policy" "s3__postgres_etl_extract" {
   name   = "${var.migrator_name}-extract-s3"
   role   = module.extract_task.task_role_name
   policy = data.aws_iam_policy_document.s3.json
+}
+
+resource "aws_iam_role_policy_attachment" "k8s_etl_monitor_sfn" {
+  role       = "k8s-${var.migrator_name}"
+  policy_arn = aws_iam_policy.k8s_monitor_sfn.arn
 }
