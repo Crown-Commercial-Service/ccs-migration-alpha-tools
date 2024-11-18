@@ -13,6 +13,11 @@ variable "region" {
   type        = string
 }
 
+variable "ec2_instance_ids" {
+  description = "The ID(s) of the EC2 instances you wish to monitor (must be in list format)"
+  type        = list(string)
+}
+
 variable "ecs_service_names" {
   description = "The name(s) of the ECS Services you wish to monitor (must be in list format)"
   type        = list(string)

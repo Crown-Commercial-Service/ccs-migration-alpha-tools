@@ -371,6 +371,60 @@ resource "aws_cloudwatch_dashboard" "cloudwatch_dashboard" {
             "view": "timeSeries"
           }
         },
+        {
+          type: "metric",
+          properties: {
+            "metrics": [
+              for ec2_instance_id in var.ec2_instance_ids : [
+                "AWS/EC2",
+                "CPUUtilization",
+                "InstanceId",
+                ec2_instance_id,
+              ]
+            ],
+            "period": 60
+            "region": var.region,
+            "stacked": false,
+            "title": "ec2_instances_cpu_utilization",
+            "view": "timeSeries"
+        }
+      },
+      {
+        type: "metric",
+        properties: {
+          "metrics": [
+            for ec2_instance_id in var.ec2_instance_ids : [
+              "AWS/EC2",
+              "NetworkIn",
+              "InstanceId",
+              ec2_instance_id,
+            ]
+          ],
+          "period": 60
+          "region": var.region,
+          "stacked": false,
+          "title": "ec2_instances_network_in",
+          "view": "timeSeries"
+        }
+      },
+      {
+        type: "metric",
+        properties: {
+          "metrics": [
+            for ec2_instance_id in var.ec2_instance_ids : [
+              "AWS/EC2",
+              "NetworkOut",
+              "InstanceId",
+              ec2_instance_id,
+            ]
+          ],
+          "period": 60
+          "region": var.region,
+          "stacked": false,
+          "title": "ec2_instances_network_out",
+          "view": "timeSeries"
+        }
+      },
       ]
     }
   )
