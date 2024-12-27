@@ -30,7 +30,7 @@ module "extract_task" {
       # N.B. $DUMP_FILENAME is injected by the Step Function task
       override_command = [
         "sh", "-c",
-        "apk upgrade && rm -rf $MOUNT_POINT/$DUMP_FILENAME && pg_dump -d $DB_CONNECTION_URL -Fd -j ${var.extract_task_pgrestore_workers} --no-acl --no-owner -f $MOUNT_POINT/$DUMP_FILENAME && echo \"Database successfully dumped\" && tar -C $MOUNT_POINT -cf $MOUNT_POINT/$DUMP_FILENAME.tar $DUMP_FILENAME && echo \"Archive successfully created\" && aws s3 cp --quiet $MOUNT_POINT/$DUMP_FILENAME.tar s3://${var.s3_extract_bucket_name}-${var.environment_name}/$DUMP_FILENAME-$(date +%Y-%m-%d-%H-%M-%S)_$LOAD_ENVIRONMENT.tar && echo \"$DUMP_FILENAME successfully uploaded to S3\""
+        "apk upgrade && rm -rf $MOUNT_POINT/$DUMP_FILENAME && pg_dump -d $DB_CONNECTION_URL -Fd -j ${var.extract_task_pgrestore_workers} --no-acl --no-owner -f $MOUNT_POINT/$DUMP_FILENAME && echo \"Database successfully dumped\" && tar -C $MOUNT_POINT -cf $MOUNT_POINT/$DUMP_FILENAME.tar $DUMP_FILENAME && echo \"Archive successfully created\" && aws s3 cp --quiet --tagging \"ExecutionID=$EXECUTION_ID\" $MOUNT_POINT/$DUMP_FILENAME.tar s3://${var.s3_extract_bucket_name}-${var.environment_name}/$DUMP_FILENAME-$(date +%Y-%m-%d-%H-%M-%S)_$LOAD_ENVIRONMENT.tar && echo \"$DUMP_FILENAME successfully uploaded to S3\""
       ]
       port = null
       # ECS Execution role will need access to these
