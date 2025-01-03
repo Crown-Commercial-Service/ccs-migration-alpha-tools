@@ -22,7 +22,7 @@ We have `extract` and `load` modules that contain Terraform code for extracting 
 
 AWS Services: RDS for source and target databases, S3 for intermediate storage, ECS for running extraction and loading tasks and Step Functions for orchestration.
 
-Kubernetes: Dispather to monitor S3 for changes and Jobs for data transformation
+Kubernetes: Dispatcher to monitor S3 for changes and Jobs for data transformation
 
 Jenkins: Orchestrates the pipeline by triggering Step Functions, monitoring jobs and logging execution. Please refer to the `ccs-jenkins-jobs` repo for the [Postgres ETL job](https://jenkins-eks.techopsdev.com/job/digitalmarketplace-1.5/job/postgres-etl/).
 
@@ -97,6 +97,6 @@ Contains environment variables for container `pg_restore` within **Load** ECS ta
 
 #### SQS in the `extract` module
 
-We have a SQS Queue service used for watching the S3 bucket in the Extract environment.
+We have a SQS Queue service for watching the S3 bucket in the Extract environment.
 
 
