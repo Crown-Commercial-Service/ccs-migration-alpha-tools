@@ -79,6 +79,7 @@ Contains environment variables for container `pg_dump` within **Extract** ECS ta
   ]
 }
 ```
+
 Contains environment variables for container `pg_restore` within **Load** ECS task.
 - `LOAD_ENVIRONMENT` is the variable of the S3 bucket name that is successfully downloaded from S3 and load into RDS.
 
