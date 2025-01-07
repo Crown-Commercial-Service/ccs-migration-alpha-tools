@@ -1,7 +1,7 @@
-# Extract and Load Postgres ETL Processes
+# Postgres Extract, Transform and Load (ETL)
 
-This folder contains Terraform configurations for the Extract and Load ETL processes.
-These processes are designed to extract data from an RDS instance, load it into an S3 bucket, then process it using Kubernetes jobs and AWS Step functions.
+This folder contains Terraform configuration for the ETL resources.
+These resources are designed to extract data from an RDS instance, load it into an S3 bucket, then process it using Kubernetes jobs and AWS Step functions.
 
 ## ETL Workflow
 
@@ -10,7 +10,7 @@ These processes are designed to extract data from an RDS instance, load it into 
 - The dump is compressed and stored in an S3 bucket
 
 **Transform**: `S3 Bucket (Extract) -> Kubernetes Dispatcher -> Transform Job -> S3 Bucket (Load)`
-- A Kubernetes dispatcher monitors the S3 bucket for new dumps
+- A Kubernetes dispatcher monitors the S3 bucket (via SQS) for new dump objects
 - Another Kubernetes job loads the dump, applies SQL transformations (I.e. removing PII), and writes the cleaned dump back to a target S3 bucket.
 
 **Load**: `S3 Bucket (Load) -> ECS Task -> Target RDS`
@@ -18,7 +18,7 @@ These processes are designed to extract data from an RDS instance, load it into 
 
 ## Modules
 
-We have `extract` and `load` modules that contain Terraform code for extracting RDS data, ECS tasks, Step Function for extraction and load process, S3 bucket definitions, IAM roles/policies for accessing S3, RDS, etc and shared variables across modules.
+We have `extract` and `load` modules that contain Terraform code for extracting RDS data, ECS tasks, a Step Function for extraction and loading, S3 bucket definitions, IAM roles/policies for accessing S3, RDS, etc and shared variables across modules.
 
 AWS Services: RDS for source and target databases, S3 for intermediate storage, ECS for running extraction and loading tasks and Step Functions for orchestration.
 
