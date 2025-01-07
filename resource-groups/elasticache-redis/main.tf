@@ -27,17 +27,18 @@ resource "aws_elasticache_replication_group" "rg" {
 }
 
 resource "aws_elasticache_cluster" "cluster" {
-  apply_immediately    = var.elasticache_cluster_apply_immediately
-  cluster_id           = var.cluster_id
-  replication_group_id = var.replication_group_enabled != false ? aws_elasticache_replication_group.rg[0].id : null
-  engine               = var.replication_group_enabled != true ? "redis" : null
-  node_type            = var.replication_group_enabled != true ? var.node_type : null
-  num_cache_nodes      = var.replication_group_enabled != true ? var.num_cache_nodes : null
-  parameter_group_name = var.replication_group_enabled != true ? var.elasticache_cluster_parameter_group_name : null
-  engine_version       = var.replication_group_enabled != true ? var.engine_version : null
-  port                 = var.replication_group_enabled != true ? 6379 : null
-  security_group_ids   = var.replication_group_enabled != true ? [aws_security_group.cluster.id] : null
-  subnet_group_name    = var.replication_group_enabled != true ? aws_elasticache_subnet_group.cluster.name : null
+  apply_immediately         = var.elasticache_cluster_apply_immediately
+  cluster_id                = var.cluster_id
+  replication_group_id      = var.replication_group_enabled != false ? aws_elasticache_replication_group.rg[0].id : null
+  engine                    = var.replication_group_enabled != true ? "redis" : null
+  node_type                 = var.replication_group_enabled != true ? var.node_type : null
+  num_cache_nodes           = var.replication_group_enabled != true ? var.num_cache_nodes : null
+  parameter_group_name      = var.replication_group_enabled != true ? var.elasticache_cluster_parameter_group_name : null
+  engine_version            = var.replication_group_enabled != true ? var.engine_version : null
+  port                      = var.replication_group_enabled != true ? 6379 : null
+  security_group_ids        = var.replication_group_enabled != true ? [aws_security_group.cluster.id] : null
+  snapshot_retention_limit  = var.snapshot_retention_limit
+  subnet_group_name         = var.replication_group_enabled != true ? aws_elasticache_subnet_group.cluster.name : null
 }
 
 locals {

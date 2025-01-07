@@ -52,6 +52,12 @@ variable "resource_name_prefixes" {
   description = "Prefix to apply to resources in AWS; options provided to satisfy divergent naming requirements across AWS"
 }
 
+variable "snapshot_retention_limit" {
+  type        = string
+  description = "The number of days for which Elasticache will retain automatic cache cluster snapshots before deleting them"
+  default     = 7
+}
+
 variable "subnet_ids" {
   type        = list(string)
   description = "List of IDs of subnets into which to deploy the Elasticache cluster"
