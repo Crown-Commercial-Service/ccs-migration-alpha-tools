@@ -98,6 +98,6 @@ Contains environment variables for container `pg_restore` within **Load** ECS ta
 
 #### SQS in the `extract` module
 
-We have a SQS Queue service for watching the S3 bucket in the Extract environment.
+SQS is used to process notifications when new dump objects are added to the S3 bucket in the Extract environment.
 
 
