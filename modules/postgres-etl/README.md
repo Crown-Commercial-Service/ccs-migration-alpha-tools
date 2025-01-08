@@ -20,11 +20,11 @@ These resources are designed to extract data from an RDS instance, load it into 
 
 We have `extract` and `load` modules that contain Terraform code for extracting RDS data, ECS tasks, a Step Function for extraction and loading, S3 bucket definitions, IAM roles/policies for accessing S3, RDS, etc and shared variables across modules.
 
-AWS Services: RDS for source and target databases, S3 for intermediate storage, ECS for running extraction and loading tasks and Step Functions for orchestration.
+**AWS Services**: RDS for source and target databases, S3 for intermediate storage, ECS for running extraction and loading tasks and Step Functions for orchestration.
 
-Kubernetes: Dispatcher to monitor S3 for changes and Jobs for data transformation
+**Kubernetes**: Dispatcher to monitor S3 for changes and Jobs for data transformation
 
-Jenkins: Orchestrates the pipeline by triggering Step Functions, monitoring jobs and logging execution. Please refer to the `ccs-jenkins-jobs` repo for the [Postgres ETL job](https://jenkins-eks.techopsdev.com/job/digitalmarketplace-1.5/job/postgres-etl/).
+**Jenkins**: Orchestrates the pipeline by triggering Step Functions, monitoring jobs and logging execution. Please refer to the `ccs-jenkins-jobs` repo for the [Postgres ETL job](https://jenkins-eks.techopsdev.com/job/digitalmarketplace-1.5/job/postgres-etl/).
 
 ## Important Notes
 
