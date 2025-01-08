@@ -95,7 +95,6 @@ Contains environment variables for container `pg_restore` within **Load** ECS ta
 }
 ```
 
-
 #### SQS Integration for ETL process
 
 The SQS queues are used to watch the S3 bucket in the Extract environment. We only need it in the `extract` module. The main queue `postgres-etl-s3` receives messages about the data extraction events and a dead-letter queue `postgres-etl-s3-dlq` handles messages that cannot be processed successfully.
