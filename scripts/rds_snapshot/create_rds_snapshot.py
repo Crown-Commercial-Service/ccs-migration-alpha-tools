@@ -72,7 +72,7 @@ def compare_snapshot_status(rds_snapshot_instance_status,
 
 def configure_prerequisites(rds_instance_name, region_name):
     try:
-        click.echo("Creating RDS client using Boto3...")
+        click.echo("Creating RDS client...")
         boto3_rds_client = boto3.client("rds", region_name=region_name)
         click.echo("RDS client successfully created!")
         
