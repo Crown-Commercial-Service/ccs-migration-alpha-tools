@@ -1,4 +1,5 @@
 import boto3
+from botocore.exceptions import ClientError, BotoCoreError
 import click
 import os
 from datetime import datetime
@@ -38,15 +39,27 @@ def create_rds_snapshot(
             boto3_rds_client=boto3_rds_client,
             rds_instance_snapshot_name=rds_instance_snapshot_name,
         )
+        compare_snapshot_status(rds_snapshot_instance_status,
+                                desired_rds_instance_snapshot_status,
+                                boto3_rds_client,
+                                rds_instance_snapshot_name)
+        click.echo(f"Snapshot {rds_instance_snapshot_name} in desired status")
+    except ClientError as error:
+        error_info = error.response['Error']
+        click.echo(f"Error: {error_info['Code']}")
+        click.echo(f"{error_info['Message']}")
+    
+def compare_snapshot_status(rds_snapshot_instance_status, 
+                            desired_rds_instance_snapshot_status,
+                            boto3_rds_client, 
+                            rds_instance_snapshot_name):
         while rds_snapshot_instance_status != desired_rds_instance_snapshot_status:
             current_rds_snapshot_instance_status = get_rds_snapshot_status(
                 boto3_rds_client=boto3_rds_client,
                 rds_instance_snapshot_name=rds_instance_snapshot_name,
             )
-            if (
-                current_rds_snapshot_instance_status
-                != desired_rds_instance_snapshot_status
-            ):
+
+            if current_rds_snapshot_instance_status != desired_rds_instance_snapshot_status:
                 click.echo(
                     f"Snapshot {rds_instance_snapshot_name} status is currently {current_rds_snapshot_instance_status}, desired status is {desired_rds_instance_snapshot_status}"
                 )
@@ -56,20 +69,16 @@ def create_rds_snapshot(
                     f"Snapshot {rds_instance_snapshot_name} status is {current_rds_snapshot_instance_status}"
                 )
                 break
-        click.echo(f"Snapshot {rds_instance_snapshot_name} in desired status")
-    except Exception as e:
-        raise Exception(
-            f"Failed to create snapshot for RDS Instance {rds_instance_name}, reason: {e}"
-        )
-
 
 def configure_prerequisites(rds_instance_name, region_name):
     try:
-        click.echo("Creating RDS Client via Boto3...")
+        click.echo("Creating RDS client using Boto3...")
         boto3_rds_client = boto3.client("rds", region_name=region_name)
-        click.echo("Successfully created RDS Client via Boto3")
-    except Exception as e:
-        raise Exception(f"Failed to create Boto3 RDS Client, reason: {e}")
+        click.echo("RDS client successfully created!")
+        
+    except BotoCoreError as error:
+        click.echo(f"{error}")
+        
     now = datetime.now()
     dt_string = now.strftime("date-%d-%m-%Y-time-%H-%M-%S")
 
@@ -85,7 +94,6 @@ def get_rds_snapshot_status(boto3_rds_client, rds_instance_snapshot_name):
         rds_instance_snapshot_status = rds_instance_snapshot["Status"]
 
     return rds_instance_snapshot_status
-
 
 if __name__ == "__main__":
     create_rds_snapshot()
