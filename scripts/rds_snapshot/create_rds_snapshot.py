@@ -37,10 +37,7 @@ def create_rds_snapshot(rds_instance_name: str, region_name: str, desired_rds_in
             boto3_rds_client=boto3_rds_client,
             rds_instance_snapshot_name=rds_instance_snapshot_name,
         )
-        compare_snapshot_status(rds_snapshot_instance_status,
-                                desired_rds_instance_snapshot_status,
-                                boto3_rds_client,
-                                rds_instance_snapshot_name)
+        compare_snapshot_status(rds_snapshot_instance_status, desired_rds_instance_snapshot_status, boto3_rds_client, rds_instance_snapshot_name)
         click.echo(f"Snapshot {rds_instance_snapshot_name} in desired status")
     except ClientError as error:
         error_info = error.response['Error']
