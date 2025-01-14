@@ -19,9 +19,7 @@ from datetime import datetime
     default="available",
     help="The desired status for your RDS Instance to reach upon completion of this script (defaults to available)",
 )
-def create_rds_snapshot(
-    rds_instance_name, region_name, desired_rds_instance_snapshot_status
-):
+def create_rds_snapshot(rds_instance_name: str, region_name: str, desired_rds_instance_snapshot_status: str) -> str:
     boto3_rds_client, dt_string, rds_instance_snapshot_name = configure_prerequisites(
         rds_instance_name=rds_instance_name, region_name=region_name
     )
@@ -49,10 +47,7 @@ def create_rds_snapshot(
         click.echo(f"Error: {error_info['Code']}")
         click.echo(f"{error_info['Message']}")
     
-def compare_snapshot_status(rds_snapshot_instance_status, 
-                            desired_rds_instance_snapshot_status,
-                            boto3_rds_client, 
-                            rds_instance_snapshot_name):
+def compare_snapshot_status(rds_snapshot_instance_status: str, desired_rds_instance_snapshot_status: str, boto3_rds_client: str, rds_instance_snapshot_name: str) -> str:
         while rds_snapshot_instance_status != desired_rds_instance_snapshot_status:
             current_rds_snapshot_instance_status = get_rds_snapshot_status(
                 boto3_rds_client=boto3_rds_client,
@@ -70,7 +65,7 @@ def compare_snapshot_status(rds_snapshot_instance_status,
                 )
                 break
 
-def configure_prerequisites(rds_instance_name, region_name):
+def configure_prerequisites(rds_instance_name: str, region_name: str) -> str:
     try:
         click.echo("Creating RDS client...")
         boto3_rds_client = boto3.client("rds", region_name=region_name)
@@ -86,7 +81,7 @@ def configure_prerequisites(rds_instance_name, region_name):
     return boto3_rds_client, dt_string, rds_instance_snapshot_name
 
 
-def get_rds_snapshot_status(boto3_rds_client, rds_instance_snapshot_name):
+def get_rds_snapshot_status(boto3_rds_client: str, rds_instance_snapshot_name: str) -> str:
     rds_instance_snapshot_status = boto3_rds_client.describe_db_snapshots(
         DBSnapshotIdentifier=rds_instance_snapshot_name
     )
