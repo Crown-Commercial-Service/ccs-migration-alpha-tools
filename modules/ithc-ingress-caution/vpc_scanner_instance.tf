@@ -5,12 +5,12 @@ resource "aws_key_pair" "vpc_scanner" {
   public_key = var.vpc_scanner_instance_public_key
 }
 
-data "aws_ami" "kali_pinned_ami" {
+data "aws_ami" "kali_latest_ami" {
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["kali-last-snapshot-amd64-2023.3.0-804fcc46-63fc-4eb6-85a1-50e66d6c7215"]
+    values = ["kali-last-snapshot-amd64-*"]
   }
 
   owners = [
@@ -20,11 +20,11 @@ data "aws_ami" "kali_pinned_ami" {
 
 resource "aws_instance" "vpc_scanner" {
   associate_public_ip_address = true
-  ami                         = data.aws_ami.kali_pinned_ami.id
+  ami                         = data.aws_ami.kali_latest_ami.id
   instance_type               = var.vpc_scanner_instance_type
   key_name                    = aws_key_pair.vpc_scanner.key_name
   subnet_id                   = var.vpc_scanner_instance_subnet_id
-  vpc_security_group_ids      = [
+  vpc_security_group_ids = [
     aws_security_group.vpc_scanner_instance.id,
   ]
 
