@@ -35,9 +35,13 @@ resource "aws_s3_bucket_policy" "extract" {
         },
         "Action" : [
           "s3:GetObject",
+          "s3:PutObjectVersionTagging",
+          "s3:GetObjectTagging",
+          "s3:PutObjectVersionTagging",
           "s3:PutObject",
           "s3:DeleteObject",
-          "s3:ListBucket"
+          "s3:ListBucket",
+          "s3:PutObjectTagging"
         ],
         "Resource" : [
           "${aws_s3_bucket.extract.arn}",

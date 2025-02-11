@@ -31,6 +31,10 @@ resource "aws_sfn_state_machine" "rds_to_s3" {
                   "Value": "etl-dump"
                 },
                 {
+                  "Name": "EXECUTION_ID",
+                  "Value.$": "$$.Execution.Id"
+                },
+                {
                   "Name": "LOAD_ENVIRONMENT",
                   "Value.$": "$.LOAD_ENVIRONMENT"
                 }

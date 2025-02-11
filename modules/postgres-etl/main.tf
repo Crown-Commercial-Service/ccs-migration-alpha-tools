@@ -1,7 +1,33 @@
+# Shared resources
+resource "aws_iam_role" "eks_paas_jenkins" {
+  name = "${var.migrator_name}-eks-paas-jenkins"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          AWS = [
+            "arn:aws:iam::665505400356:role/eks-paas-postgres-etl",
+            "arn:aws:iam::665505400356:role/eks-paas-jenkins",
+            "arn:aws:iam::473251818902:role/eks-paas-jenkins",
+            "arn:aws:iam::974531504241:role/eks-paas-jenkins"
+          ]
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
 module "extract" {
   source = "./extract"
 
   count = var.enable_extract ? 1 : 0
+
+  depends_on = [
+    aws_iam_role.eks_paas_jenkins
+  ]
 
   aws_account_id                  = var.aws_account_id
   aws_region                      = var.aws_region
@@ -25,6 +51,10 @@ module "load" {
   source = "./load"
 
   count = var.enable_load ? 1 : 0
+
+  depends_on = [
+    aws_iam_role.eks_paas_jenkins
+  ]
 
   aws_account_id                  = var.aws_account_id
   aws_region                      = var.aws_region

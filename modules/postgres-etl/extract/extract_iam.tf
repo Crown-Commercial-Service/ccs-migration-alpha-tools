@@ -189,6 +189,30 @@ data "aws_iam_policy_document" "rds_to_s3_sfn" {
   }
 }
 
+resource "aws_iam_policy" "eks_paas_jenkins_trigger_sfn" {
+  name        = "${var.migrator_name}-eks-paas-jenkins-trigger-sfn"
+  description = "Allows EKS PaaS Jenkins to trigger the Postgres ETL Step Function"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = [
+          "states:StartExecution",
+        ],
+        Resource = aws_sfn_state_machine.rds_to_s3.arn
+      },
+      {
+        Effect   = "Allow",
+        Action   = [
+          "states:DescribeExecution",
+        ],
+        Resource = "arn:aws:states:${var.aws_region}:${var.aws_account_id}:execution:postgres-etl-rds-to-s3:*"
+      }
+    ]
+  })
+}
+
 data "aws_iam_policy_document" "logging" {
   version = "2012-10-17"
   # We are expecting repeated Sids of "DescribeAllLogGroups", hence `overwrite` rather than `source`
@@ -266,4 +290,9 @@ resource "aws_iam_role_policy" "s3__postgres_etl_extract" {
   name   = "${var.migrator_name}-extract-s3"
   role   = module.extract_task.task_role_name
   policy = data.aws_iam_policy_document.s3.json
+}
+
+resource "aws_iam_role_policy_attachment" "eks_paas_jenkins_trigger_sfn" {
+  role       = "${var.migrator_name}-eks-paas-jenkins"
+  policy_arn = aws_iam_policy.eks_paas_jenkins_trigger_sfn.arn
 }
