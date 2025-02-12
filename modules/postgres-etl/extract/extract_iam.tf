@@ -19,8 +19,7 @@ data "aws_iam_policy_document" "s3" {
       "s3:GetObjectVersionAcl",
       "s3:GetObjectVersionTagging",
       "s3:DeleteObject",
-      "s3:DeleteObjectVersion",
-      "s3:ListBucket"
+      "s3:DeleteObjectVersion"
     ]
 
     resources = [
