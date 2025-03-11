@@ -82,17 +82,10 @@ data "aws_iam_policy_document" "allow_push_from_jenkins_accounts" {
 
     principals {
       type = "AWS"
-      identifiers = var.grant_jenkins_sandbox_access != false ? ["473251818902", "974531504241", "665505400356"] : ["473251818902", "974531504241"]
+      identifiers = var.grant_jenkins_sandbox_access != false ? var.ecr_jenkins_account_list_with_sandbox : var.ecr_jenkins_account_list_without_sandbox
     }
 
-    actions = [
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:BatchGetImage",
-      "ecr:CompleteLayerUpload",
-      "ecr:InitiateLayerUpload",
-      "ecr:PutImage",
-      "ecr:UploadLayerPart",
-    ]
+    actions = var.ecr_allow_push_from_jenkins_accounts_actions
   }
 }
 

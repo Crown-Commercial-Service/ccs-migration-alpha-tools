@@ -1,3 +1,28 @@
+variable "ecr_allow_push_from_jenkins_accounts_actions" {
+  type        = list(string)
+  description = "The actions to grant the ECR policy for pushing from Jenkins Accounts"
+  default     = [
+    "ecr:BatchCheckLayerAvailability",
+    "ecr:BatchGetImage",
+    "ecr:CompleteLayerUpload",
+    "ecr:InitiateLayerUpload",
+    "ecr:PutImage",
+    "ecr:UploadLayerPart",
+  ]
+}
+
+variable "ecr_jenkins_account_list_with_sandbox" {
+  type        = list(string)
+  description = "The list of AWS Accounts (including Sandbox) for Jenkins Access"
+  default     = ["473251818902", "974531504241", "665505400356"]
+}
+
+variable "ecr_jenkins_account_list_without_sandbox" {
+  type        = list(string)
+  description = "The list of AWS Accounts (excluding Sandbox) for Jenkins Access"
+  default     = ["473251818902", "974531504241"]
+}
+
 variable "expire_untagged_images_older_than_days" {
   type        = number
   description = "Number of days after which to expire untagged images"
