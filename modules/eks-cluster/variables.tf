@@ -5,7 +5,7 @@ variable "capacity_type" {
 }
 
 variable "desired_size" {
-  description = "The desired size for the EKS node group"
+  description = "Desired number of worker nodes"
   type        = number
 }
 
@@ -23,12 +23,12 @@ variable "k8s_version" {
 }
 
 variable "max_size" {
-  description = "The max size for the EKS node group"
+  description = "Maximum number of worker nodes"
   type        = number
 }
 
 variable "min_size" {
-  description = "The min size for the EKS node group"
+  description = "Minimum number of worker nodes"
   type        = number
 }
 
@@ -53,5 +53,5 @@ variable "private_subnets" {
 }
 
 variable "service_ipv4_cidr" {
-  description = "The CIDR for the Kubernetes service range"
+  description = "The CIDR block to assign Kubernetes pod and service IP addresses from"
 }
