@@ -18,6 +18,19 @@ output "subnets" {
   value       = local.subnet_attributes
 }
 
+output "private_subnets" {
+  description = "Combine the private subnets formatted for the EKS cluster"
+  value = flatten([
+    for subnet in ["web", "application"] : [
+      for az, subnet_id in local.subnet_attributes[subnet].az_ids : {
+        id                = subnet_id
+        cidr_block        = local.subnet_attributes[subnet].cidr_blocks[az]
+        availability_zone = az
+      }
+    ]
+  ])
+}
+
 output "vpc_id" {
   description = "The ID of the VPC"
   value       = aws_vpc.vpc.id
