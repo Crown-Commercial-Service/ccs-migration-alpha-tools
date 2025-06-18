@@ -38,6 +38,10 @@ output "private_subnets" {
   )
 }
 
+output "vpc_cidr_block" {
+  value = aws_vpc.vpc.cidr_block
+}
+
 output "vpc_id" {
   description = "The ID of the VPC"
   value       = aws_vpc.vpc.id

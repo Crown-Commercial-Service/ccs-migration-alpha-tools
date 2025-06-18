@@ -38,8 +38,8 @@ variable "min_size" {
   type        = number
 }
 
-variable "project" {
-  description = "Project name"
+variable "application_name" {
+  description = "The name of the application"
   type        = string
 }
 
@@ -63,5 +63,15 @@ variable "private_subnets" {
 
 variable "service_ipv4_cidr" {
   description = "The CIDR block to assign Kubernetes pod and service IP addresses from"
+  type        = string
+}
+
+variable "vpc_cidr" {
+  description = "The CIDR block of the VPC"
+  type        = string
+}
+
+variable "vpc_id" {
+  description = "The id of the VPC"
   type        = string
 }

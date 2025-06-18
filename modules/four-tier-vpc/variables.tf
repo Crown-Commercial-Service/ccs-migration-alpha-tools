@@ -12,9 +12,9 @@ variable "database_ports" {
   # Example: database_ports = [ { db_type : "postgres", port : 5432 }, { db_type : "redis", port : 6379 } ]
 }
 
-variable "eks_cluster_name" {
+variable "application_name" {
   type        = string
-  description = "The name of the EKS cluster"
+  description = "The name of the application"
 }
 
 variable "resource_name_prefixes" {
