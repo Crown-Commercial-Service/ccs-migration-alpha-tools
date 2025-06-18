@@ -55,7 +55,8 @@ resource "aws_security_group" "db_clients" {
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${var.resource_name_prefixes.normal}:DBCLIENTS:${upper(var.db_name)}"
+    Name                     = "${var.resource_name_prefixes.normal}:DBCLIENTS:${upper(var.db_name)}"
+    "karpenter.sh/discovery" = var.eks_cluster_name
   }
 }
 

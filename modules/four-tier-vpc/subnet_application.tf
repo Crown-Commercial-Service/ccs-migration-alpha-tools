@@ -6,7 +6,8 @@ resource "aws_subnet" "application" {
   vpc_id            = aws_vpc.vpc.id
 
   tags = {
-    "Name" = "${var.resource_name_prefixes.normal}:SUBNET:APPLICATION:${each.key}"
+    "Name"                   = "${var.resource_name_prefixes.normal}:SUBNET:APPLICATION:${each.key}"
+    "karpenter.sh/discovery" = var.eks_cluster_name
   }
 }
 

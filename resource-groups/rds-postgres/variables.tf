@@ -56,6 +56,11 @@ variable "deletion_protection" {
   default     = false
 }
 
+variable "eks_cluster_name" {
+  type        = string
+  description = "The name of the EKS cluster"
+}
+
 variable "final_snapshot_identifier" {
   type        = string
   description = "Identifier to give the final snapshot of the db upon deletion (if any)"
