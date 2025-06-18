@@ -20,17 +20,22 @@ output "subnets" {
 
 output "private_subnets" {
   description = "Map of web & application subnets formatted for the EKS cluster"
-  value = merge([
-    for subnet in ["web", "application"] : {
-      for az, subnet_id in local.subnet_attributes[subnet].az_ids :
-      # build a unique key per subnet, e.g. "web-eu-west-2a"
-      "${subnet}-${az}" => {
+  value = merge(
+    { for az, subnet_id in local.subnet_attributes.web.az_ids :
+      "web-${az}" => {
         id                = subnet_id
-        cidr_block        = local.subnet_attributes[subnet].cidr_blocks[az]
+        cidr_block        = local.subnet_attributes.web.cidr_blocks[az]
+        availability_zone = az
+      }
+    },
+    { for az, subnet_id in local.subnet_attributes.application.az_ids :
+      "application-${az}" => {
+        id                = subnet_id
+        cidr_block        = local.subnet_attributes.application.cidr_blocks[az]
         availability_zone = az
       }
     }
-  ])
+  )
 }
 
 output "vpc_id" {
