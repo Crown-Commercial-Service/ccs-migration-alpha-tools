@@ -39,6 +39,37 @@ resource "aws_eks_node_group" "this" {
   }
 }
 
+resource "aws_security_group" "this" {
+  name        = "eks-${var.project}-node-security-group"
+  description = "Security group for the worker nodes"
+  vpc_id      = var.vpc_id
+
+  tags = {
+    "karpenter.sh/discovery" = "eks-${var.project}"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ingress_https" {
+  security_group_id = aws_security_group.this.id
+  cidr_ipv4         = var.vpc_cidr
+  from_port         = 31443
+  ip_protocol       = "tcp"
+  to_port           = 31443
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ingress_http" {
+  security_group_id = aws_security_group.this.id
+  cidr_ipv4         = var.vpc_cidr
+  from_port         = 31080
+  ip_protocol       = "tcp"
+  to_port           = 31080
+}
+
+resource "aws_vpc_security_group_egress_rule" "egress" {
+  security_group_id = aws_security_group.this.id
+  ip_protocol       = "-1"
+}
+
 resource "aws_ec2_tag" "karpenter_sg_discovery" {
   resource_id = aws_eks_cluster.this.vpc_config[0].cluster_security_group_id
   key         = "karpenter.sh/discovery"
