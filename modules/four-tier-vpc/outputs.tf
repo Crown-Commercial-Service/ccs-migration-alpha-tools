@@ -21,10 +21,10 @@ output "subnets" {
 output "private_subnets" {
   description = "Combine the private subnets formatted for the EKS cluster"
   value = flatten([
-    for group in ["web", "application"] : [
-      for az, subnet_id in local.subnet_attributes[group].az_ids : {
+    for subnet in ["web", "application"] : [
+      for az, subnet_id in local.subnet_attributes[subnet].az_ids : {
         id                = subnet_id
-        cidr_block        = local.subnet_attributes[group].cidr_blocks[az]
+        cidr_block        = local.subnet_attributes[subnet].cidr_blocks[az]
         availability_zone = az
       }
     ]
