@@ -40,6 +40,7 @@ variable "min_size" {
 
 variable "project" {
   description = "Project name"
+  type        = string
 }
 
 variable "public_cidr_allowlist" {
@@ -56,9 +57,11 @@ variable "private_subnets" {
   type = map(object({
     availability_zone = string
     cidr_block        = string
+    id                = string
   }))
 }
 
 variable "service_ipv4_cidr" {
   description = "The CIDR block to assign Kubernetes pod and service IP addresses from"
+  type        = string
 }
