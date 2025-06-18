@@ -1,5 +1,5 @@
 variable "capacity_type" {
-  description = "The type of EC2 capacity to launch for the EKS node group"
+  description = "Type of capacity associated with the EKS Node Group"
   type        = string
   default     = "SPOT"
 }
@@ -10,7 +10,7 @@ variable "desired_size" {
 }
 
 variable "instance_types" {
-  description = "The type of EC2 instance to launch for the EKS node group"
+  description = "List of instance types associated with the EKS Node Group"
   type        = list(string)
   default = [
     "t2.medium"
