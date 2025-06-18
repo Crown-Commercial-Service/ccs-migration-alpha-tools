@@ -10,7 +10,7 @@ resource "aws_kms_key" "eks" {
 }
 
 resource "aws_kms_alias" "eks" {
-  name          = "alias/eks-${project}"
+  name          = "alias/eks"
   target_key_id = aws_kms_key.eks.key_id
 }
 
