@@ -46,7 +46,8 @@ variable "public_cidr_allowlist" {
   description = "Allowed public CIDR"
   type        = list(string)
   default = [
-    "0.0.0.0/0"
+    "51.149.8.0/25",    # CCS IPs
+    "54.220.137.216/32" # Muhammad bastion IP
   ]
 }
 
