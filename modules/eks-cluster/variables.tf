@@ -38,8 +38,8 @@ variable "min_size" {
   type        = number
 }
 
-variable "project" {
-  description = "Project name"
+variable "application_name" {
+  description = "The name of the application"
   type        = string
 }
 

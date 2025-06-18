@@ -56,9 +56,9 @@ variable "deletion_protection" {
   default     = false
 }
 
-variable "eks_cluster_name" {
+variable "application_name" {
   type        = string
-  description = "The name of the EKS cluster"
+  description = "The name of the application"
 }
 
 variable "final_snapshot_identifier" {

@@ -1,5 +1,5 @@
 resource "aws_eks_cluster" "this" {
-  name     = "eks-${var.project}"
+  name     = "eks-${var.application_name}"
   role_arn = aws_iam_role.eks_cluster_iam_role.arn
   version  = var.k8s_version
 
@@ -22,7 +22,7 @@ resource "aws_eks_cluster" "this" {
 
 resource "aws_eks_node_group" "this" {
   cluster_name    = aws_eks_cluster.this.name
-  node_group_name = "eks-${var.project}-node-group"
+  node_group_name = "eks-${var.application_name}-node-group"
   node_role_arn   = aws_iam_role.eks_node_group_iam_role.arn
   subnet_ids      = [for i, v in var.private_subnets : v.id]
   capacity_type   = var.capacity_type
@@ -40,12 +40,12 @@ resource "aws_eks_node_group" "this" {
 }
 
 resource "aws_security_group" "this" {
-  name        = "eks-${var.project}-node-security-group"
+  name        = "eks-${var.application_name}-node-security-group"
   description = "Security group for the worker nodes"
   vpc_id      = var.vpc_id
 
   tags = {
-    "karpenter.sh/discovery" = "eks-${var.project}"
+    "karpenter.sh/discovery" = "eks-${var.application_name}"
   }
 }
 

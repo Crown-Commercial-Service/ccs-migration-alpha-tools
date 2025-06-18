@@ -56,7 +56,7 @@ resource "aws_security_group" "db_clients" {
 
   tags = {
     Name                     = "${var.resource_name_prefixes.normal}:DBCLIENTS:${upper(var.db_name)}"
-    "karpenter.sh/discovery" = var.eks_cluster_name
+    "karpenter.sh/discovery" = "eks-${var.application_name}"
   }
 }
 

@@ -7,7 +7,7 @@ resource "aws_subnet" "application" {
 
   tags = {
     "Name"                   = "${var.resource_name_prefixes.normal}:SUBNET:APPLICATION:${each.key}"
-    "karpenter.sh/discovery" = var.eks_cluster_name
+    "karpenter.sh/discovery" = "eks-${var.application_name}"
   }
 }
 
