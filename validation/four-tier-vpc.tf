@@ -5,7 +5,7 @@ module "four_tier_vpc" {
   database_ports = [
     { db_type : "postgres", "port" : 5432 }
   ]
-  eks_cluster_name = "test"
+  application_name = "test"
   resource_name_prefixes = {
     normal        = "CORE:DEMO"
     hyphens       = "CORE-DEMO"
