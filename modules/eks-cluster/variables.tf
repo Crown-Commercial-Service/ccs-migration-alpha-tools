@@ -4,6 +4,11 @@ variable "capacity_type" {
   default     = "SPOT"
 }
 
+variable "desired_size" {
+  description = "The desired size for the EKS node group"
+  type        = number
+}
+
 variable "instance_types" {
   description = "The type of EC2 instance to launch for the EKS node group"
   type        = list(string)
@@ -15,6 +20,16 @@ variable "instance_types" {
 variable "k8s_version" {
   description = "Kubernetes version"
   type        = string
+}
+
+variable "max_size" {
+  description = "The max size for the EKS node group"
+  type        = number
+}
+
+variable "min_size" {
+  description = "The min size for the EKS node group"
+  type        = number
 }
 
 variable "project" {
