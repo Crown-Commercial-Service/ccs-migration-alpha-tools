@@ -35,7 +35,7 @@ resource "aws_eks_node_group" "this" {
   }
 
   update_config {
-    max_unavailable = 1
+    max_unavailable = var.max_unavailable
   }
 }
 

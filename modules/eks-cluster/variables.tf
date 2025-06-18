@@ -27,6 +27,12 @@ variable "max_size" {
   type        = number
 }
 
+variable "max_unavailable" {
+  description = "Desired max number of unavailable worker nodes during node group update"
+  type        = number
+  default     = 1
+}
+
 variable "min_size" {
   description = "Minimum number of worker nodes"
   type        = number
