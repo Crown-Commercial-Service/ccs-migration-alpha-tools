@@ -21,20 +21,22 @@ resource "aws_eks_cluster" "this" {
 }
 
 resource "aws_eks_node_group" "this" {
-    cluster_name = aws_eks_cluster.this.name
-    node_group_name = "eks-${var.project}-node-group"
-    node_role_arn = aws_iam_role.eks_node_group_iam_role.arn
-    subnet_ids = [for i, v in var.private_subnets : v.id]
+  cluster_name    = aws_eks_cluster.this.name
+  node_group_name = "eks-${var.project}-node-group"
+  node_role_arn   = aws_iam_role.eks_node_group_iam_role.arn
+  subnet_ids      = [for i, v in var.private_subnets : v.id]
+  capacity_type   = var.capacity_type
+  instance_types  = var.instance_types
 
-    scaling_config {
-      desired_size = 2
-      max_size = 3
-      min_size = 2
-    }
+  scaling_config {
+    desired_size = 2
+    max_size     = 3
+    min_size     = 2
+  }
 
-    update_config {
-      max_unavailable = 1
-    }
+  update_config {
+    max_unavailable = 1
+  }
 }
 
 resource "aws_ec2_tag" "karpenter_sg_discovery" {

@@ -1,12 +1,25 @@
-variable "project" {
-  description = "Project name"
+variable "capacity_type" {
+  description = "The type of EC2 capacity to launch for the EKS node group"
+  type        = string
+  default     = "SPOT"
+}
+
+variable "instance_types" {
+  description = "The type of EC2 instance to launch for the EKS node group"
+  type        = list(string)
+  default = [
+    "t2.medium"
+  ]
 }
 
 variable "k8s_version" {
   description = "Kubernetes version"
+  type        = string
 }
 
-variable "service_ipv4_cidr" {}
+variable "project" {
+  description = "Project name"
+}
 
 variable "public_cidr_allowlist" {
   description = "Allowed public CIDR"
@@ -22,4 +35,8 @@ variable "private_subnets" {
     availability_zone = string
     cidr_block        = string
   }))
+}
+
+variable "service_ipv4_cidr" {
+  description = "The CIDR for the Kubernetes service range"
 }
