@@ -1,5 +1,5 @@
 data "aws_kms_key" "eks" {
-  key_id = "alias/eks"
+  key_id = "alias/aws/eks"
 }
 
 data "tls_certificate" "this" {
