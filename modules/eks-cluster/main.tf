@@ -39,6 +39,19 @@ resource "aws_eks_node_group" "this" {
   }
 }
 
+resource "aws_eks_addon" "metrics_server" {
+  cluster_name                = aws_eks_cluster.this.name
+  addon_name                  = "metrics-server"
+  resolve_conflicts_on_create = "OVERWRITE"
+
+}
+
+resource "aws_eks_addon" "vpc_cni" {
+  cluster_name                = aws_eks_cluster.this.name
+  addon_name                  = "vpc-cni"
+  resolve_conflicts_on_create = "OVERWRITE"
+}
+
 resource "aws_security_group" "this" {
   name        = "eks-${var.application_name}-node-security-group"
   description = "Security group for the worker nodes"
@@ -75,18 +88,5 @@ resource "aws_ec2_tag" "karpenter_sg_discovery" {
   resource_id = aws_eks_cluster.this.vpc_config[0].cluster_security_group_id
   key         = "karpenter.sh/discovery"
   value       = aws_eks_cluster.this.name
-}
-
-resource "aws_eks_addon" "metrics_server" {
-  cluster_name                = aws_eks_cluster.this.name
-  addon_name                  = "metrics-server"
-  resolve_conflicts_on_create = "OVERWRITE"
-
-}
-
-resource "aws_eks_addon" "vpc_cni" {
-  cluster_name                = aws_eks_cluster.this.name
-  addon_name                  = "vpc-cni"
-  resolve_conflicts_on_create = "OVERWRITE"
 }
 
