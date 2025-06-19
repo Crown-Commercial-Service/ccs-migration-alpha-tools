@@ -17,6 +17,22 @@ resource "aws_iam_role" "eks_cluster_iam_role" {
   })
 }
 
+resource "aws_iam_role" "eks_fargate" {
+  name = "eks-fargate"
+
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "eks-fargate-pods.amazonaws.com"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+
+}
+
 resource "aws_iam_role" "eks_node_group_iam_role" {
   name = "eks-${var.application_name}-node-group-role"
 
@@ -30,6 +46,11 @@ resource "aws_iam_role" "eks_node_group_iam_role" {
     }]
     Version = "2012-10-17"
   })
+}
+
+resource "aws_iam_role_policy_attachment" "AmazonEKSFargatePodExecutionRolePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
+  role       = aws_iam_role.eks_fargate.name
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSWorkerNodePolicy" {
