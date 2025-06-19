@@ -4,7 +4,7 @@ import json
 import logging
 import os
 
-logging.basicConfig(level=logging.INFO)
+logging.getLogger().setLevel(logging.INFO)
 
 
 def create_boto3_clients():

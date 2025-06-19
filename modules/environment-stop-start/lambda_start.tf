@@ -5,7 +5,7 @@ resource "aws_lambda_function" "start" {
   role             = aws_iam_role.start.arn
   filename         = data.archive_file.start_stop.output_path
   source_code_hash = data.archive_file.start_stop.output_base64sha256
-  timeout          = 600
+  timeout          = var.start_stop_lambda_timeout
 
   environment {
     variables = {
