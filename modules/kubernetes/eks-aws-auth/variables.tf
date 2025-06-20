@@ -18,10 +18,6 @@ variable "additional_iam_roles" {
     rolearn  = "arn:aws:iam::@AWS_ACCOUNT@:role/CCS_TechOps_Admin"
     username = "arn:aws:sts::{{AccountID}}:assumed-role/CCS_TechOps_Admin/{{SessionName}}"
     }, {
-    groups   = ["system:masters"]
-    rolearn  = "arn:aws:iam::@AWS_ACCOUNT@:role/CCS_TechOps_GitHub_Actions"
-    username = "arn:aws:sts::{{AccountID}}:assumed-role/CCS_TechOps_GitHub_Actions/{{SessionName}}"
-    }, {
     groups   = ["eks-console-dashboard-restricted-access-group"]
     rolearn  = "arn:aws:iam::@AWS_ACCOUNT@:role/CCS_Security_RO"
     username = "arn:aws:sts::{{AccountID}}:assumed-role/CCS_Security_RO/{{SessionName}}"
