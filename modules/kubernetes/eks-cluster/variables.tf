@@ -1,3 +1,8 @@
+variable "application_name" {
+  description = "The name of the application"
+  type        = string
+}
+
 variable "capacity_type" {
   description = "Type of capacity associated with the EKS Node Group"
   type        = string
@@ -36,11 +41,6 @@ variable "max_unavailable" {
 variable "min_size" {
   description = "Minimum number of worker nodes"
   type        = number
-}
-
-variable "application_name" {
-  description = "The name of the application"
-  type        = string
 }
 
 variable "public_cidr_allowlist" {
