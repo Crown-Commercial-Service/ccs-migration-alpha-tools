@@ -21,16 +21,6 @@ resource "helm_release" "external_secrets_operator" {
   }
 
   set {
-    name  = "image.repository"
-    value = "${var.aws_ecr_registry}/external-secrets/external-secrets"
-  }
-
-  set {
-    name  = "image.tag"
-    value = var.external_secrets_image_tag
-  }
-
-  set {
     name  = "image.pullPolicy"
     value = "IfNotPresent"
   }
