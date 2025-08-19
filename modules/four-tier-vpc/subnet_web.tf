@@ -1,9 +1,11 @@
 resource "aws_subnet" "web" {
   for_each = local.subnet_cidr_blocks["web"]
 
-  availability_zone = "${var.aws_region}${each.key}"
-  cidr_block        = each.value
-  vpc_id            = aws_vpc.vpc.id
+  assign_ipv6_address_on_creation = true
+  availability_zone               = "${var.aws_region}${each.key}"
+  cidr_block                      = each.value
+  ipv6_cidr_block                 = local.ipv6_subnet_cidr_blocks["web"][each.key]
+  vpc_id                          = aws_vpc.vpc.id
 
   tags = {
     "Name"                   = "${var.resource_name_prefixes.normal}:SUBNET:WEB:${each.key}"
@@ -97,6 +99,28 @@ resource "aws_network_acl_rule" "web__allow_ephemeral_everywhere_out" {
   to_port        = 65535
 }
 
+resource "aws_network_acl_rule" "web__allow_ipv6_ephemeral_everywhere_out" {
+  egress          = true
+  from_port       = 1024
+  ipv6_cidr_block = "::/0"
+  network_acl_id  = aws_network_acl.web_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5401
+  to_port         = 65535
+}
+
+resource "aws_network_acl_rule" "web__allow_ipv6_8080_in" {
+  egress          = false
+  from_port       = 8080
+  ipv6_cidr_block = "::/0"
+  network_acl_id  = aws_network_acl.web_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5300
+  to_port         = 8080
+}
+
 # Rules for instances to make outbound general requests (via NAT in public subnets)
 #
 resource "aws_network_acl_rule" "web__allow_http_everywhere_out" {
@@ -121,6 +145,17 @@ resource "aws_network_acl_rule" "web__allow_https_everywhere_out" {
   to_port        = 443
 }
 
+resource "aws_network_acl_rule" "web__allow_8888_everywhere_out" {
+  egress          = true
+  from_port       = 8888
+  ipv6_cidr_block = "::/0"
+  network_acl_id  = aws_network_acl.web_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5500
+  to_port         = 8888
+}
+
 resource "aws_network_acl_rule" "web__allow_ephemeral_everywhere_in" {
   cidr_block     = "0.0.0.0/0"
   egress         = false
@@ -130,6 +165,28 @@ resource "aws_network_acl_rule" "web__allow_ephemeral_everywhere_in" {
   rule_action    = "allow"
   rule_number    = 5200
   to_port        = 65535
+}
+
+resource "aws_network_acl_rule" "web__allow_ipv6_ephemeral_everywhere_in" {
+  egress          = false
+  from_port       = 1024
+  ipv6_cidr_block = "::/0"
+  network_acl_id  = aws_network_acl.web_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5402
+  to_port         = 65535
+}
+
+resource "aws_network_acl_rule" "web__allow_ipv6_outbound" {
+  network_acl_id  = aws_network_acl.web_subnet.id
+  rule_number     = 6001
+  egress          = true
+  protocol        = "tcp"
+  rule_action     = "allow"
+  ipv6_cidr_block = "::/0"
+  from_port       = 443
+  to_port         = 443
 }
 
 # Rules for instances to communicate with downstream LBs
