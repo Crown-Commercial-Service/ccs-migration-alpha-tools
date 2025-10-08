@@ -1,3 +1,10 @@
+variable "application_name" {
+  type        = string
+  description = "The name of the application"
+  default     = null
+  nullable    = true
+}
+
 variable "aws_region" {
   type        = string
   description = "Region into which to deploy region-specific resources"
@@ -10,11 +17,6 @@ variable "database_ports" {
   }))
   description = "List of objects, each list member detailing a port on which to allow traffic into the database subnet"
   # Example: database_ports = [ { db_type : "postgres", port : 5432 }, { db_type : "redis", port : 6379 } ]
-}
-
-variable "application_name" {
-  type        = string
-  description = "The name of the application"
 }
 
 variable "resource_name_prefixes" {
