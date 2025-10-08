@@ -8,8 +8,6 @@ resource "aws_iam_role" "eks_paas_jenkins" {
         Effect = "Allow",
         Principal = {
           AWS = [
-            "arn:aws:iam::665505400356:role/eks-paas-postgres-etl",
-            "arn:aws:iam::665505400356:role/eks-paas-jenkins",
             "arn:aws:iam::473251818902:role/eks-paas-jenkins",
             "arn:aws:iam::974531504241:role/eks-paas-jenkins"
           ]
