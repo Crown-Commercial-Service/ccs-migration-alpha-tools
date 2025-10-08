@@ -10,6 +10,13 @@ variable "allow_major_version_upgrade" {
   default     = false
 }
 
+variable "application_name" {
+  type        = string
+  description = "The name of the application"
+  default     = null
+  nullable    = true
+}
+
 variable "apply_immediately" {
   type        = bool
   description = "Whether to apply changes immediately or in the next maintenance window"
@@ -54,11 +61,6 @@ variable "deletion_protection" {
   type        = bool
   description = "Boolean to opt in/out of enabling deletion protection. The DB cannot be deleted when set to true"
   default     = false
-}
-
-variable "application_name" {
-  type        = string
-  description = "The name of the application"
 }
 
 variable "final_snapshot_identifier" {
