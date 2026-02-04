@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "extract_sqs" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::665505400356:role/eks-paas-postgres-etl"
+        "arn:aws:iam::473251818902:role/eks-paas-postgres-etl"
       ]
     }
 
