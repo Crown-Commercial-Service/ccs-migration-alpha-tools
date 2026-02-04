@@ -60,8 +60,6 @@ data "aws_iam_policy_document" "ecr" {
     resources = [
       "arn:aws:ecr:${var.aws_region}:473251818902:repository/${var.migrator_name}",   # Dev
       "arn:aws:ecr:${var.aws_region}:473251818902:repository/${var.migrator_name}:*", # Dev
-      "arn:aws:ecr:${var.aws_region}:665505400356:repository/${var.migrator_name}",   # SBX
-      "arn:aws:ecr:${var.aws_region}:665505400356:repository/${var.migrator_name}:*", # SBX
       "arn:aws:ecr:${var.aws_region}:974531504241:repository/${var.migrator_name}",   # Prod
       "arn:aws:ecr:${var.aws_region}:974531504241:repository/${var.migrator_name}:*"  # Prod
     ]
