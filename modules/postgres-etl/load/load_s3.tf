@@ -19,7 +19,6 @@ resource "aws_s3_bucket_policy" "load" {
         "Principal" : {
           "AWS" : [
             "arn:aws:iam::473251818902:role/eks-paas-postgres-etl", # Dev
-            "arn:aws:iam::665505400356:role/eks-paas-postgres-etl", # SBX
             "arn:aws:iam::974531504241:role/eks-paas-postgres-etl"  # PROD
           ]
         },
