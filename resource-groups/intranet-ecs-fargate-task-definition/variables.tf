@@ -12,8 +12,8 @@ variable "container_definitions" {
   type = map(object({
     # CPU to allocate to the container (where a value of 1024 == 1vCPU)
     cpu = number
-    # Needed for the main container for the intranet
-    # Valid condition values are "SUCCESS" | "COMPLETE" | "START" | "HEALTHY"
+    # Needed for the main container for the intranet 
+    # Valid condition values are "SUCCESS" | "COMPLETE" | "START" | "HEALTHY" 
     depends_on = optional(list(object({
       container_name = string
       condition      = string
@@ -26,8 +26,6 @@ variable "container_definitions" {
     healthcheck_command = string
     # Canonical Docker image name - OR - URL of the image repo
     image = string
-    # Full name of an existing CloudWatch Log Group for the container
-    log_group_name = string
     # Memory to allocate to the container (where a value of 1024 == 1GB)
     memory = number
     # List of config value objects for volumes to be mounted from the container
@@ -52,7 +50,7 @@ variable "ecs_execution_role_arn" {
 
 variable "family_name" {
   type        = string
-  description = "The family name to give to the task definition, across all revisions"
+  description = "The name to give to the task definition, across all revisions"
 }
 
 variable "override_entrypoints" {

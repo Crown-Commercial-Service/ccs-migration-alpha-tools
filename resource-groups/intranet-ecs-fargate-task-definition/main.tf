@@ -24,7 +24,8 @@ locals {
         logConfiguration = {
           "logDriver" : "awslogs",
           "options" : {
-            "awslogs-group" : vars.log_group_name,
+            "awslogs-create-group" : "true",
+            "awslogs-group" : module.task_log_group.log_group_name,
             "awslogs-region" : var.aws_region,
             "awslogs-stream-prefix" : "container"
           }
@@ -42,7 +43,6 @@ locals {
           {
             containerPort = vars.port
             hostPort      = vars.port
-            name          = "${var.family_name}-${vars.port}"
             protocol      = "tcp"
           }
         ]
