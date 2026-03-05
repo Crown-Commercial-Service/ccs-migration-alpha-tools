@@ -1,9 +1,11 @@
 resource "aws_subnet" "application" {
   for_each = local.subnet_cidr_blocks["application"]
 
-  availability_zone = "${var.aws_region}${each.key}"
-  cidr_block        = each.value
-  vpc_id            = aws_vpc.vpc.id
+  assign_ipv6_address_on_creation = true
+  availability_zone               = "${var.aws_region}${each.key}"
+  cidr_block                      = each.value
+  ipv6_cidr_block                 = local.ipv6_subnet_cidr_blocks["application"][each.key]
+  vpc_id                          = aws_vpc.vpc.id
 
   tags = {
     "Name"                   = "${var.resource_name_prefixes.normal}:SUBNET:APPLICATION:${each.key}"
@@ -64,6 +66,17 @@ resource "aws_network_acl_rule" "application__allow_http_web_a_in" {
   to_port        = 80
 }
 
+resource "aws_network_acl_rule" "application__allow_ipv6_http_web_a_in" {
+  egress          = false
+  from_port       = 80
+  ipv6_cidr_block = local.ipv6_subnet_cidr_blocks.web.a
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5501
+  to_port         = 80
+}
+
 resource "aws_network_acl_rule" "application__allow_http_web_b_in" {
   cidr_block     = local.subnet_cidr_blocks.web.b
   egress         = false
@@ -73,6 +86,17 @@ resource "aws_network_acl_rule" "application__allow_http_web_b_in" {
   rule_action    = "allow"
   rule_number    = 5001
   to_port        = 80
+}
+
+resource "aws_network_acl_rule" "application__allow_ipv6_http_web_b_in" {
+  egress          = false
+  from_port       = 80
+  ipv6_cidr_block = local.ipv6_subnet_cidr_blocks.web.b
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5502
+  to_port         = 80
 }
 
 # Rules for inbound traffic from the application subnets (think cross-AZ)
@@ -88,6 +112,17 @@ resource "aws_network_acl_rule" "application__allow_http_application_a_in" {
   to_port        = 80
 }
 
+resource "aws_network_acl_rule" "application__allow_ipv6_http_application_a_in" {
+  egress          = false
+  from_port       = 80
+  ipv6_cidr_block = local.ipv6_subnet_cidr_blocks.application.a
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5503
+  to_port         = 80
+}
+
 resource "aws_network_acl_rule" "application__allow_http_application_b_in" {
   cidr_block     = local.subnet_cidr_blocks.application.b
   egress         = false
@@ -97,6 +132,17 @@ resource "aws_network_acl_rule" "application__allow_http_application_b_in" {
   rule_action    = "allow"
   rule_number    = 5003
   to_port        = 80
+}
+
+resource "aws_network_acl_rule" "application__allow_ipv6_http_application_b_in" {
+  egress          = false
+  from_port       = 80
+  ipv6_cidr_block = local.ipv6_subnet_cidr_blocks.application.b
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5505
+  to_port         = 80
 }
 
 resource "aws_network_acl_rule" "application__deny_25565_everywhere_out" {
@@ -121,6 +167,17 @@ resource "aws_network_acl_rule" "application__allow_ephemeral_everywhere_out" {
   to_port        = 65535
 }
 
+resource "aws_network_acl_rule" "application__allow_ipv6_ephemeral_everywhere_out" {
+  egress          = true
+  from_port       = 1024
+  ipv6_cidr_block = "::/0"
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5800
+  to_port         = 65535
+}
+
 # Rules for instances to make outbound general requests (via NAT in web subnets)
 #
 resource "aws_network_acl_rule" "application__allow_http_everywhere_out" {
@@ -130,8 +187,19 @@ resource "aws_network_acl_rule" "application__allow_http_everywhere_out" {
   network_acl_id = aws_network_acl.application_subnet.id
   protocol       = "tcp"
   rule_action    = "allow"
-  rule_number    = 5300
+  rule_number    = 5301
   to_port        = 80
+}
+
+resource "aws_network_acl_rule" "application__allow_ipv6_8080_everywhere_out" {
+  egress          = true
+  from_port       = 8080
+  ipv6_cidr_block = "::/0"
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5700
+  to_port         = 8080
 }
 
 resource "aws_network_acl_rule" "application__allow_https_everywhere_out" {
@@ -145,6 +213,17 @@ resource "aws_network_acl_rule" "application__allow_https_everywhere_out" {
   to_port        = 443
 }
 
+resource "aws_network_acl_rule" "application__allow_ipv6_8888_everywhere_in" {
+  egress          = true
+  from_port       = 8888
+  ipv6_cidr_block = "::/0"
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5300
+  to_port         = 8888
+}
+
 resource "aws_network_acl_rule" "application__allow_ephemeral_everywhere_in" {
   cidr_block     = "0.0.0.0/0"
   egress         = false
@@ -154,6 +233,28 @@ resource "aws_network_acl_rule" "application__allow_ephemeral_everywhere_in" {
   rule_action    = "allow"
   rule_number    = 5200
   to_port        = 65535
+}
+
+resource "aws_network_acl_rule" "application__allow_ipv6_ephemeral_everywhere_in" {
+  egress          = false
+  from_port       = 1024
+  ipv6_cidr_block = "::/0"
+  network_acl_id  = aws_network_acl.application_subnet.id
+  protocol        = "tcp"
+  rule_action     = "allow"
+  rule_number     = 5400
+  to_port         = 65535
+}
+
+resource "aws_network_acl_rule" "application__allow_ipv6_outbound" {
+  network_acl_id  = aws_network_acl.application_subnet.id
+  rule_number     = 6000
+  egress          = true
+  protocol        = "tcp"
+  rule_action     = "allow"
+  ipv6_cidr_block = "::/0"
+  from_port       = 443
+  to_port         = 443
 }
 
 # Rules for instances to communicate with downstream DBs
