@@ -29,6 +29,7 @@ variable "backup_kms_key_id" {
 variable "backup_vault_name" {
   type        = string
   description = "The name of the Airgapped Backup Vault to use for backups"
+  default     = "backup_vault_nonprod"
   validation {
     condition     = contains(["backup_vault_nonprod", "backup_vault_prod"], var.backup_vault_name)
     error_message = "backup_vault_name must be either 'backup_vault_nonprod' or 'backup_vault_prod'"
