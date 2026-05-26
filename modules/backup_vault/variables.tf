@@ -18,7 +18,7 @@ variable "backup_environment_id" {
 variable "backup_role_name" {
   description = "Name of the IAM role to be assumed by AWS Backup for cross-account backup copying"
   type        = string
-  default     = "ccs_backup_management"
+  default     = "backup_management"
 }
 
 variable "backup_kms_key_id" {
