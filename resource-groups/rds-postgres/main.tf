@@ -35,6 +35,7 @@ resource "aws_db_instance" "db" {
   storage_encrypted                   = true
   storage_throughput                  = var.storage_throughput
   storage_type                        = var.storage_type
+  tags                                = var.tags
   username                            = var.db_username
   vpc_security_group_ids              = [aws_security_group.db.id]
 }
@@ -55,7 +56,7 @@ resource "aws_security_group" "db_clients" {
   vpc_id      = var.vpc_id
 
   tags = {
-    Name                     = "${var.resource_name_prefixes.normal}:DBCLIENTS:${upper(var.db_name)}"
+    Name = "${var.resource_name_prefixes.normal}:DBCLIENTS:${upper(var.db_name)}"
   }
 }
 

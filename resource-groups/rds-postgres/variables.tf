@@ -179,6 +179,12 @@ variable "storage_type" {
   default     = "gp3"
 }
 
+variable "tags" {
+  type        = map(string)
+  description = "Tags to apply to the DB instance and related resources"
+  default     = {}
+}
+
 variable "vpc_id" {
   type        = string
   description = "ID of the VPC containing the service"
