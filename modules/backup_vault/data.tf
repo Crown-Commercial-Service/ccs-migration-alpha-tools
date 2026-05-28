@@ -76,6 +76,19 @@ data "aws_iam_policy_document" "backup_vault_policy" {
   }
 }
 
+data "aws_iam_policy_document" "eventbridge_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
 data "aws_iam_policy_document" "lambda_logging_permissions" {
   statement {
     sid    = "AllowLambdaToWriteLogs"
