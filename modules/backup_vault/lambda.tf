@@ -9,7 +9,7 @@ resource "aws_lambda_function" "backup_copy_to_vault" {
 
   environment {
     variables = {
-      AIRGAP_VAULT_ARN   = "arn:aws:backup:eu-west-1:${var.backup_environment_id}:backup-vault:${var.backup_vault_name}"
+      AIRGAP_VAULT_ARN   = "arn:aws:backup:eu-west-2:${var.backup_environment_id}:backup-vault:${var.backup_vault_name}"
       BACKUP_ROLE_ARN    = aws_iam_role.backup_role.arn
       COPY_ORIGIN_REGION = local.secondary_region
     }

@@ -48,3 +48,4 @@ resource "aws_iam_role_policy_attachment" "lambda_logs_attachment" {
   role       = aws_iam_role.backup_role.name
   policy_arn = aws_iam_policy.backup_lambda_policy[0].arn
 }
+
