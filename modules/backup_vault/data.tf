@@ -89,6 +89,14 @@ data "aws_iam_policy_document" "eventbridge_assume_role" {
   }
 }
 
+data "aws_iam_policy_document" "eventbridge_forwarder_policy" {
+  statement {
+    effect    = "Allow"
+    actions   = ["events:PutEvents"]
+    resources = ["arn:aws:events:eu-west-1:${var.backup_environment_id}:event-bus/default"]
+  }
+}
+
 data "aws_iam_policy_document" "lambda_logging_permissions" {
   statement {
     sid    = "AllowLambdaToWriteLogs"
