@@ -31,22 +31,22 @@ resource "aws_lambda_permission" "backup_copy_transfer" {
 
 #Trigger Eventbridge in Management Account to Copy Snapshot Cross Account to Staging Vault
 resource "aws_cloudwatch_event_rule" "backup_copy_stage" {
-  provider = aws.secondary_region #MOVE
+  provider = aws.secondary_region
   name     = "backup-copy-to-staging-vault"
   event_pattern = jsonencode({
     source        = ["aws.backup"],
     "detail-type" = ["Copy Job State Change"],
     detail = {
       state                     = ["COMPLETED"],
-      destinationBackupVaultArn = ["arn:aws:backup:eu-west-1:${var.backup_environment_id}:backup-vault:staging_vault"]
+      destinationBackupVaultArn = ["arn:aws:backup:eu-west-2:${var.backup_environment_id}:backup-vault:staging_vault"]
     }
   })
 }
 
 resource "aws_cloudwatch_event_target" "backup_copy_stage" {
-  provider  = aws.secondary_region #MOVE
+  provider  = aws.secondary_region
   rule      = aws_cloudwatch_event_rule.backup_copy_stage.name
   target_id = "SendToDestinationAccount"
-  arn       = "arn:aws:events:eu-west-1:${var.backup_environment_id}:event-bus/default"
+  arn       = "arn:aws:events:eu-west-2:${var.backup_environment_id}:event-bus/default"
   role_arn  = aws_iam_role.eventbridge_forwarder_role.arn
 }

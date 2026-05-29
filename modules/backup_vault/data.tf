@@ -93,7 +93,7 @@ data "aws_iam_policy_document" "eventbridge_forwarder_policy" {
   statement {
     effect    = "Allow"
     actions   = ["events:PutEvents"]
-    resources = ["arn:aws:events:eu-west-1:${var.backup_environment_id}:event-bus/default"]
+    resources = ["arn:aws:events:eu-west-2:${var.backup_environment_id}:event-bus/default"]
   }
 }
 
