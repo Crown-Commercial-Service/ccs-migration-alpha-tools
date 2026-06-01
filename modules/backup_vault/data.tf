@@ -75,3 +75,18 @@ data "aws_iam_policy_document" "backup_vault_policy" {
     resources = ["*"]
   }
 }
+
+data "aws_iam_policy_document" "lambda_logging_permissions" {
+  statement {
+    sid    = "AllowLambdaToWriteLogs"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+
+    resources = [
+      "${aws_cloudwatch_log_group.lambda_backup[0].arn}:*"
+    ]
+  }
+}
