@@ -29,7 +29,7 @@ variable "backup_kms_key_id" {
 variable "backup_vault_name" {
   type        = string
   description = "The name of the Airgapped Backup Vault to use for backups"
-  default     = "staging_vault"
+  default     = "backup_vault_locked"
 }
 
 variable "backup_crossregion_copy" {
