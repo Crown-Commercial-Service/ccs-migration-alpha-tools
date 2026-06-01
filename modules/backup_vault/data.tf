@@ -75,39 +75,3 @@ data "aws_iam_policy_document" "backup_vault_policy" {
     resources = ["*"]
   }
 }
-
-data "aws_iam_policy_document" "eventbridge_assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["events.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
-data "aws_iam_policy_document" "eventbridge_forwarder_policy" {
-  statement {
-    effect    = "Allow"
-    actions   = ["events:PutEvents"]
-    resources = ["arn:aws:events:eu-west-2:${var.backup_environment_id}:event-bus/default"]
-  }
-}
-
-data "aws_iam_policy_document" "lambda_logging_permissions" {
-  statement {
-    sid    = "AllowLambdaToWriteLogs"
-    effect = "Allow"
-    actions = [
-      "logs:CreateLogStream",
-      "logs:PutLogEvents"
-    ]
-
-    resources = [
-      "${aws_cloudwatch_log_group.lambda_backup[0].arn}:*"
-    ]
-  }
-}
