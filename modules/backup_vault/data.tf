@@ -1,4 +1,5 @@
 data "archive_file" "backup_copy_to_vault" {
+  count       = var.backup_crossregion_copy ? 1 : 0
   output_path = "${path.root}/files/backup-copy-to-vault.zip"
   source_file = "${path.module}/backup_copy_lambda.py"
   type        = "zip"
