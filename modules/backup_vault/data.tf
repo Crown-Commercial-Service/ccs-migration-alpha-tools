@@ -77,6 +77,7 @@ data "aws_iam_policy_document" "backup_vault_policy" {
 }
 
 data "aws_iam_policy_document" "lambda_logging_permissions" {
+  count = var.backup_crossregion_copy ? 1 : 0
   statement {
     sid    = "AllowLambdaToWriteLogs"
     effect = "Allow"

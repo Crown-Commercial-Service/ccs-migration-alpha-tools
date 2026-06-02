@@ -21,6 +21,7 @@ resource "aws_cloudwatch_event_target" "backup_copy_transfer" {
 }
 
 resource "aws_lambda_permission" "backup_copy_transfer" {
+  count         = var.backup_crossregion_copy ? 1 : 0
   statement_id  = "AllowExecutionFromEventBridge"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.backup_copy_to_vault[0].function_name
