@@ -3,11 +3,10 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = ">=5.26.0"
+      configuration_aliases = [
+        aws,
+        aws.secondary_region,
+      ]
     }
   }
-}
-
-provider "aws" {
-  alias  = "secondary_region"
-  region = local.secondary_region
 }
