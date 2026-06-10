@@ -5,10 +5,9 @@ resource "aws_iam_role" "backup_role" {
 }
 
 resource "aws_iam_policy" "backup_lambda_policy" {
-  count       = var.backup_crossregion_copy ? 1 : 0
   name        = "backup-copy-lambda-logging-policy"
   description = "Allows the backup copy Lambda to write logs to CloudWatch"
-  policy      = data.aws_iam_policy_document.lambda_logging_permissions[0].json
+  policy      = data.aws_iam_policy_document.lambda_logging_permissions.json
 }
 
 resource "aws_iam_policy" "backup_kms_access" {

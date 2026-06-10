@@ -1,11 +1,10 @@
 resource "aws_lambda_function" "backup_copy_to_vault" {
-  count            = var.backup_crossregion_copy ? 1 : 0
-  filename         = data.archive_file.backup_copy_to_vault[0].output_path
+  filename         = data.archive_file.backup_copy_to_vault.output_path
   function_name    = "backup-copy-to-vault"
   handler          = "backup_copy_lambda.lambda_handler"
   role             = aws_iam_role.backup_role.arn
   runtime          = var.backup_copy_to_vault_runtime
-  source_code_hash = data.archive_file.backup_copy_to_vault[0].output_base64sha256
+  source_code_hash = data.archive_file.backup_copy_to_vault.output_base64sha256
 
   environment {
     variables = {

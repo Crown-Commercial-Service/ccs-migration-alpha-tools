@@ -1,5 +1,4 @@
 data "archive_file" "backup_copy_to_vault" {
-  count       = var.backup_crossregion_copy ? 1 : 0
   output_path = "${path.root}/files/backup-copy-to-vault.zip"
   source_file = "${path.module}/backup_copy_lambda.py"
   type        = "zip"
@@ -78,7 +77,6 @@ data "aws_iam_policy_document" "backup_vault_policy" {
 }
 
 data "aws_iam_policy_document" "lambda_logging_permissions" {
-  count = var.backup_crossregion_copy ? 1 : 0
   statement {
     sid    = "AllowLambdaToWriteLogs"
     effect = "Allow"
@@ -88,7 +86,7 @@ data "aws_iam_policy_document" "lambda_logging_permissions" {
     ]
 
     resources = [
-      "${aws_cloudwatch_log_group.lambda_backup[0].arn}:*"
+      "${aws_cloudwatch_log_group.lambda_backup.arn}:*"
     ]
   }
 }
