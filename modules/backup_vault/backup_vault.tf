@@ -1,13 +1,13 @@
 resource "aws_backup_vault" "backup_vault" {
   name        = "backup_vault"
-  kms_key_arn = "arn:aws:kms:${local.primary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}"
+  kms_key_arn = data.aws_kms_key.primary.arn
 }
 
 resource "aws_backup_vault" "backup_vault_transfer" {
   count       = var.backup_crossregion_copy ? 1 : 0
   provider    = aws.secondary_region
   name        = "backup_vault_transfer"
-  kms_key_arn = "arn:aws:kms:${local.secondary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}"
+  kms_key_arn = data.aws_kms_key.secondary.arn
 }
 
 resource "aws_backup_vault_policy" "backup_vault_policy" {
