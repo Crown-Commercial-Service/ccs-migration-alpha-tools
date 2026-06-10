@@ -98,5 +98,6 @@ data "aws_kms_key" "primary" {
 }
 
 data "aws_kms_key" "secondary" {
-  key_id = "arn:aws:kms:${local.secondary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}"
+  provider = aws.secondary_region
+  key_id   = "arn:aws:kms:${local.secondary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}"
 }
