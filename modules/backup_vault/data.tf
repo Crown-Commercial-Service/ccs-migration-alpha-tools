@@ -34,8 +34,8 @@ data "aws_iam_policy_document" "backup_kms_access" {
     ]
 
     resources = [
-      "arn:aws:kms:${local.primary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}",
-      "arn:aws:kms:${local.secondary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}"
+      data.aws_kms_key.primary.arn,
+      data.aws_kms_key.secondary.arn
     ]
   }
 
@@ -49,8 +49,8 @@ data "aws_iam_policy_document" "backup_kms_access" {
     ]
 
     resources = [
-      "arn:aws:kms:${local.primary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}",
-      "arn:aws:kms:${local.secondary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}"
+      data.aws_kms_key.primary.arn,
+      data.aws_kms_key.secondary.arn
     ]
 
     condition {
@@ -91,4 +91,12 @@ data "aws_iam_policy_document" "lambda_logging_permissions" {
       "${aws_cloudwatch_log_group.lambda_backup[0].arn}:*"
     ]
   }
+}
+
+data "aws_kms_key" "primary" {
+  key_id = "arn:aws:kms:${local.primary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}"
+}
+
+data "aws_kms_key" "secondary" {
+  key_id = "arn:aws:kms:${local.secondary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}"
 }
