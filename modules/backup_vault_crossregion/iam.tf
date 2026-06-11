@@ -20,6 +20,11 @@ resource "aws_iam_role_policy_attachment" "backup_kms_access" {
   policy_arn = aws_iam_policy.backup_kms_access.arn
 }
 
+resource "aws_iam_role_policy_attachment" "backup_lambda_policy" {
+  role       = aws_iam_role.backup_role.name
+  policy_arn = aws_iam_policy.backup_lambda_policy.arn
+}
+
 resource "aws_iam_role_policy_attachment" "backup_role_policys" {
   for_each   = local.backup_role_policy_arns
   role       = aws_iam_role.backup_role.name
