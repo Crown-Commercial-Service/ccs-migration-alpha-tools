@@ -25,3 +25,15 @@ variable "backup_vault_name" {
   description = "The name of the Airgapped Backup Vault to use for backups"
   default     = "backup_vault_locked"
 }
+
+variable "incidentio_endpoint" {
+  description = "The endpoint for the Incident.io integration"
+  type        = string
+  default     = ""
+}
+
+variable "incidentio_querystring" {
+  description = "The query string for the Incident.io integration"
+  type        = string
+  default     = ""
+}

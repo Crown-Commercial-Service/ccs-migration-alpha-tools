@@ -52,6 +52,21 @@ data "aws_iam_policy_document" "backup_kms_access" {
   }
 }
 
+data "aws_iam_policy_document" "backup_sns" {
+  statement {
+    sid     = "AllowCloudWatchToSNS"
+    effect  = "Allow"
+    actions = ["sns:Publish"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudwatch.amazonaws.com"]
+    }
+
+    resources = [aws_sns_topic.backup_failure_alerts.arn]
+  }
+}
+
 data "aws_iam_policy_document" "backup_vault_policy" {
   statement {
     sid    = "Allow ${var.backup_environment_id} to copy into local-vault"
