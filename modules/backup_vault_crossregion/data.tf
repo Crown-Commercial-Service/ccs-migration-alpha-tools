@@ -106,6 +106,21 @@ data "aws_iam_policy_document" "lambda_logging_permissions" {
   }
 }
 
+data "aws_iam_policy_document" "lambda_sns" {
+  statement {
+    sid     = "AllowCloudWatchToSNS"
+    effect  = "Allow"
+    actions = ["sns:Publish"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudwatch.amazonaws.com"]
+    }
+
+    resources = [aws_sns_topic.lambda_failure_alerts.arn]
+  }
+}
+
 data "aws_kms_key" "primary" {
   key_id = "arn:aws:kms:${local.primary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}"
 }
