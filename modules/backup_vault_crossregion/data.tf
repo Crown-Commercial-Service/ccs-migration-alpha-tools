@@ -78,13 +78,13 @@ data "aws_iam_policy_document" "backup_vault_policy" {
 
 data "aws_iam_policy_document" "backup_sns" {
   statement {
-    sid     = "AllowEventBridgeToSNS"
+    sid     = "AllowCloudWatchToSNS"
     effect  = "Allow"
     actions = ["sns:Publish"]
 
     principals {
       type        = "Service"
-      identifiers = ["events.amazonaws.com"]
+      identifiers = ["cloudwatch.amazonaws.com"]
     }
 
     resources = [aws_sns_topic.backup_failure_alerts.arn]
@@ -103,21 +103,6 @@ data "aws_iam_policy_document" "lambda_logging_permissions" {
     resources = [
       "${aws_cloudwatch_log_group.lambda_backup.arn}:*"
     ]
-  }
-}
-
-data "aws_iam_policy_document" "lambda_sns" {
-  statement {
-    sid     = "AllowCloudWatchToSNS"
-    effect  = "Allow"
-    actions = ["sns:Publish"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["cloudwatch.amazonaws.com"]
-    }
-
-    resources = [aws_sns_topic.lambda_failure_alerts.arn]
   }
 }
 
