@@ -14,3 +14,11 @@ resource "aws_lambda_function" "backup_copy_to_vault" {
     }
   }
 }
+
+resource "aws_lambda_permission" "backup_copy_transfer" {
+  statement_id  = "AllowExecutionFromEventBridge"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.backup_copy_to_vault.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.backup_copy_transfer.arn
+}
