@@ -76,6 +76,21 @@ data "aws_iam_policy_document" "backup_vault_policy" {
   }
 }
 
+data "aws_iam_policy_document" "backup_sns" {
+  statement {
+    sid     = "AllowEventBridgeToSNS"
+    effect  = "Allow"
+    actions = ["sns:Publish"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    resources = [aws_sns_topic.backup_failure_alerts.arn]
+  }
+}
+
 data "aws_iam_policy_document" "lambda_logging_permissions" {
   statement {
     sid    = "AllowLambdaToWriteLogs"
