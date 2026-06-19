@@ -58,3 +58,37 @@ resource "aws_network_acl_rule" "database__allow_ephemeral_public_out" {
   rule_number    = 1
   to_port        = 65535
 }
+
+#Additional Rules for MySQL
+resource "aws_network_acl_rule" "public__allow_3306_database_a_out" {
+  cidr_block     = var.database_subnet_cidr_blocks["a"]
+  egress         = true
+  from_port      = 3306
+  network_acl_id = var.public_subnets_nacl_id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 3
+  to_port        = 3306
+}
+
+resource "aws_network_acl_rule" "public__allow_3306_database_b_out" {
+  cidr_block     = var.database_subnet_cidr_blocks["b"]
+  egress         = true
+  from_port      = 3306
+  network_acl_id = var.public_subnets_nacl_id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 4
+  to_port        = 3306
+}
+
+resource "aws_network_acl_rule" "database__allow_3306_public_in" {
+  cidr_block     = var.db_bastion_instance_subnet_cidr_block
+  egress         = false
+  from_port      = 3306
+  network_acl_id = var.database_subnets_nacl_id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 2
+  to_port        = 3306
+}
