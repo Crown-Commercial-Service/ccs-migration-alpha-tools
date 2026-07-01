@@ -10,7 +10,7 @@ data "aws_ami" "amazon_linux_ami" {
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-ebs"]
+    values = ["al2023-ami-*-kernel-6.1-x86_64"]
   }
 
   owners = [
@@ -24,7 +24,7 @@ resource "aws_instance" "db_bastion" {
   instance_type               = var.db_bastion_instance_type
   key_name                    = aws_key_pair.db_bastion.key_name
   subnet_id                   = var.db_bastion_instance_subnet_id
-  vpc_security_group_ids      = concat(
+  vpc_security_group_ids = concat(
     [aws_security_group.db_bastion_instance.id],
     # Note that the db_clients_security_group already provides SG rules for connecting
     var.db_clients_security_group_ids,
