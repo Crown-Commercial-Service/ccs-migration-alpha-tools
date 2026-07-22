@@ -9,6 +9,12 @@ variable "is_ephemeral" {
   default     = false
 }
 
+variable "tags" {
+  type        = map(string)
+  description = "Tags to apply to the S3 bucket"
+  default     = {}
+}
+
 variable "versioning" {
   type        = bool
   description = "If set to true, will activate versioning on all objects placed in the bucket"
