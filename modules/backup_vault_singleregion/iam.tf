@@ -4,9 +4,20 @@ resource "aws_iam_role" "backup_role" {
   assume_role_policy = data.aws_iam_policy_document.backup_assume_role.json
 }
 
+resource "aws_iam_role" "ssm_backup_role" {
+  name               = "backup_management_ssm"
+  assume_role_policy = data.aws_iam_policy_document.ssm_backup_assume_role.json
+}
+
 resource "aws_iam_policy" "backup_kms_access" {
   name   = "backup_vault_kms_access"
   policy = data.aws_iam_policy_document.backup_kms_access.json
+}
+
+resource "aws_iam_role_policy" "ssm_backup_policy" {
+  name   = "backup_management_ssm_policy"
+  role   = aws_iam_role.ssm_backup_role.id
+  policy = data.aws_iam_policy_document.ssm_backup_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "backup_kms_access" {

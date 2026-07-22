@@ -4,10 +4,21 @@ resource "aws_iam_role" "backup_role" {
   assume_role_policy = data.aws_iam_policy_document.backup_assume_role.json
 }
 
+resource "aws_iam_role" "ssm_backup_role" {
+  name               = "backup_management_ssm"
+  assume_role_policy = data.aws_iam_policy_document.ssm_backup_assume_role.json
+}
+
 resource "aws_iam_policy" "backup_lambda_policy" {
   name        = "backup-copy-lambda-logging-policy"
   description = "Allows the backup copy Lambda to write logs to CloudWatch"
   policy      = data.aws_iam_policy_document.lambda_logging_permissions.json
+}
+
+resource "aws_iam_role_policy" "ssm_backup_policy" {
+  name   = "backup_management_ssm_policy"
+  role   = aws_iam_role.ssm_backup_role.id
+  policy = data.aws_iam_policy_document.ssm_backup_policy.json
 }
 
 resource "aws_iam_policy" "backup_kms_access" {

@@ -106,6 +106,47 @@ data "aws_iam_policy_document" "lambda_logging_permissions" {
   }
 }
 
+data "aws_iam_policy_document" "ssm_backup_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${var.backup_environment_id}:root"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+data "aws_iam_policy_document" "ssm_backup_policy" {
+  statement {
+    sid    = "AllowSSMBackupOperations"
+    effect = "Allow"
+
+    actions = [
+      "ssm:GetParametersByPath",
+      "ssm:GetParameter",
+      "ssm:GetParameterHistory",
+      "ssm:ListTagsForResource"
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "AllowSSMRestoreOperations"
+    effect = "Allow"
+
+    actions = [
+      "ssm:PutParameter",
+      "ssm:AddTagsToResource"
+    ]
+
+    resources = ["*"]
+  }
+}
+
 data "aws_kms_key" "primary" {
   key_id = "arn:aws:kms:${local.primary_region}:${var.backup_environment_id}:key/${var.backup_kms_key_id}"
 }
