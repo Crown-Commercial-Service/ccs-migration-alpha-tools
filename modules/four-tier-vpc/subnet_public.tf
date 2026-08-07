@@ -10,14 +10,6 @@ resource "aws_subnet" "public" {
   }
 }
 
-resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.vpc.id
-
-  tags = {
-    Name = "${var.resource_name_prefixes.hyphens}-IGW"
-  }
-}
-
 resource "aws_default_route_table" "default" {
   default_route_table_id = aws_vpc.vpc.default_route_table_id
 }
