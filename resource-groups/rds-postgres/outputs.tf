@@ -14,6 +14,11 @@ output "availability_zone" {
   value       = aws_db_instance.db.availability_zone
 }
 
+output "arn" {
+  description = "ARN of the RDS instance"
+  value       = aws_db_instance.db.arn
+}
+
 output "db_clients_security_group_id" {
   description = "ID of Security Group, membership of which grants routing access to the DB"
   value       = aws_security_group.db_clients.id
